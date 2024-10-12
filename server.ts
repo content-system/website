@@ -41,6 +41,46 @@ app.get("/", (req: Request, res: Response) => {
     message: "Welcome in Express",
   })
 })
+app.get("/works", (req: Request, res: Response) => {
+  res.render("works", {
+    message: "Welcome in works Express",
+  })
+})
+app.get("/services", (req: Request, res: Response) => {
+  res.render("services", {
+    message: "Welcome in services Express",
+  })
+})
+app.get("/news", (req: Request, res: Response) => {
+  res.render("news", {
+    message: "Welcome in news Express",
+  })
+})
+app.get("/careers", (req: Request, res: Response) => {
+  res.render("careers", {
+    message: "Welcome in careers Express",
+  })
+})
+app.get("/contact", (req: Request, res: Response) => {
+  res.render("contact", {
+    message: "Welcome in contact Express",
+  })
+})
+app.get("/milestones", (req: Request, res: Response) => {
+  res.render("milestones", {
+    message: "Welcome in milestones Express",
+  })
+})
+app.get("/companies", (req: Request, res: Response) => {
+  res.render("companies", {
+    message: "Welcome in companies Express",
+  })
+})
+app.get("/leadership", (req: Request, res: Response) => {
+  res.render("leadership", {
+    message: "Welcome in leadership Express",
+  })
+})
 
 http.createServer(app).listen(conf.port, () => {
   console.log("Start server at port " + conf.port)
