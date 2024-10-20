@@ -1,6 +1,212 @@
 {% extends "layouts/default.html" %} {% block content %}
-<div class="view-container menu">
+<div class="view-container">
   <header><h2>News</h2></header>
-  <div>This is news page {{ message }}</div>
+  <div>
+    <form id="articlesForm" name="articlesForm" novalidate="">
+      <section class="row search-group">
+        <label class="col s12 m6 search-input"
+          ><select>
+            <option value="12">12</option>
+            <option value="24" selected="">24</option>
+            <option value="60">60</option>
+            <option value="100">100</option>
+            <option value="120">120</option>
+            <option value="180">180</option>
+            <option value="300">300</option>
+            <option value="600">600</option></select
+          ><input id="q" maxlength="255" placeholder="Keyword" type="text" value="" name="q" /><button type="button" hidden="" class="btn-remove-text"></button
+          ><button type="button" class="btn-filter"></button><button type="submit" class="btn-search"></button
+        ></label>
+      </section>
+    </form>
+    <form class="list-result">
+      <ul class="row list-view">
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div class="cover" style="background-image: url('https://fptsoftware.com/-/media/project/fpt-software/global/80000.png')"></div>
+            <a href="/news/20240917001">FPT Expands Global Workforce to 80,000 amid Its 36th Anniversary</a>
+            <p>17/9/2024 16:46</p>
+            <p>
+              FPT Corporation recently announced a significant milestone, passing 80,000 employees across 30 countries. The milestone coincides with the
+              company’s 36th anniversary and underscores its remarkable growth and global expansion.
+            </p>
+          </section>
+        </li>
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div
+              class="cover"
+              style="
+                background-image: url('https://fptsoftware.com/-/media/project/fpt-software/global/common/fptsoftware_building_d/francophone-day-2024_1.webp');
+              "
+            ></div>
+            <a href="/news/20240722001">FPT to Bolster Growth among Francophone Community, Emphasizing Workforce Development</a>
+            <p>22/7/2024 17:06</p>
+            <p>
+              FPT Corporation recently hosted the FPT Francophone Day, a dynamic networking and culture exchange platform for the French-speaking community in
+              Vietnam. The event also marked the inauguration of FPT Francophone Association, highlighting the IT firm’s commitment to fostering its
+              French-proficient professionals and nurturing opportunities for business and culture exchange.
+            </p>
+          </section>
+        </li>
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div class="cover" style="background-image: url('https://fptsoftware.com/-/media/project/fpt-software/fso/675a1663.webp')"></div>
+            <a href="/news/20240912001">FPT Software Earns First Hong Kong Business Technology Excellence Award for its Agent Digital Platform in Insurtech</a>
+            <p>12/9/2024 16:48</p>
+            <p>
+              Global leading IT company FPT Software has earned recognition at the Hong Kong Business Technology Excellence Awards in the Software - Insurtech
+              category. This marks the first time the company has received this prestigious award, reinforcing its status as a trusted service provider in the
+              insurance sector.
+            </p>
+          </section>
+        </li>
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div class="cover" style="background-image: url('https://fptsoftware.com/-/media/project/fpt-software/global/fpt_shanghai.webp')"></div>
+            <a href="/news/20240826001">FPT Opens New Office in Shanghai, China</a>
+            <p>26/8/2024 16:49</p>
+            <p>
+              FPT China recently celebrated the opening of a new office in Shanghai, in response to the growing customer base and increasing demand for digital
+              services and solutions. The tech firm is set to transform the Shanghai office into a leading hub for talent and technology with accelerated AI
+              integration across its services to deliver unmatched innovation to customers worldwide.
+            </p>
+          </section>
+        </li>
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div
+              class="cover"
+              style="
+                background-image: url('https://fptsoftware.com/-/media/project/fpt-software/global/common/fptsoftware_building_d/455863996_3699023507019198_7345037110881035098_n.webp');
+              "
+            ></div>
+            <a href="/news/20240823001">Feature Interview: Low-Code Development Platform Adoption and How FPT Software Is Leading the Charge in South Korea</a>
+            <p>23/8/2024 16:51</p>
+            <p>This in-depth interview discusses the rapid adoption of low-code platforms globally, with a focus on key markets such as South Korea.</p>
+          </section>
+        </li>
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div class="cover" style="background-image: url('https://fptsoftware.com/-/media/project/fpt-software/fso/uplift/fme-1.png')"></div>
+            <a href="/news/20240819001">FPT Software and Meerana Technologies Partner to Drive Digital Transformation in UAE</a>
+            <p>19/8/2024 16:54</p>
+            <p>
+              This partnership aims to expand FPT Software’s footprint in the region and address the market needs across various sectors, including Utilities,
+              BFSI, Logistics, Transportation, and more.
+            </p>
+          </section>
+        </li>
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div class="cover" style="background-image: url('https://fptsoftware.com/-/media/project/fpt-software/fso/uplift/1.png')"></div>
+            <a href="/news/20240930001">FPT Software Wins Job Creation Award at ESGBusiness Awards 2024</a>
+            <p>30/9/2024 16:45</p>
+            <p>
+              This recognition highlights FPT Software's commitment to nurturing top talent and fostering diverse and inclusive workplaces across the global IT
+              industry.
+            </p>
+          </section>
+        </li>
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div class="cover" style="background-image: url('https://fptsoftware.com/-/media/project/fpt-software/fso/green-tuesday-initiative.webp')"></div>
+            <a href="/news/20240717001">FPT Software Adopts Green Tuesday Initiative to Accelerate Sustainable Movement</a>
+            <p>17/7/2024 17:08</p>
+            <p>
+              FPT Software officially became a partner of the Green Tuesday Initiative, aiming to cut down food-related footprint on the organizational scale.
+              As the first Vietnamese enterprise to join the program, this move further highlights the IT firm's steadfast progress and commitment to green
+              transformation and sustainable development.
+            </p>
+          </section>
+        </li>
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div class="cover" style="background-image: url('https://fptsoftware.com/-/media/project/fpt-software/fso/post_fso-x-vincss.png')"></div>
+            <a href="/news/20240709001">FPT Software and VinCSS Join Hands to Accelerate Cybersecurity in Automotive Industry</a>
+            <p>9/7/2024 17:11</p>
+            <p>
+              FPT Software and VinCSS recently signed a Memorandum of Understanding (MoU) targeting the automotive sector. The partnership enables both
+              companies to enhance their solutions by leveraging each other’s resources, expertise, and network.
+            </p>
+          </section>
+        </li>
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div
+              class="cover"
+              style="background-image: url('https://fptsoftware.com/-/media/project/fpt-software/fso/newsroom/newsroom/news080724.webp')"
+            ></div>
+            <a href="/news/20240708001">FPT Japan Joins Leading IT Companies in Forming the Vietnamese Association of Digital Transformation in Japan</a>
+            <p>8/7/2024 17:14</p>
+            <p>
+              The Vietnamese Association of Digital Transformation in Japan (VADX Japan) was officially launched in Tokyo, Japan, with FPT Japan serving as the
+              Association's Chair Company and Do Van Khac, Senior Executive Vice President of FPT Software and CEO of FPT Japan, serving as the company’s
+              representative. This initiative represents FPT Japan’s ongoing commitment to enhancing cooperation and development in digital technology between
+              Vietnam and Japan.
+            </p>
+          </section>
+        </li>
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div
+              class="cover"
+              style="
+                background-image: url('https://fptsoftware.com/-/media/project/fpt-software/global/common/fptsoftware_building_d/fpt-global-internship-frame-(8).webp');
+              "
+            ></div>
+            <a href="/news/20240704001">FPT Software Welcomes First Batch of Global Interns to Vietnam for the Global Internship Program 2024</a>
+            <p>4/7/2024 17:19</p>
+            <p>
+              Returning for the second edition, the program has seen a fourfold increase in international student participation compared to last year, with
+              students representing a wider variety of countries
+            </p>
+          </section>
+        </li>
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div
+              class="cover"
+              style="background-image: url('https://fptsoftware.com/-/media/project/fpt-software/fso/448926222_763543399021830_4527054500824727171_n.webp')"
+            ></div>
+            <a href="/news/20240701001">FPT Software Wins 2nd Runner-Up at SAP Hack2Build Contest</a>
+            <p>1/7/2024 17:21</p>
+            <p>FPT Software Wins 2nd Runner-Up at SAP Hack2Build Contest</p>
+          </section>
+        </li>
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div
+              class="cover"
+              style="background-image: url('https://fptsoftware.com/-/media/project/fpt-software/fso/newsroom/news---press-release/dsc00136.webp')"
+            ></div>
+            <a href="/news/20240605001">Vietnam Tech Revolution Story to Be Featured on Discovery Channel, With FPT in the Spotlight</a>
+            <p>5/6/2024 17:23</p>
+            <p>
+              FPT Corporation (FPT) collaborates with Warner Bros. Discovery in an upcoming documentary titled “Silicon Delta - The Story of Vietnam’s Tech
+              Revolution.” The documentary highlights Vietnam as a leading digital economy of Southeast Asia, with FPT at the forefront of the country’s
+              transformation into a global destination for business and innovation
+            </p>
+          </section>
+        </li>
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div
+              class="cover"
+              style="
+                background-image: url('https://fptsoftware.com/-/media/project/fpt-software/fso/newsroom/news---press-release/fpt-issues-first-ever-environmental-policy.webp');
+              "
+            ></div>
+            <a href="/news/20240530001">FPT Issues First-Ever Environmental Policy, Strengthening Sustainable Commitment</a>
+            <p>30/5/2024 17:25</p>
+            <p>
+              This policy provides a detailed plan for implementing specific steps to reduce greenhouse gas (GHG) emissions, aiming at becoming Vietnam's
+              pioneering company to achieve Net Zero emissions by 2040.
+            </p>
+          </section>
+        </li>
+      </ul>
+    </form>
+  </div>
 </div>
 {% endblock %}
