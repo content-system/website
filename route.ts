@@ -16,4 +16,8 @@ export function route(app: Application, ctx: ApplicationContext): void {
   app.put("/users/:id", checkUser, ctx.user.update)
   app.patch("/users/:id", checkUser, ctx.user.patch)
   app.delete("/users/:id", ctx.user.delete)
+
+  app.get("/news", ctx.article.render)
+  app.get("/careers", ctx.job.render)
+  app.get("/contact", ctx.contact.render)
 }

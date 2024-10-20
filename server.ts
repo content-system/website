@@ -51,6 +51,7 @@ app.get("/services", (req: Request, res: Response) => {
     message: "Welcome in services Express",
   })
 })
+/*
 app.get("/news", (req: Request, res: Response) => {
   res.render("news", {
     message: "Welcome in news Express",
@@ -66,6 +67,7 @@ app.get("/contact", (req: Request, res: Response) => {
     message: "Welcome in contact Express",
   })
 })
+    */
 app.get("/milestones", (req: Request, res: Response) => {
   res.render("milestones", {
     message: "Welcome in milestones Express",

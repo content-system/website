@@ -9,8 +9,8 @@
   <div>
     <form id="jobsForm" name="jobsForm" novalidate="">
       <section class="row search-group">
-        <label class="col s12 m6 search-input"
-          ><select>
+        <label class="col s12 m6 search-input">
+          <select>
             <option value="12">12</option>
             <option value="24" selected="">24</option>
             <option value="60">60</option>
@@ -18,56 +18,29 @@
             <option value="120">120</option>
             <option value="180">180</option>
             <option value="300">300</option>
-            <option value="600">600</option></select
-          ><input id="q" maxlength="255" placeholder="Keyword" type="text" value="" name="q" /><button type="button" hidden="" class="btn-remove-text"></button
-          ><button type="button" class="btn-filter"></button><button type="submit" class="btn-search"></button
-        ></label>
+            <option value="600">600</option>
+          </select>
+          <input id="q" maxlength="255" placeholder="Keyword" type="text" value="" name="q" />
+          <button type="button" hidden="" class="btn-remove-text"></button>
+          <button type="button" class="btn-filter"></button>
+          <button type="submit" class="btn-search"></button>
+        </label>
       </section>
     </form>
     <form class="list-result">
       <ul class="row list-view">
+        {% for item in list %}
         <li class="col s12 m6 l4 xl3">
           <section>
             <div>
-              <h4><a>Senior Backend Developer (Java, Kotlin, MySQL)</a></h4>
-              <p>
-                • Analyze and organize raw data • Build data systems and pipelines • Prepare data for prescriptive and predictive modeling • Combine raw
-                information from different sources • Explore ways to enhance data quality and reliability • Identify opportunities for data acquisition • Data
-                pipeline maintenance/testing.
-              </p>
+              <a href="/news/{{ item.id }}20240917001">{{ item.title }}</a>
+              <p>{{ item.publishedAt }}</p>
+              <p>{{ item.description }}</p>
             </div>
             <button class="btn-detail"></button>
           </section>
         </li>
-        <li class="col s12 m6 l4 xl3">
-          <section>
-            <div>
-              <h4><a>Business Analyst (Japanese)</a></h4>
-              <p>
-                Previous experience as a data engineer or in a similar role Technical expertise with data models, data mining, and segmentation techniques
-                Knowledge of programming languages (e.g. Java and Python) Experience with data architecture and data modeling Hands-on experience with SQL
-                database design Great numerical and analytical skills Degree in Computer Science, IT, or similar field; a Masters is a plus Data engineering
-                certification (e.g IBM Certified Data Engineer) is a plus
-              </p>
-            </div>
-            <button class="btn-detail"></button>
-          </section>
-        </li>
-        <li class="col s12 m6 l4 xl3">
-          <section>
-            <div>
-              <h4><a>Senior DevOps Engineer - Salary Up to $2800</a></h4>
-              <p>
-                1. Collaborate with Front-End Developers to integrate user-facing elements with server-side logic and other applications APIs; 2. Maintain and
-                improve running-functionality as well as design and develop new system, new feature; d 3. Develop and maintain Back-End Code that improves
-                analytical and statistical modeling and forecasting methods to support business tribes in their decision-making process; 4. Create data
-                structures from scratch; 5. Actively test and debug code defect; 6. Research to learn technology and knowledge needed to develop products for
-                the global market.
-              </p>
-            </div>
-            <button class="btn-detail"></button>
-          </section>
-        </li>
+        {% endfor %}
       </ul>
     </form>
   </div>
