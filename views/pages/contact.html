@@ -1,37 +1,37 @@
 <div class="view-container">
   <form id="contactForm" name="contactForm">
-    <header><h2>Contact</h2></header>
+    <header><h2>{{ resource.contact }}</h2></header>
     <div class="row">
       <label class="col s12 m6 required invalid">
-        Full Name
-        <input type="text" id="name" name="name" value="{{contact.name}}" maxlength="100" required="true" placeholder="Full Name" />
+        {{ resource.fullname }}
+        <input type="text" id="name" name="name" value="{{contact.name}}" maxlength="100" required="true" placeholder="{{ resource.fullname }}" />
         <span class="span-error">Full Name is required.</span>
       </label>
       <label class="col s12 m6 required">
-        Country
-        <input type="text" id="country" name="country" value="{{contact.country}}" value="" maxlength="100" required placeholder="Country" />
+        {{ resource.country }}
+        <input type="text" id="country" name="country" value="{{contact.country}}" value="" maxlength="100" required placeholder="{{ resource.country }}" />
       </label>
       <label class="col s12 m6 required">
-        Company
-        <input type="text" id="company" name="company" value="{{contact.company}}" maxlength="100" required placeholder="Company" />
+        {{ resource.company }}
+        <input type="text" id="company" name="company" value="{{contact.company}}" maxlength="100" required placeholder="{{ resource.company }}" />
       </label>
       <label class="col s12 m6">
-        Job Title
-        <input type="text" id="jobTitle" name="jobTitle" value="{{contact.jobTitle}}" maxlength="100" required placeholder="Job Title" />
+        {{ resource.job_title }}
+        <input type="text" id="jobTitle" name="jobTitle" value="{{contact.jobTitle}}" maxlength="100" required placeholder="{{ resource.job_title }}" />
       </label>
       <label class="col s12 m6 required">
-        Email
-        <input type="text" id="email" name="email" value="{{contact.email}}" data-type="email" required maxlength="120" placeholder="Email" />
+        {{ resource.email }}
+        <input type="text" id="email" name="email" value="{{contact.email}}" data-type="email" required maxlength="120" placeholder="{{ resource.email }}" />
       </label>
       <label class="col s12 m6 required">
-        Telephone
-        <input type="tel" id="phone" name="phone" value="{{contact.email}}" required maxlength="17" placeholder="Telephone" />
+        {{ resource.phone }}
+        <input type="tel" id="phone" name="phone" value="{{contact.phone}}" required maxlength="17" placeholder="{{ resource.phone }}" />
       </label>
       <label class="col s12 m12">
-        Message
-        <textarea id="message" name="message" maxlength="400" placeholder="Message">{{contact.message}}</textarea>
+        {{ resource.message }}
+        <textarea id="message" name="message" maxlength="400" placeholder="{{ resource.message }}">{{contact.message}}</textarea>
       </label>
     </div>
-    <footer><button type="submit" id="btnSubmit" name="btnSubmit">Submit</button></footer>
+    <footer><button type="submit" id="btnSubmit" name="btnSubmit">{{ resource.submit }}</button></footer>
   </form>
 </div>

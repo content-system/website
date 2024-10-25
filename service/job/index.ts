@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { Controller } from "express-ext"
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
-import { getView } from "../core"
+import { getView } from "../../core"
 import { Job, JobFilter, jobModel, JobRepository, JobService } from "./job"
 export * from "./job"
 

@@ -2,7 +2,8 @@ import { Request, Response } from "express"
 import { Controller } from "express-ext"
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
-import { getView } from "../core"
+import { getView } from "../../core"
+import { getResource } from "../../resources"
 import { Contact, ContactFilter, contactModel, ContactRepository, ContactService } from "./contact"
 export * from "./contact"
 
@@ -23,11 +24,12 @@ export class ContactController extends Controller<Contact, string, ContactFilter
     this.render = this.render.bind(this)
   }
   render(req: Request, res: Response) {
+    const resource = getResource()
     res.render(getView(req, "contact"), {
+      resource,
       contact: {
         name: "Duc Nguyen",
       },
-      message: "Welcome in news Express",
     })
   }
 }

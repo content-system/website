@@ -9,8 +9,8 @@ import { Pool } from "pg"
 import { PoolManager } from "pg-extension"
 import { config, env } from "./config"
 import { useContext } from "./context"
+import { getView } from "./core"
 import { route } from "./route"
-import { getView } from "./service/core"
 
 dotenv.config()
 const conf = merge(config, process.env, env, process.env.ENV)
