@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { Controller } from "express-ext"
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
+import { getView } from "../core"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 export * from "./article"
 
@@ -25,7 +26,7 @@ export class ArticleController extends Controller<Article, string, ArticleFilter
       title: "FPT Software",
     }
     this.articleService.search(filter, 6).then((result) => {
-      res.render("news", {
+      res.render(getView(req, "news"), {
         list: result.list,
       })
     })

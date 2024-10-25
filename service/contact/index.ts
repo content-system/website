@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { Controller } from "express-ext"
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
+import { getView } from "../core"
 import { Contact, ContactFilter, contactModel, ContactRepository, ContactService } from "./contact"
 export * from "./contact"
 
@@ -15,13 +16,17 @@ export class ContactManager extends Manager<Contact, string, ContactFilter> impl
     super(search, repository)
   }
 }
+
 export class ContactController extends Controller<Contact, string, ContactFilter> {
   constructor(log: Log, service: ContactService) {
     super(log, service)
     this.render = this.render.bind(this)
   }
   render(req: Request, res: Response) {
-    res.render("contact", {
+    res.render(getView(req, "contact"), {
+      contact: {
+        name: "Duc Nguyen",
+      },
       message: "Welcome in news Express",
     })
   }

@@ -1,38 +1,4 @@
-{% extends "layouts/default.html" %} {% block content %}
-<div class="view-container">
-  <form id="contactForm" name="contactForm" model-name="contact" date-format="D/M/YYYY">
-    <header><h2>Contact</h2></header>
-    <div class="row">
-      <label class="col s12 m6 required invalid"
-        >Full Name<input id="name" maxlength="100" required="" placeholder="Full Name" type="text" value="" name="name" />
-        <span class="span-error">Full Name is required.</span>
-      </label>
-      <label class="col s12 m6 required">
-        Country
-        <input id="country" maxlength="100" required="" placeholder="Country" type="text" value="" name="country" />
-      </label>
-      <label class="col s12 m6 required"
-        >Company
-        <input id="company" maxlength="100" required="" placeholder="Company" type="text" value="" name="company" />
-      </label>
-      <label class="col s12 m6">
-        Job Title
-        <input id="jobTitle" data-type="jobTitle" maxlength="100" placeholder="Job Title" type="text" value="" name="jobTitle" />
-      </label>
-      <label class="col s12 m6 required">
-        Email
-        <input id="email" data-type="email" required="" maxlength="120" placeholder="Email" type="text" value="" name="email" />
-      </label>
-      <label class="col s12 m6 required">
-        Telephone
-        <input id="phone" required="" maxlength="17" placeholder="Telephone" type="tel" value="" name="phone" />
-      </label>
-      <label class="col s12 m12">
-        Message
-        <textarea id="message" name="message" maxlength="400" placeholder="Message"></textarea>
-      </label>
-    </div>
-    <footer><button type="submit" id="btnSubmit" name="btnSubmit">Submit</button></footer>
-  </form>
-</div>
+{% extends "layouts/default.html" %}
+{% block content %}
+  {% include "pages/contact.html" %}
 {% endblock %}

@@ -10,6 +10,7 @@ import { PoolManager } from "pg-extension"
 import { config, env } from "./config"
 import { useContext } from "./context"
 import { route } from "./route"
+import { getView } from "./service/core"
 
 dotenv.config()
 const conf = merge(config, process.env, env, process.env.ENV)
@@ -37,49 +38,32 @@ const ctx = useContext(db, logger, middleware)
 route(app, ctx)
 
 app.get("/", (req: Request, res: Response) => {
-  res.render("index", {
+  res.render(getView(req, "index"), {
     message: "Welcome in Express",
   })
 })
 app.get("/works", (req: Request, res: Response) => {
-  res.render("works", {
+  res.render(getView(req, "works"), {
     message: "Welcome in works Express",
   })
 })
 app.get("/services", (req: Request, res: Response) => {
-  res.render("services", {
+  res.render(getView(req, "services"), {
     message: "Welcome in services Express",
   })
 })
-/*
-app.get("/news", (req: Request, res: Response) => {
-  res.render("news", {
-    message: "Welcome in news Express",
-  })
-})
-app.get("/careers", (req: Request, res: Response) => {
-  res.render("careers", {
-    message: "Welcome in careers Express",
-  })
-})
-app.get("/contact", (req: Request, res: Response) => {
-  res.render("contact", {
-    message: "Welcome in contact Express",
-  })
-})
-    */
 app.get("/milestones", (req: Request, res: Response) => {
-  res.render("milestones", {
+  res.render(getView(req, "milestones"), {
     message: "Welcome in milestones Express",
   })
 })
 app.get("/companies", (req: Request, res: Response) => {
-  res.render("companies", {
+  res.render(getView(req, "companies"), {
     message: "Welcome in companies Express",
   })
 })
 app.get("/leadership", (req: Request, res: Response) => {
-  res.render("leadership", {
+  res.render(getView(req, "leadership"), {
     message: "Welcome in leadership Express",
   })
 })

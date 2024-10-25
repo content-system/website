@@ -1,6 +1,4 @@
-{% extends "layouts/default.html" %} {% block content %}
-<div class="view-container menu">
-  <header><h2>Companies</h2></header>
-  <div>This is companies page {{ message }}</div>
-</div>
+{% extends "layouts/default.html" %}
+{% block content %}
+  {% include "pages/companies.html" %}
 {% endblock %}

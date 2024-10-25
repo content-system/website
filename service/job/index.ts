@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { Controller } from "express-ext"
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
+import { getView } from "../core"
 import { Job, JobFilter, jobModel, JobRepository, JobService } from "./job"
 export * from "./job"
 
@@ -25,7 +26,7 @@ export class JobController extends Controller<Job, string, JobFilter> {
       title: "Java",
     }
     this.jobService.search(filter, 6).then((result) => {
-      res.render("careers", {
+      res.render(getView(req, "careers"), {
         list: result.list,
       })
     })
