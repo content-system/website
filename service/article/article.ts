@@ -34,27 +34,25 @@ export const articleModel: Attributes = {
     required: true,
   },
   title: {
-    length: 100,
+    length: 255,
     required: true,
     q: true,
   },
   description: {
-    length: 100,
+    length: 1000,
     required: true,
     q: true,
   },
   publishedAt: {
+    column: "published_at",
     type: "datetime",
   },
-  name: {
-    required: true,
-    q: true,
-    length: 100,
-  },
   content: {
+    length: 5000,
     required: true,
-    q: true,
   },
-  tags: {},
+  tags: {
+    type: "primitives",
+  },
   type: {},
 }
