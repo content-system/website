@@ -4,7 +4,7 @@
     <form id="articlesForm" name="articlesForm" novalidate="">
       <section class="row search-group">
         <label class="col s12 m6 search-input">
-          <select id="limit" name="limit">
+          <select id="limit" name="limit" onchange="searchNews(event)">
             {% for pageSize in pageSizes %}
             <option value="{{pageSize}}" {% if pageSize == filter.limit %} selected {% endif %}>{{pageSize}}</option>
             {% endfor %}

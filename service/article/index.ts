@@ -58,6 +58,10 @@ export class ArticleController extends Controller<Article, string, ArticleFilter
       for (const item of result.list) {
         item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
       }
+      if (filter.publishedAt) {
+        filter.publishedAt.min = datetimeToString(filter.publishedAt.min)
+        filter.publishedAt.max = datetimeToString(filter.publishedAt.max)
+      }
       res.render(getView(req, "news"), {
         resource,
         pageSizes,

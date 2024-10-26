@@ -350,6 +350,9 @@ function searchNews(e) {
   const target = e.target
   const form = target.form
   const filter = decodeFromForm(form)
+  if (target.nodeName === "SELECT") {
+    filter.page = 1
+  }
   const url = buildUrl(filter)
   fetch(url, {
     method: "GET",
