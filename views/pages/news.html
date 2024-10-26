@@ -4,7 +4,7 @@
     <form id="articlesForm" name="articlesForm" novalidate="">
       <section class="row search-group">
         <label class="col s12 m6 search-input">
-          <select>
+          <select id="limit" name="limit">
             {% for pageSize in pageSizes %}
             <option value="{{pageSize}}" {% if pageSize == filter.limit %} selected {% endif %}>{{pageSize}}</option>
             {% endfor %}
@@ -39,7 +39,6 @@
           />
         </label>
       </section>
-      <input type="hidden" id="limit" name="limit" value="{{ filter.limit }}"/>
       <input type="hidden" id="page" name="page" value="{{ filter.page }}"/>
     </form>
     <form class="list-result">

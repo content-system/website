@@ -149,15 +149,15 @@ function decodeFromForm(form, locale, currencySymbol) {
     const id = ctrl.getAttribute("id")
     let val
     let isDate = false
-    if (!name || name === "") {
-      let dataField = ctrl.getAttribute("data-field")
-      if (!dataField && ctrl.parentElement && ctrl.parentElement.classList.contains("DayPickerInput")) {
-        if (ctrl.parentElement.parentElement) {
-          dataField = ctrl.parentElement.parentElement.getAttribute("data-field")
-          isDate = true
-        }
-      }
+    let dataField = ctrl.getAttribute("data-field")
+    if (dataField && dataField.length > 0) {
       name = dataField
+    } else if ((!name || name === "") && ctrl.parentElement && ctrl.parentElement.classList.contains("DayPickerInput")) {
+      if (ctrl.parentElement.parentElement) {
+        dataField = ctrl.parentElement.parentElement.getAttribute("data-field")
+        isDate = true
+        name = dataField
+      }
     }
     if (name != null && name !== "") {
       let nodeName = ctrl.nodeName
@@ -205,7 +205,7 @@ function decodeFromForm(form, locale, currencySymbol) {
           case "datetime-local":
             if (ctrl.value.length > 0) {
               try {
-                val = new Date(ctrl.value).toISOString()
+                val = new Date(ctrl.value)
               } catch (err) {
                 val = null
               }
@@ -361,8 +361,6 @@ function searchNews(e) {
           if (pageBody) {
             pageBody.innerHTML = data
           }
-          console.log("Success:", data)
-          alert("Data submitted successfully!")
         })
       } else {
         console.error("Error:", response.statusText)

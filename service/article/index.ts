@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { Controller, fromRequest } from "express-ext"
+import { Controller, format, fromRequest } from "express-ext"
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
 import {
@@ -48,6 +48,7 @@ export class ArticleController extends Controller<Article, string, ArticleFilter
     }
     if (hasParam(req)) {
       filter = fromRequest<ArticleFilter>(req)
+      format(filter, ["publishedAt"])
     }
     const page = queryNumber(req, "page", 1)
     const limit = queryNumber(req, "limit", defaultLimit)
