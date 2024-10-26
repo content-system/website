@@ -1,25 +1,46 @@
 <div class="view-container">
-  <header><h2>News</h2></header>
+  <header><h2>{{ resource.news }}</h2></header>
   <div>
     <form id="articlesForm" name="articlesForm" novalidate="">
       <section class="row search-group">
         <label class="col s12 m6 search-input">
           <select>
-            <option value="12">12</option>
-            <option value="24" selected>24</option>
-            <option value="60">60</option>
-            <option value="100">100</option>
-            <option value="120">120</option>
-            <option value="180">180</option>
-            <option value="300">300</option>
-            <option value="600">600</option>
+            {% for pageSize in pageSizes %}
+            <option value="{{pageSize}}" {% if pageSize == filter.limit %} selected {% endif %}>{{pageSize}}</option>
+            {% endfor %}
           </select>
-          <input type="text" id="q" name="q" maxlength="255" placeholder="Keyword" value="" />
+          <input type="text" id="q" name="q" maxlength="255" placeholder="{{ resource.search }}" value="{{ filter.q }}" />
           <button type="button" hidden="" class="btn-remove-text"></button>
-          <button type="button" class="btn-filter"></button>
-          <button type="submit" class="btn-search"></button>
+          <button type="button" class="btn-filter on"></button>
+          <button type="submit" class="btn-search" onclick="searchNews(event)"></button>
         </label>
       </section>
+      <section class="row search-group inline">
+        <label class="col s12 m6">
+          {{ resource.published_at_from }}
+          <input
+            type="datetime-local"
+            id="publishedAt_min"
+            name="publishedAt_min"
+            data-field="publishedAt.min"
+            value="{{ filter.publishedAt.min }}"
+            step=".010"
+          />
+        </label>
+        <label class="col s12 m6">
+          {{ resource.published_at_to }}
+          <input
+            type="datetime-local"
+            id="publishedAt_max"
+            name="publishedAt_max"
+            data-field="publishedAt.max"
+            value="{{ filter.publishedAt.max }}"
+            step=".010"
+          />
+        </label>
+      </section>
+      <input type="hidden" id="limit" name="limit" value="{{ filter.limit }}"/>
+      <input type="hidden" id="page" name="page" value="{{ filter.page }}"/>
     </form>
     <form class="list-result">
       <ul class="row list-view">
@@ -27,7 +48,7 @@
         <li class="col s12 m6 l4 xl3 card">
           <section>
             <div class="cover" style="background-image: url('{{ item.thumbnail }}')"></div>
-            <a href="/news/{{ item.id }}20240917001">{{ item.title }}</a>
+            <a href="/news/{{ item.id }}">{{ item.title }}</a>
             <p>{{ item.publishedAt }}</p>
             <p>{{ item.description }}</p>
           </section>

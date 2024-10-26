@@ -203,7 +203,7 @@ export const en = {
   timestamp: "Timestamp",
   ip: "IP",
 
-  articles: "Articles",
+  news: "News",
   jobs: "Jobs",
   id: "Id",
   title: "Title",
