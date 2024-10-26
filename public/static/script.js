@@ -77,39 +77,6 @@ function hideLoading() {
   const loading = document.getElementById("sysLoading")
   loading.style.display = "none"
 }
-function findParentNode(e, nodeName) {
-  if (!e) {
-    return null
-  }
-  if (e.nodeName == nodeName) {
-    return e
-  }
-  let p = e
-  while (true) {
-    p = p.parentElement
-    if (!p) {
-      return null
-    }
-    if (p.nodeName == nodeName) {
-      return p
-    }
-  }
-}
-function findParent(e, className) {
-  if (!e) {
-    return null
-  }
-  let p = e
-  while (true) {
-    p = p.parentElement
-    if (!p) {
-      return null
-    }
-    if (p.classList.contains(className)) {
-      return p
-    }
-  }
-}
 function toggleClass(e, className) {
   if (e) {
     if (e.classList.contains(className)) {
@@ -121,79 +88,6 @@ function toggleClass(e, className) {
     }
   }
   return false
-}
-function changeMenu() {
-  const body = document.getElementById("sysBody")
-  toggleClass(body, "top-menu")
-}
-function changeMode() {
-  const body = document.getElementById("sysBody")
-  toggleClass(body === null || body === void 0 ? void 0 : body.parentElement, "dark")
-}
-function toggleMenu(e) {
-  const p = findParent(e.target, "sidebar-parent")
-  toggleClass(p, "menu-on")
-}
-function toggleSearch(e) {
-  const p = findParent(e.target, "sidebar-parent")
-  if (p) {
-    toggleClass(p, "search")
-  }
-}
-function navigate(e) {
-  e.preventDefault()
-  const target = e.target
-  const link = findParentNode(target, "A")
-  if (link) {
-    showLoading()
-    const url = link.href
-    fetch(url + "?partial=true", { method: "GET" })
-      .then((response) => {
-        if (response.ok) {
-          response.text().then((data) => {
-            const pageBody = document.getElementById("pageBody")
-            if (pageBody) {
-              pageBody.innerHTML = data
-              const span = link.querySelector("span")
-              const title = span ? span.innerText : link.innerText
-              window.history.pushState({ pageTitle: title }, "", url)
-            }
-            hideLoading()
-          })
-        } else {
-          console.error("Error:", response.statusText)
-          alert("Failed to submit data.")
-        }
-      })
-      .catch((err) => {
-        console.log("Error: " + err)
-        hideLoading()
-        alert("An error occurred while submitting the form")
-      })
-  }
-}
-function toggleMenuItem(e) {
-  e.preventDefault()
-  let target = e.target
-  const nul = target.nextElementSibling
-  if (nul) {
-    const elI = target.querySelectorAll(".menu-item > i.entity-icon")
-    if (nul.classList.contains("expanded")) {
-      nul.classList.remove("expanded")
-      if (elI && elI.length > 0) {
-        elI[0].classList.add("up")
-        elI[0].classList.remove("down")
-      }
-    } else {
-      nul.classList.add("expanded")
-      if (elI && elI.length > 0) {
-        elI[0].classList.remove("up")
-        elI[0].classList.add("down")
-      }
-    }
-  }
-  const parent = findParentNode(target, "LI")
-  toggleClass(parent, "open")
 }
 function valueOf(obj, key) {
   const mapper = key.split(".").map((item) => {
@@ -232,7 +126,7 @@ function setValue(obj, key, value) {
   }
   return setKey(obj, isArrayKey, firstKey, value)
 }
-const setKey = (_object, _isArrayKey, _key, _nextValue) => {
+function setKey(_object, _isArrayKey, _key, _nextValue) {
   if (_isArrayKey) {
     if (_object.length > _key) {
       _object[_key] = _nextValue
@@ -353,33 +247,4 @@ function decodeFromForm(form, locale, currencySymbol) {
     }
   }
   return obj
-}
-function submitContact(e) {
-  e.preventDefault()
-  const target = e.target
-  const form = target.form
-  const contact = decodeFromForm(form)
-  const url = getCurrentURL()
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(contact),
-  })
-    .then((response) => {
-      if (response.ok) {
-        response.text().then((data) => {
-          console.log("Success:", data)
-          alert("Data submitted successfully!")
-        })
-      } else {
-        console.error("Error:", response.statusText)
-        alert("Failed to submit data.")
-      }
-    })
-    .catch((err) => {
-      console.log("Error: " + err)
-      alert("An error occurred while submitting the form")
-    })
 }

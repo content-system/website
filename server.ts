@@ -28,6 +28,29 @@ nunjucks.configure("views", {
 })
 app.set("view engine", "html")
 
+function getFirstPath(url: string): string {
+  const s = url.substring(8)
+  const i = s.indexOf("/")
+  if (i < 0 || s.length - i <= 1) {
+    return "/"
+  }
+  const j = s.indexOf("/", i + 1)
+  if (j > 0) {
+    return s.substring(i, j)
+  } else {
+    return s.substring(i)
+  }
+}
+
+const path = getFirstPath("https://localhost:8080/leadership")
+console.log(path)
+const path2 = getFirstPath("https://localhost:8080/l")
+console.log(path2)
+const path3 = getFirstPath("https://localhost:8080/")
+console.log(path3)
+const path4 = getFirstPath("https://localhost:8080")
+console.log(path4)
+
 const logger = createLogger(conf.log)
 const middleware = new MiddlewareLogger(logger.info, conf.middleware)
 app.use(allow(conf.allow), json(), middleware.log)
