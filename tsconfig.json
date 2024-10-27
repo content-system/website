@@ -8,13 +8,13 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "strict": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["resources/**/*.ts", "core/*.ts", "service/**/*.ts", "server.ts", "config.ts", "context.ts", "route.ts"],
+  "include": ["resources/**/*.ts", "core/*.ts", "service/**/*.ts", "server.ts", "config.ts", "context.ts", "route.ts", "client/**/*.ts"],
   "exclude": ["node_modules"]
 }

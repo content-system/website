@@ -266,10 +266,10 @@ export function buildPageSearch(search: string): string {
   const sr = removePage(search)
   return sr.length == 0 ? sr : "&" + sr
 }
-export function removeSort(query: string): string {
-  query = removeField(query, "sort")
-  query = removeField(query, "partial")
-  return query
+export function removeSort(search: string): string {
+  search = removeField(search, "sort")
+  search = removeField(search, "partial")
+  return search
 }
 export interface Sort {
   field?: string
@@ -308,10 +308,10 @@ export function renderSort(field: string, sort: Sort): string {
   }
   return et
 }
-export function buildSortSearch(query: string, fields: string[], sort: Sort): SortMap {
-  query = removeSort(query)
+export function buildSortSearch(search: string, fields: string[], sort: Sort): SortMap {
+  search = removeSort(search)
   let sorts: SortMap = {}
-  const prefix = query.length > 0 ? "?" + query + "&" : "?"
+  const prefix = search.length > 0 ? "?" + search + "&" : "?"
   for (let i = 0; i < fields.length; i++) {
     sorts[fields[i]] = {
       url: prefix + "sort=" + getSortString(fields[i], sort),
