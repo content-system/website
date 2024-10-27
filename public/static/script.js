@@ -30,6 +30,40 @@ function parseDate(v, format) {
   const day = parseInt(valueItems[iday], 10)
   return new Date(year, month, day)
 }
+const o = "object"
+function trimNull(obj) {
+  if (!obj || typeof obj !== o) {
+    return obj
+  }
+  const keys = Object.keys(obj)
+  for (const key of keys) {
+    const v = obj[key]
+    if (v == null) {
+      delete obj[key]
+    } else if (Array.isArray(v) && v.length > 0) {
+      const v1 = v[0]
+      if (typeof v1 === o && !(v1 instanceof Date)) {
+        for (const item of v) {
+          trimNull(item)
+        }
+      }
+    } else if (typeof v === o && !(v instanceof Date)) {
+      trimNull(obj[key])
+    }
+  }
+  return obj
+}
+function trimNullArray(arrs) {
+  if (!arrs) {
+    return arrs
+  }
+  if (arrs.length > 0) {
+    for (const obj of arrs) {
+      trimNull(obj)
+    }
+  }
+  return arrs
+}
 function getCurrentURL() {
   return window.location.origin + window.location.pathname
 }
@@ -253,47 +287,44 @@ function removeFormatUrl(url) {
   const startParams = url.indexOf("?")
   return startParams !== -1 ? url.substring(0, startParams) : url
 }
-function buildSearchUrl(ft, fields, limit) {
-  if (!fields || fields.length === 0) {
-    fields = "fields"
+function getPrefix(url) {
+  return url.indexOf("?") >= 0 ? "&" : "?"
+}
+function buildSearchUrl(ft, page, limit, fields) {
+  if (!page || page.length === 0) {
+    page = "page"
   }
   if (!limit || limit.length === 0) {
     limit = "limit"
+  }
+  if (!fields || fields.length === 0) {
+    fields = "fields"
   }
   const pageIndex = ft.page
   if (pageIndex && !isNaN(pageIndex) && pageIndex <= 1) {
     delete ft.page
   }
   const keys = Object.keys(ft)
-  const currentUrl = window.location.host + window.location.pathname
-  let url = removeFormatUrl(currentUrl) + "?partial=true"
+  let url = "?partial=true"
   for (const key of keys) {
     const objValue = ft[key]
     if (objValue) {
       if (key !== fields) {
         if (typeof objValue === "string" || typeof objValue === "number") {
-          if (key === limit) {
-            if (objValue !== defaultLimit) {
-              if (url.indexOf("?") === -1) {
-                url += `?${key}=${objValue}`
-              } else {
-                url += `&${key}=${objValue}`
-              }
+          if (key === page) {
+            if (objValue != 1) {
+              url += getPrefix(url) + `${key}=${objValue}`
+            }
+          } else if (key === limit) {
+            if (objValue != defaultLimit) {
+              url += getPrefix(url) + `${key}=${objValue}`
             }
           } else {
-            if (url.indexOf("?") === -1) {
-              url += `?${key}=${objValue}`
-            } else {
-              url += `&${key}=${objValue}`
-            }
+            url += getPrefix(url) + `${key}=${objValue}`
           }
         } else if (typeof objValue === "object") {
           if (objValue instanceof Date) {
-            if (url.indexOf("?") === -1) {
-              url += `?${key}=${objValue.toISOString()}`
-            } else {
-              url += `&${key}=${objValue.toISOString()}`
-            }
+            url += getPrefix(url) + `${key}=${objValue.toISOString()}`
           } else {
             if (Array.isArray(objValue)) {
               if (objValue.length > 0) {
@@ -305,28 +336,16 @@ function buildSearchUrl(ft, fields, limit) {
                     strs.push(subValue.toString())
                   }
                 }
-                if (url.indexOf("?") === -1) {
-                  url += `?${key}=${strs.join(",")}`
-                } else {
-                  url += `&${key}=${strs.join(",")}`
-                }
+                url += getPrefix(url) + `${key}=${strs.join(",")}`
               }
             } else {
               const keysLvl2 = Object.keys(objValue)
               for (const key2 of keysLvl2) {
                 const objValueLvl2 = objValue[key2]
-                if (url.indexOf("?") === -1) {
-                  if (objValueLvl2 instanceof Date) {
-                    url += `?${key}.${key2}=${objValueLvl2.toISOString()}`
-                  } else {
-                    url += `?${key}.${key2}=${objValueLvl2}`
-                  }
+                if (objValueLvl2 instanceof Date) {
+                  url += getPrefix(url) + `${key}.${key2}=${objValueLvl2.toISOString()}`
                 } else {
-                  if (objValueLvl2 instanceof Date) {
-                    url += `&${key}.${key2}=${objValueLvl2.toISOString()}`
-                  } else {
-                    url += `&${key}.${key2}=${objValueLvl2}`
-                  }
+                  url += getPrefix(url) + `${key}.${key2}=${objValueLvl2}`
                 }
               }
             }
@@ -335,26 +354,61 @@ function buildSearchUrl(ft, fields, limit) {
       }
     }
   }
-  let p = "http://"
-  const loc = window.location.href
-  if (loc.length >= 8) {
-    const ss = loc.substring(0, 8)
-    if (ss === "https://") {
-      p = "https://"
+  return url
+}
+function removeField(search, fieldName) {
+  let i = search.indexOf(fieldName + "=")
+  if (i < 0) {
+    return search
+  }
+  if (i > 0) {
+    if (search.substring(i - 1, 1) != "&") {
+      i = search.indexOf("&" + fieldName + "=")
+      if (i < 0) {
+        return search
+      }
+      i = i + 1
     }
   }
-  return p + url
+  const j = search.indexOf("&", i + fieldName.length)
+  return j >= 0 ? search.substring(0, i) + search.substring(j + 1) : search.substring(0, i - 1)
+}
+function getField(search, fieldName) {
+  let i = search.indexOf(fieldName + "=")
+  if (i < 0) {
+    return ""
+  }
+  if (i > 0) {
+    if (search.substring(i - 1, 1) != "&") {
+      i = search.indexOf("&" + fieldName + "=")
+      if (i < 0) {
+        return search
+      }
+      i = i + 1
+    }
+  }
+  const j = search.indexOf("&", i + fieldName.length)
+  return j >= 0 ? search.substring(i, j) : search.substring(i)
 }
 function changePage(e) {
   e.preventDefault()
   const target = e.target
-  let url = target.href
-  if (url.indexOf("partial=true") < 0) {
-    url = url + "&partial=true"
+  let search = target.search
+  if (search.length > 0) {
+    search = search.substring(1)
   }
-  fetch(url, {
-    method: "GET",
-  })
+  search = removeField(search, "partial")
+  const p = getField(search, "page")
+  if (p === "page=1") {
+    search = removeField(search, "page")
+  }
+  let url = window.location.origin + window.location.pathname
+  url = url + (search.length === 0 ? "?partial=true" : "?" + search + "&partial=true")
+  let newUrl = window.location.origin + window.location.pathname
+  if (search.length > 0) {
+    newUrl = newUrl + "?" + search
+  }
+  fetch(url, { method: "GET" })
     .then((response) => {
       if (response.ok) {
         response.text().then((data) => {
@@ -362,6 +416,7 @@ function changePage(e) {
           if (pageBody) {
             pageBody.innerHTML = data
           }
+          window.history.pushState(undefined, "Title", newUrl)
         })
       } else {
         console.error("Error:", response.statusText)
@@ -377,9 +432,18 @@ function search(e) {
   e.preventDefault()
   const target = e.target
   const form = target.form
-  const filter = decodeFromForm(form)
+  const initFilter = decodeFromForm(form)
+  const filter = trimNull(initFilter)
   filter.page = 1
-  const url = buildSearchUrl(filter)
+  const search = buildSearchUrl(filter)
+  const url = getCurrentURL() + search
+  let newUrl = getCurrentURL()
+  if (search.length > 0) {
+    const s = removeField(search.substring(1), "partial")
+    if (s.length > 0) {
+      newUrl = newUrl + "?" + s
+    }
+  }
   fetch(url, {
     method: "GET",
   })
@@ -390,6 +454,7 @@ function search(e) {
           if (pageBody) {
             pageBody.innerHTML = data
           }
+          window.history.pushState(undefined, "Title", newUrl)
         })
       } else {
         console.error("Error:", response.statusText)

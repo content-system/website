@@ -2,6 +2,7 @@ import { Request } from "express"
 
 export const defaultLimit = 12
 export const pageSizes = [12, 24, 60, 100, 120, 180, 300, 600]
+const et = ""
 
 export function getView(req: Request, view: string): string {
   const partial = req.query["partial"]
@@ -19,13 +20,13 @@ export function addDays(d: Date, n: number): Date {
 }
 export function formatDate(d: Date | null | undefined, dateFormat?: string, full?: boolean, upper?: boolean): string {
   if (!d) {
-    return ""
+    return et
   }
   let format = dateFormat && dateFormat.length > 0 ? dateFormat : "M/D/YYYY"
   if (upper) {
     format = format.toUpperCase()
   }
-  let arr = ["", "", ""]
+  let arr = [et, et, et]
   const items = format.split(/\/|\.| |-/)
   let iday = items.indexOf("D")
   let im = items.indexOf("M")
@@ -50,7 +51,7 @@ export function formatDate(d: Date | null | undefined, dateFormat?: string, full
   arr[iyear] = getYear(d.getFullYear(), fy)
   const s = detectSeparator(format)
   const e = detectLastSeparator(format)
-  const l = items.length === 4 ? format[format.length - 1] : ""
+  const l = items.length === 4 ? format[format.length - 1] : et
   return arr[0] + s + arr[1] + e + arr[2] + l
 }
 function detectSeparator(format: string): string {
@@ -84,7 +85,7 @@ function getD(n: number, fu: boolean): string {
   return fu ? pad(n) : n.toString()
 }
 export function datetimeToString(date?: Date | string): any {
-  if (!date || date === "") {
+  if (!date || date === et) {
     return undefined
   }
   const d2 = typeof date !== "string" ? date : new Date(date)
@@ -98,7 +99,7 @@ export function datetimeToString(date?: Date | string): any {
 }
 export function formatDateTime(date: Date | null | undefined, dateFormat?: string, full?: boolean, upper?: boolean): any {
   if (!date) {
-    return ""
+    return et
   }
   const sd = formatDate(date, dateFormat, full, upper)
   if (sd.length === 0) {
@@ -108,7 +109,7 @@ export function formatDateTime(date: Date | null | undefined, dateFormat?: strin
 }
 export function formatLongDateTime(date: Date | null | undefined, dateFormat?: string, full?: boolean, upper?: boolean): string {
   if (!date) {
-    return ""
+    return et
   }
   const sd = formatDate(date, dateFormat, full, upper)
   if (sd.length === 0) {
@@ -118,7 +119,7 @@ export function formatLongDateTime(date: Date | null | undefined, dateFormat?: s
 }
 export function formatFullDateTime(date: Date | null | undefined, dateFormat?: string, s?: string, full?: boolean, upper?: boolean): string {
   if (!date) {
-    return ""
+    return et
   }
   const sd = formatDate(date, dateFormat, full, upper)
   if (sd.length === 0) {
@@ -206,4 +207,116 @@ export function clone(obj: any): any {
     }
   }
   return x
+}
+
+export function queryString(req: Request, name: string, d?: string): string | undefined {
+  const p = req.query[name]
+  if (!p || p.toString().length == 0) {
+    return d
+  }
+  return p.toString()
+}
+export function hasSearch(req: Request): boolean {
+  return req.url.indexOf("?") >= 0
+}
+export function getSearch(url: string): string {
+  const i = url.indexOf("?")
+  return i < 0 ? et : url.substring(i + 1)
+}
+export function getField(search: string, fieldName: string): string {
+  let i = search.indexOf(fieldName + "=")
+  if (i < 0) {
+    return ""
+  }
+  if (i > 0) {
+    if (search.substring(i - 1, 1) != "&") {
+      i = search.indexOf("&" + fieldName + "=")
+      if (i < 0) {
+        return search
+      }
+      i = i + 1
+    }
+  }
+  const j = search.indexOf("&", i + fieldName.length)
+  return j >= 0 ? search.substring(i, j) : search.substring(i)
+}
+export function removeField(search: string, fieldName: string): string {
+  let i = search.indexOf(fieldName + "=")
+  if (i < 0) {
+    return search
+  }
+  if (i > 0) {
+    if (search.substring(i - 1, 1) != "&") {
+      i = search.indexOf("&" + fieldName + "=")
+      if (i < 0) {
+        return search
+      }
+      i = i + 1
+    }
+  }
+  const j = search.indexOf("&", i + fieldName.length)
+  return j >= 0 ? search.substring(0, i) + search.substring(j + 1) : search.substring(0, i - 1)
+}
+export function removePage(search: string): string {
+  search = removeField(search, "page")
+  search = removeField(search, "partial")
+  return search
+}
+export function buildPageSearch(search: string): string {
+  const sr = removePage(search)
+  return sr.length == 0 ? sr : "&" + sr
+}
+export function removeSort(query: string): string {
+  query = removeField(query, "sort")
+  query = removeField(query, "partial")
+  return query
+}
+export interface Sort {
+  field?: string
+  type?: string
+}
+export interface SortType {
+  url: string
+  tag: string
+}
+export interface SortMap {
+  [key: string]: SortType
+}
+export function getSortString(field: string, sort: Sort): string {
+  if (field === sort.field) {
+    return sort.type === "-" ? field : "-" + field
+  }
+  return field
+}
+export function buildSort(s?: string): Sort {
+  if (!s || s.indexOf(",") >= 0) {
+    return {} as Sort
+  }
+  if (s.startsWith("-")) {
+    return { field: s.substring(1), type: "-" }
+  } else {
+    return { field: s.startsWith("+") ? s.substring(1) : s, type: "+" }
+  }
+}
+export function buildSortFromRequest(req: Request): Sort {
+  const s = queryString(req, "sort")
+  return buildSort(s)
+}
+export function renderSort(field: string, sort: Sort): string {
+  if (field === sort.field) {
+    return sort.type === "-" ? "<i class='sort-down'></i>" : "<i class='sort-up'></i>"
+  }
+  return et
+}
+export function buildSortSearch(query: string, fields: string[], sort: Sort): SortMap {
+  query = removeSort(query)
+  let sorts: SortMap = {}
+  const prefix = query.length > 0 ? "?" + query + "&" : "?"
+  for (let i = 0; i < fields.length; i++) {
+    sorts[fields[i]] = {
+      url: prefix + "sort=" + getSortString(fields[i], sort),
+      tag: renderSort(fields[i], sort),
+    }
+  }
+  return sorts
 }

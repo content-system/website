@@ -1,8 +1,19 @@
 import { Request, Response } from "express"
-import { buildPageQueryFromUrl, buildPages, Controller, format, fromRequest, getOffset, hasQuery, queryNumber } from "express-ext"
+import { buildPages, Controller, format, fromRequest, getOffset, hasQuery, queryNumber } from "express-ext"
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
-import { addDays, cloneFilter, defaultLimit, formatDateTime, getDateFormat, getView, pageSizes } from "../../core"
+import {
+  buildPageSearch,
+  buildSortFromRequest,
+  buildSortSearch,
+  cloneFilter,
+  defaultLimit,
+  formatDateTime,
+  getDateFormat,
+  getSearch,
+  getView,
+  pageSizes,
+} from "../../core"
 import { getResource } from "../../resources"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 export * from "./article"
@@ -17,6 +28,7 @@ export class ArticleManager extends Manager<Article, string, ArticleFilter> impl
     super(search, repository)
   }
 }
+const fields = ["title", "publishedAt", "description"]
 export class ArticleController extends Controller<Article, string, ArticleFilter> {
   constructor(log: Log, protected articleService: ArticleService) {
     super(log, articleService)
@@ -28,10 +40,6 @@ export class ArticleController extends Controller<Article, string, ArticleFilter
     let filter: ArticleFilter = {
       q: "",
       limit: defaultLimit,
-      publishedAt: {
-        max: new Date(),
-        min: addDays(new Date(), -60),
-      },
     }
     if (hasQuery(req)) {
       filter = fromRequest<ArticleFilter>(req)
@@ -45,13 +53,17 @@ export class ArticleController extends Controller<Article, string, ArticleFilter
       for (const item of result.list) {
         item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
       }
+      const search = getSearch(req.url)
+      console.log("search: " + search)
+      const sort = buildSortFromRequest(req)
       res.render(getView(req, "news"), {
         resource,
         pageSizes,
         filter,
         list: result.list,
         pages: buildPages(limit, result.total),
-        pageQuery: buildPageQueryFromUrl(req.url),
+        pageSearch: buildPageSearch(search),
+        sort: buildSortSearch(search, fields, sort),
       })
     })
   }

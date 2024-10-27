@@ -1,48 +1,64 @@
 <div class="view-container">
-  <header><h2>{{ resource.news }}</h2></header>
+  <header><h2>{{resource.news}}</h2></header>
   <div>
     <form id="articlesForm" name="articlesForm" novalidate="">
       <section class="row search-group">{% include "partials/search.html" %} {% include "partials/pagination.html" %}</section>
       <section class="row search-group inline">
         <label class="col s12 m6">
-          {{ resource.published_at_from }}
+          {{resource.published_at_from}}
           <input
             type="datetime-local"
             id="publishedAt_min"
             name="publishedAt_min"
             data-field="publishedAt.min"
-            value="{{ datetimeToString(filter.publishedAt.min) }}"
+            value="{{datetimeToString(filter.publishedAt.min)}}"
             step=".010"
           />
         </label>
         <label class="col s12 m6">
-          {{ resource.published_at_to }}
+          {{resource.published_at_to}}
           <input
             type="datetime-local"
             id="publishedAt_max"
             name="publishedAt_max"
             data-field="publishedAt.max"
-            value="{{ datetimeToString(filter.publishedAt.max) }}"
+            value="{{datetimeToString(filter.publishedAt.max)}}"
             step=".010"
           />
         </label>
       </section>
-      <input type="hidden" id="page" name="page" value="{{ filter.page }}" />
-      <input type="hidden" id="_message" name="_message" value="{{ message }}" />
+      <input type="hidden" id="page" name="page" value="{{filter.page}}" />
+      <input type="hidden" id="_message" name="_message" value="{{message}}" />
     </form>
     <form class="list-result">
-      <ul class="row list-view">
-        {% for item in list %}
-        <li class="col s12 m6 l4 xl3 card">
-          <section>
-            <div class="cover" style="background-image: url('{{ item.thumbnail }}')"></div>
-            <a href="/news/{{ item.id }}">{{ item.title }}</a>
-            <p>{{ item.publishedAt }}</p>
-            <p>{{ item.description }}</p>
-          </section>
-        </li>
-        {% endfor %}
-      </ul>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th data-field="title">
+                <a href="{{sort.title.url}}">{{resource.title}} {{sort.title.tag}}</a>
+              </th>
+              <th data-field="publishedAt">
+                <a href="{{sort.publishedAt.url}}">{{resource.published_at}} {{sort.publishedAt.tag}}</a>
+              </th>
+              <th data-field="description">
+                <a href="{{sort.description.url}}">{{resource.description}} {{sort.description.tag}}</a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in list %}
+            <tr>
+              <td>
+                <a>{{item.title}}</a>
+              </td>
+              <td>{{item.publishedAt}}</td>
+              <td>{{item.description}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </form>
   </div>
 </div>
