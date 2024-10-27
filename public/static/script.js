@@ -253,7 +253,7 @@ function removeFormatUrl(url) {
   const startParams = url.indexOf("?")
   return startParams !== -1 ? url.substring(0, startParams) : url
 }
-function buildUrl(ft, fields, limit) {
+function buildSearchUrl(ft, fields, limit) {
   if (!fields || fields.length === 0) {
     fields = "fields"
   }
@@ -345,15 +345,41 @@ function buildUrl(ft, fields, limit) {
   }
   return p + url
 }
-function searchNews(e) {
+function changePage(e) {
+  e.preventDefault()
+  const target = e.target
+  let url = target.href
+  if (url.indexOf("partial=true") < 0) {
+    url = url + "&partial=true"
+  }
+  fetch(url, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (response.ok) {
+        response.text().then((data) => {
+          const pageBody = document.getElementById("pageBody")
+          if (pageBody) {
+            pageBody.innerHTML = data
+          }
+        })
+      } else {
+        console.error("Error:", response.statusText)
+        alert("Failed to submit data.")
+      }
+    })
+    .catch((err) => {
+      console.log("Error: " + err)
+      alert("An error occurred while submitting the form")
+    })
+}
+function search(e) {
   e.preventDefault()
   const target = e.target
   const form = target.form
   const filter = decodeFromForm(form)
-  if (target.nodeName === "SELECT") {
-    filter.page = 1
-  }
-  const url = buildUrl(filter)
+  filter.page = 1
+  const url = buildSearchUrl(filter)
   fetch(url, {
     method: "GET",
   })

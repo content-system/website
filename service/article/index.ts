@@ -2,7 +2,22 @@ import { Request, Response } from "express"
 import { Controller, format, fromRequest } from "express-ext"
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
-import { addDays, cloneFilter, defaultLimit, formatDateTime, getDateFormat, getOffset, getView, hasParam, pageSizes, queryNumber } from "../../core"
+import {
+  addDays,
+  buildPageQuery,
+  buildPages,
+  cloneFilter,
+  defaultLimit,
+  formatDateTime,
+  getDateFormat,
+  getOffset,
+  getPageQuery,
+  getQuery,
+  getView,
+  hasParam,
+  pageSizes,
+  queryNumber,
+} from "../../core"
 import { getResource } from "../../resources"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 export * from "./article"
@@ -26,6 +41,9 @@ export class ArticleController extends Controller<Article, string, ArticleFilter
     const dateFormat = getDateFormat()
     const resource = getResource()
     console.log(req.url)
+    const qr = getQuery(req.url)
+    console.log(qr)
+    console.log(getPageQuery(qr))
     let filter: ArticleFilter = {
       q: "",
       limit: defaultLimit,
@@ -52,11 +70,14 @@ export class ArticleController extends Controller<Article, string, ArticleFilter
         filter.publishedAt.max = datetimeToString(filter.publishedAt.max)
       }
         */
+      const qr = getQuery(req.url)
       res.render(getView(req, "news"), {
         resource,
         pageSizes,
         filter,
         list: result.list,
+        pages: buildPages(limit, result.total),
+        pageQuery: buildPageQuery(qr),
       })
     })
   }
