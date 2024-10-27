@@ -2,19 +2,7 @@ import { Request, Response } from "express"
 import { Controller, format, fromRequest } from "express-ext"
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
-import {
-  addDays,
-  cloneFilter,
-  datetimeToString,
-  defaultLimit,
-  formatDateTime,
-  getDateFormat,
-  getOffset,
-  getView,
-  hasParam,
-  pageSizes,
-  queryNumber,
-} from "../../core"
+import { addDays, cloneFilter, defaultLimit, formatDateTime, getDateFormat, getOffset, getView, hasParam, pageSizes, queryNumber } from "../../core"
 import { getResource } from "../../resources"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 export * from "./article"
@@ -42,8 +30,8 @@ export class ArticleController extends Controller<Article, string, ArticleFilter
       q: "",
       limit: defaultLimit,
       publishedAt: {
-        max: datetimeToString(new Date()),
-        min: datetimeToString(addDays(new Date(), -60)),
+        max: new Date(),
+        min: addDays(new Date(), -60),
       },
     }
     if (hasParam(req)) {
@@ -58,10 +46,12 @@ export class ArticleController extends Controller<Article, string, ArticleFilter
       for (const item of result.list) {
         item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
       }
+      /*
       if (filter.publishedAt) {
         filter.publishedAt.min = datetimeToString(filter.publishedAt.min)
         filter.publishedAt.max = datetimeToString(filter.publishedAt.max)
       }
+        */
       res.render(getView(req, "news"), {
         resource,
         pageSizes,

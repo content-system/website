@@ -52,8 +52,8 @@
           <p id="sysMessage"></p>
         </div>
         <footer>
-          <button type="button" class="btn-cancel" id="sysNo" name="btnCancel" onclick="noOnClick()"></button
-          ><button type="submit" class="btn-accept" id="sysYes" name="btnAccept" onclick="yesOnClick()"></button>
+          <button type="button" class="btn-cancel" id="sysNo" name="btnCancel" onclick="noOnClick()"></button>
+          <button type="submit" class="btn-accept" id="sysYes" name="btnAccept" onclick="yesOnClick()"></button>
         </footer>
       </div>
     </div>
@@ -75,6 +75,7 @@
     <script src="/static/base.js" data-nscript="afterInteractive"></script>
     <script src="/static/script.js" data-nscript="afterInteractive"></script>
     <script>
+      "use strict"
       function findParentNode(e, nodeName) {
         if (!e) {
           return null
@@ -126,7 +127,7 @@
           p.classList.toggle("menu-on")
         }
       }
-      function toggleSearch(e) {
+      function toggleUniversalSearch(e) {
         const p = findParent(e.target, "sidebar-parent")
         if (p) {
           p.classList.toggle("search")

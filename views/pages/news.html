@@ -23,7 +23,7 @@
             id="publishedAt_min"
             name="publishedAt_min"
             data-field="publishedAt.min"
-            value="{{ filter.publishedAt.min }}"
+            value="{{ datetimeToString(filter.publishedAt.min) }}"
             step=".010"
           />
         </label>
@@ -34,7 +34,7 @@
             id="publishedAt_max"
             name="publishedAt_max"
             data-field="publishedAt.max"
-            value="{{ filter.publishedAt.max }}"
+            value="{{ datetimeToString(filter.publishedAt.max) }}"
             step=".010"
           />
         </label>

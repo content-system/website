@@ -9,7 +9,7 @@ import { Pool } from "pg"
 import { PoolManager } from "pg-extension"
 import { config, env } from "./config"
 import { useContext } from "./context"
-import { getView } from "./core"
+import { datetimeToString, getView } from "./core"
 import { route } from "./route"
 
 dotenv.config()
@@ -38,6 +38,7 @@ const db = new PoolManager(pool)
 const ctx = useContext(db, logger, middleware)
 route(app, ctx)
 
+app.locals.datetimeToString = datetimeToString
 app.get("/", (req: Request, res: Response) => {
   res.render(getView(req, "index"), {
     message: "Welcome in Express",
