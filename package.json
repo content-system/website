@@ -2,12 +2,11 @@
   "name": "website",
   "version": "1.0.0",
   "description": "",
-  "main": "app",
+  "main": "server",
   "scripts": {
     "start": "nodemon --exec ts-node-dev server.ts",
     "build": "webpack --config webpack.config.js",
-    "prod": "node dist/server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prod": "node server.js"
   },
   "keywords": [],
   "author": "",
