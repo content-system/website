@@ -1,7 +1,7 @@
 "use strict"
 const r1 = / |,|\$|€|£|¥|'|٬|،| /g
 const r2 = / |\.|\$|€|£|¥|'|٬|،| /g
-const defaultLimit = 24
+const defaultLimit = 12
 function parseDate(v, format) {
   if (!format || format.length === 0) {
     format = "MM/DD/YYYY"

@@ -1,6 +1,6 @@
 import { Request } from "express"
 
-export const defaultLimit = 24
+export const defaultLimit = 12
 export const pageSizes = [12, 24, 60, 100, 120, 180, 300, 600]
 
 export function getView(req: Request, view: string): string {
