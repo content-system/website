@@ -12,26 +12,6 @@ export function getDateFormat(profile?: string): string {
   return "M/D/YYYY"
 }
 
-export function hasParam(req: Request): boolean {
-  return req.url.indexOf("?") >= 0
-}
-export function queryNumber(req: Request, name: string, d: number): number {
-  const field = req.query[name]
-  const v = field ? field.toString() : undefined
-  if (!v || v.length === 0) {
-    return d
-  }
-  if (isNaN(v as any)) {
-    return d
-  }
-  const n = parseFloat(v)
-  return n
-}
-export function getOffset(limit: number, page: number): number {
-  const offset = limit * (page - 1)
-  return offset < 0 ? 0 : offset
-}
-
 export function addDays(d: Date, n: number): Date {
   const newDate = new Date(d)
   newDate.setDate(newDate.getDate() + n)
@@ -227,82 +207,3 @@ export function clone(obj: any): any {
   }
   return x
 }
-
-export function getPageTotal(pageSize?: number, total?: number): number {
-  if (!pageSize || pageSize <= 0) {
-    return 1
-  } else {
-    if (!total) {
-      total = 0
-    }
-    if (total % pageSize === 0) {
-      return Math.floor(total / pageSize)
-    }
-    return Math.floor(total / pageSize + 1)
-  }
-}
-export function buildPages(pageSize?: number, total?: number): number[] {
-  const pageTotal = getPageTotal(pageSize, total)
-  if (pageTotal <= 1) {
-    return [1]
-  }
-  const arr: number[] = []
-  for (let i = 1; i <= pageTotal; i++) {
-    arr.push(i)
-  }
-  return arr
-}
-export function getQuery(url: string): string {
-  const i = url.indexOf("?")
-  return i < 0 ? "" : url.substring(i + 1)
-}
-export function getPageQuery(query: string): string {
-  const i = query.indexOf("page=")
-  if (i < 0) {
-    return ""
-  }
-  const j = query.indexOf("&", i + 4)
-  return j < 0 ? query.substring(i) : query.substring(i, j)
-}
-const partialTrue = "partial=true"
-export function removePageQuery(query: string): string {
-  if (query.length == 0) {
-    return query
-  }
-  const p1 = "&" + partialTrue
-  const q1 = query.indexOf(p1)
-  if (q1 >= 0) {
-    query = query.substring(0, q1) + query.substring(q1 + partialTrue.length + 2)
-  } else {
-    const p2 = partialTrue + "&"
-    const q2 = query.indexOf(p2)
-    if (q2 >= 0) {
-      query = query.substring(0, q1) + query.substring(q1 + partialTrue.length + 2)
-    }
-  }
-  const pageQuery = getPageQuery(query)
-  if (pageQuery.length == 0) {
-    return query
-  } else {
-    const x = pageQuery + "&"
-    if (query.indexOf(x) >= 0) {
-      return query.replace(x, "")
-    }
-    const x2 = "&" + pageQuery
-    if (query.indexOf(x2) >= 0) {
-      return query.replace(x2, "")
-    }
-    return query.replace(pageQuery, "")
-  }
-}
-export function buildPageQuery(query: string): string {
-  const qr = removePageQuery(query)
-  return qr.length == 0 ? qr : "&" + qr
-}
-/*
-export function buildPageQuery(url: string, page: number): string {
-  if (url.indexOf("page=") >= 0) {
-
-  }
-}
-*/
