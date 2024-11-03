@@ -9,7 +9,7 @@ import { Pool } from "pg"
 import { PoolManager } from "pg-extension"
 import { config, env } from "./config"
 import { useContext } from "./context"
-import { datetimeToString, getField, getView, removeField } from "./core"
+import { datetimeToString, getView } from "./core"
 import { route } from "./route"
 
 dotenv.config()
@@ -27,16 +27,6 @@ nunjucks.configure("views", {
   express: app,
 })
 app.set("view engine", "html")
-
-console.log(getField("page=2&des=test&sort=title", "page"))
-console.log(getField("page=2&des=test&sort=title", "des"))
-console.log(getField("page=2&des=test&sort=title", "sort"))
-
-console.log(removeField("xpage=2&des=test&sort=title", "page"))
-console.log(removeField("xpage=2&page=6&des=test&sort=title", "page"))
-console.log(removeField("page=2&des=test&sort=title", "sort"))
-console.log(removeField("page=2&des=test&sort=title", "des"))
-console.log(removeField("page=2&xdes=test2&des=test&sort=title", "des"))
 
 const logger = createLogger(conf.log)
 const middleware = new MiddlewareLogger(logger.info, conf.middleware)

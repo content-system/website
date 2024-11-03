@@ -1,19 +1,21 @@
 import { Request, Response } from "express"
-import { buildPages, Controller, format, fromRequest, getOffset, hasQuery, queryNumber } from "express-ext"
-import { Log, Manager, Search } from "onecore"
-import { DB, Repository, SearchBuilder } from "query-core"
 import {
+  buildPages,
   buildPageSearch,
   buildSortFromRequest,
   buildSortSearch,
   cloneFilter,
-  defaultLimit,
-  formatDateTime,
-  getDateFormat,
+  format,
+  fromRequest,
+  getOffset,
   getSearch,
-  getView,
-  pageSizes,
-} from "../../core"
+  hasSearch,
+  queryNumber,
+  resources,
+} from "express-ext"
+import { Manager, Search } from "onecore"
+import { DB, Repository, SearchBuilder } from "query-core"
+import { formatDateTime, getDateFormat, getView } from "../../core"
 import { getResource } from "../../resources"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 export * from "./article"
@@ -29,9 +31,8 @@ export class ArticleManager extends Manager<Article, string, ArticleFilter> impl
   }
 }
 const fields = ["title", "publishedAt", "description"]
-export class ArticleController extends Controller<Article, string, ArticleFilter> {
-  constructor(log: Log, protected articleService: ArticleService) {
-    super(log, articleService)
+export class ArticleController {
+  constructor(protected service: ArticleService) {
     this.render = this.render.bind(this)
   }
   render(req: Request, res: Response) {
@@ -39,26 +40,25 @@ export class ArticleController extends Controller<Article, string, ArticleFilter
     const resource = getResource()
     let filter: ArticleFilter = {
       q: "",
-      limit: defaultLimit,
+      limit: resources.defaultLimit,
     }
-    if (hasQuery(req)) {
+    if (hasSearch(req)) {
       filter = fromRequest<ArticleFilter>(req)
       format(filter, ["publishedAt"])
     }
-    const page = queryNumber(req, "page", 1)
-    const limit = queryNumber(req, "limit", defaultLimit)
+    const page = queryNumber(req, resources.page, 1)
+    const limit = queryNumber(req, resources.limit, resources.defaultLimit)
     const offset = getOffset(limit, page)
     console.log(JSON.stringify(filter) + " " + limit + " " + offset)
-    this.articleService.search(cloneFilter(filter, page, limit), limit, offset).then((result) => {
+    this.service.search(cloneFilter(filter, page, limit), limit, offset).then((result) => {
       for (const item of result.list) {
         item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
       }
       const search = getSearch(req.url)
-      console.log("search: " + search)
       const sort = buildSortFromRequest(req)
       res.render(getView(req, "news"), {
         resource,
-        pageSizes,
+        pageSizes: resources.pageSizes,
         filter,
         list: result.list,
         pages: buildPages(limit, result.total),
@@ -73,6 +73,6 @@ export function useArticleService(db: DB): ArticleService {
   const repository = new SqlArticleRepository(db)
   return new ArticleManager(builder.search, repository)
 }
-export function useArticleController(log: Log, db: DB): ArticleController {
-  return new ArticleController(log, useArticleService(db))
+export function useArticleController(db: DB): ArticleController {
+  return new ArticleController(useArticleService(db))
 }
