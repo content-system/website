@@ -10,8 +10,18 @@
         <img class="logo" src="/images/logo.png" alt="Logo of The Company" />
       </div>
       <label class="search-input">
-        <input type="text" id="q" name="q" maxlength="1000" placeholder="Keyword" autocomplete="off" value="" style="padding-left: 12px" />
-        <button type="button" hidden="" class="btn-remove-text"></button>
+        <input
+          type="text"
+          id="q"
+          name="q"
+          maxlength="400"
+          onchange="qOnChange(event)"
+          placeholder="{{resource.search}}"
+          autocomplete="off"
+          value=""
+          style="padding-left: 12px"
+        />
+        <button type="button" hidden class="btn-remove-text" onclick="removeTextOnClick(event)"></button>
         <button type="button" class="btn-search"></button>
       </label>
       <section class="quick-nav">

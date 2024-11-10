@@ -1,11 +1,12 @@
-function findParentNode(e: HTMLElement | null | undefined, nodeName: string): HTMLElement | null {
+"use strict"
+function findParentNode(e, nodeName) {
   if (!e) {
     return null
   }
   if (e.nodeName == nodeName) {
     return e
   }
-  let p: HTMLElement | null = e
+  let p = e
   while (true) {
     p = p.parentElement
     if (!p) {
@@ -16,7 +17,6 @@ function findParentNode(e: HTMLElement | null | undefined, nodeName: string): HT
     }
   }
 }
-
 function changeMenu() {
   const body = document.getElementById("sysBody")
   if (body) {
@@ -29,22 +29,21 @@ function changeMode() {
     body.classList.toggle("dark")
   }
 }
-function toggleMenu(e: Event) {
-  const p = findParent(e.target as HTMLElement, "sidebar-parent")
+function toggleMenu(e) {
+  const p = findParent(e.target, "sidebar-parent")
   if (p) {
     p.classList.toggle("menu-on")
   }
 }
-function toggleUniversalSearch(e: Event) {
-  const p = findParent(e.target as HTMLElement, "sidebar-parent")
+function toggleUniversalSearch(e) {
+  const p = findParent(e.target, "sidebar-parent")
   if (p) {
     p.classList.toggle("search")
   }
 }
-
-function toggleMenuItem(e: Event) {
+function toggleMenuItem(e) {
   e.preventDefault()
-  let target = e.target as HTMLElement
+  let target = e.target
   const nul = target.nextElementSibling
   if (nul) {
     const elI = target.querySelector(".menu-item > i.entity-icon")
@@ -65,37 +64,37 @@ function toggleMenuItem(e: Event) {
     parent.classList.toggle("open")
   }
 }
-function removeTextOnClick(e: Event, name?: string) {
+function removeTextOnClick(e, name) {
   const n = name && name.length > 0 ? name : "q"
-  const btn = e.target as HTMLInputElement
-  const q = getElement(btn.form, n) as HTMLInputElement
+  const btn = e.target
+  const q = getElement(btn.form, n)
   if (q) {
     btn.hidden = true
     q.value = ""
   }
 }
-function qOnChange(e: Event) {
-  const text = e.target as HTMLInputElement
+function qOnChange(e) {
+  const text = e.target
   const form = text.form
   if (form) {
-    const btn = form.querySelector(".btn-remove-text") as HTMLButtonElement
+    const btn = form.querySelector(".btn-remove-text")
     if (btn) {
       btn.hidden = !(text.value.length > 0)
     }
   }
 }
-function toggleSearch(e: Event) {
-  const btn = e.target as HTMLInputElement
+function toggleSearch(e) {
+  const btn = e.target
   const form = btn.form
   if (form) {
-    const advanceSearch = form.querySelector(".advance-search") as HTMLElement
+    const advanceSearch = form.querySelector(".advance-search")
     if (advanceSearch) {
       const onStatus = toggleClass(btn, "on")
       advanceSearch.hidden = !onStatus
     }
   }
 }
-function toggleClass(e: HTMLElement | null | undefined, className: string): boolean {
+function toggleClass(e, className) {
   if (e) {
     if (e.classList.contains(className)) {
       e.classList.remove(className)
@@ -107,8 +106,7 @@ function toggleClass(e: HTMLElement | null | undefined, className: string): bool
   }
   return false
 }
-
-function getFirstPath(url: string): string {
+function getFirstPath(url) {
   const s = url.substring(8)
   const i = s.indexOf("/")
   if (i < 0 || s.length - i <= 1) {
@@ -121,10 +119,10 @@ function getFirstPath(url: string): string {
     return s.substring(i)
   }
 }
-function navigate(e: Event) {
+function navigate(e) {
   e.preventDefault()
-  const target = e.target as HTMLElement
-  const link = findParentNode(target, "A") as HTMLLinkElement
+  const target = e.target
+  const link = findParentNode(target, "A")
   if (link) {
     const url = link.href
     fetch(url + "?partial=true", { method: "GET" })
@@ -165,7 +163,6 @@ function navigate(e: Event) {
       })
   }
 }
-
 window.onload = function () {
   setTimeout(function () {
     const page = document.getElementById("pageContainer")
@@ -175,7 +172,7 @@ window.onload = function () {
         registerEvents(forms[i])
       }
     }
-    const sysNav = document.getElementById("sysNav") as HTMLElement
+    const sysNav = document.getElementById("sysNav")
     const firstPath = getFirstPath(window.location.origin + window.location.pathname)
     const activePath = window.location.origin + firstPath
     const elA = sysNav.querySelectorAll("a")

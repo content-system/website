@@ -1,7 +1,14 @@
 "use strict"
 const r1 = / |,|\$|€|£|¥|'|٬|،| /g
 const r2 = / |\.|\$|€|£|¥|'|٬|،| /g
-const defaultLimit = 12
+class resources {}
+resources.defaultLimit = 12
+resources.confirmHeader = "Confirm"
+resources.errorHeader = "Error"
+resources.warningHeader = "Warning"
+resources.infoHeader = "Info"
+resources.successHeader = "Success"
+resources.containerClass = "form-input"
 function parseDate(v, format) {
   if (!format || format.length === 0) {
     format = "MM/DD/YYYY"
@@ -53,76 +60,114 @@ function trimNull(obj) {
   }
   return obj
 }
-function trimNullArray(arrs) {
-  if (!arrs) {
-    return arrs
-  }
-  if (arrs.length > 0) {
-    for (const obj of arrs) {
-      trimNull(obj)
-    }
-  }
-  return arrs
-}
 function getCurrentURL() {
   return window.location.origin + window.location.pathname
 }
-function fadeIn(el, display) {
-  el.style.opacity = "0"
-  el.style.display = display || "block"
-  ;(function fade() {
-    let val = parseFloat(el.style.opacity)
-    val += 0.1
-    if (!(val > 1)) {
-      el.style.opacity = val.toString()
-      requestAnimationFrame(fade)
+function getElement(form, name) {
+  if (form) {
+    const l = form.length
+    for (let i = 0; i < l; i++) {
+      const e = form[i]
+      if (e.getAttribute("name") === name) {
+        return e
+      }
     }
-  })()
+  }
+  return null
 }
-function fadeOut(el) {
-  el.style.opacity = "1"
-  ;(function fade() {
-    let val = parseFloat(el.style.opacity)
-    val -= 0.1
-    if (val < 0) {
-      el.style.display = "none"
-    } else {
-      requestAnimationFrame(fade)
+function findParent(e, className, nodeName) {
+  if (!e) {
+    return null
+  }
+  if (nodeName && e.nodeName === nodeName) {
+    return e
+  }
+  let p = e
+  while (true) {
+    p = p.parentElement
+    if (!p) {
+      return null
     }
-  })()
+    if (p.classList.contains(className)) {
+      return p
+    }
+    if (nodeName && p.nodeName === nodeName) {
+      return p
+    }
+  }
 }
-function toast(msg) {
-  const sysToast = document.getElementById("sysToast")
-  sysToast.innerHTML = msg
-  fadeIn(sysToast)
+function materialOnFocus(event) {
+  const ctrl = event.currentTarget
+  if (ctrl.disabled || ctrl.readOnly) {
+    return
+  }
   setTimeout(() => {
-    fadeOut(sysToast)
-  }, 1340)
+    if (ctrl.nodeName === "INPUT" || ctrl.nodeName === "SELECT" || ctrl.nodeName === "TEXTAREA") {
+      const c = findParent(ctrl, resources.containerClass, "LABEL")
+      if (c && !c.classList.contains("focused")) {
+        c.classList.add("focused")
+      }
+    }
+  }, 0)
 }
-function showLoading(isFirstTime) {
-  const sysLoading = document.getElementById("sysLoading")
-  sysLoading.style.display = "block"
-  if (isFirstTime) {
-    sysLoading.classList.add("dark")
-  } else {
-    sysLoading.classList.remove("dark")
-  }
+function materialOnBlur(event) {
+  const ctrl = event.currentTarget
+  setTimeout(() => {
+    if (ctrl.nodeName === "INPUT" || ctrl.nodeName === "SELECT" || ctrl.nodeName === "TEXTAREA") {
+      const c = findParent(ctrl, resources.containerClass, "LABEL")
+      if (c) {
+        c.classList.remove("focused")
+        c.classList.remove("focus")
+      }
+    }
+  }, 0)
 }
-function hideLoading() {
-  const loading = document.getElementById("sysLoading")
-  loading.style.display = "none"
-}
-function toggleClass(e, className) {
-  if (e) {
-    if (e.classList.contains(className)) {
-      e.classList.remove(className)
-      return false
-    } else {
-      e.classList.add(className)
-      return true
+function registerEvents(form) {
+  const len = form.length
+  for (let i = 0; i < len; i++) {
+    const ctrl = form[i]
+    if (ctrl.nodeName === "INPUT" || ctrl.nodeName === "SELECT") {
+      let type = ctrl.getAttribute("type")
+      if (type != null) {
+        type = type.toLowerCase()
+      }
+      if (ctrl.nodeName === "INPUT" && (type === "checkbox" || type === "radio" || type === "submit" || type === "button" || type === "reset")) {
+        continue
+      } else {
+        const parent = ctrl.parentElement
+        const required = ctrl.getAttribute("required")
+        if (parent) {
+          if (parent.nodeName === "LABEL" && required != null && required !== undefined && required != "false" && !parent.classList.contains("required")) {
+            parent.classList.add("required")
+          } else if (parent.classList.contains("form-group") || parent.classList.contains("field")) {
+            const firstChild = parent.firstChild
+            if (firstChild && firstChild.nodeName === "LABEL") {
+              if (!firstChild.classList.contains("required")) {
+                firstChild.classList.add("required")
+              }
+            }
+          }
+        }
+        if (ctrl.getAttribute("onblur") === null && ctrl.getAttribute("(blur)") === null) {
+          ctrl.onblur = materialOnBlur
+        } else {
+          console.log("name:" + ctrl.getAttribute("name"))
+        }
+        if (ctrl.getAttribute("onfocus") === null && ctrl.getAttribute("(focus)") === null) {
+          ctrl.onfocus = materialOnFocus
+        } else {
+          console.log("name:" + ctrl.getAttribute("name"))
+        }
+      }
+    } else if (ctrl.nodeName === "TEXTAREA") {
+      if (ctrl.getAttribute("blur") === null) {
+        ctrl.blur = materialOnBlur
+      }
+      if (ctrl.getAttribute("focus") === null) {
+        ctrl.focus = materialOnFocus
+      }
     }
   }
-  return false
 }
 function valueOf(obj, key) {
   const mapper = key.split(".").map((item) => {
@@ -316,7 +361,7 @@ function buildSearchUrl(ft, page, limit, fields) {
               url += getPrefix(url) + `${key}=${objValue}`
             }
           } else if (key === limit) {
-            if (objValue != defaultLimit) {
+            if (objValue != resources.defaultLimit) {
               url += getPrefix(url) + `${key}=${objValue}`
             }
           } else {
@@ -415,6 +460,10 @@ function changePage(e) {
           const pageBody = document.getElementById("pageBody")
           if (pageBody) {
             pageBody.innerHTML = data
+            const forms = pageBody.querySelectorAll("form")
+            for (let i = 0; i < forms.length; i++) {
+              registerEvents(forms[i])
+            }
           }
           window.history.pushState(undefined, "Title", newUrl)
         })
@@ -453,6 +502,10 @@ function search(e) {
           const pageBody = document.getElementById("pageBody")
           if (pageBody) {
             pageBody.innerHTML = data
+            const forms = pageBody.querySelectorAll("form")
+            for (let i = 0; i < forms.length; i++) {
+              registerEvents(forms[i])
+            }
           }
           window.history.pushState(undefined, "Title", newUrl)
         })
@@ -466,12 +519,55 @@ function search(e) {
       alert("An error occurred while submitting the form")
     })
 }
-function submitContact(e) {
+function saveFormData(e) {
+  e.preventDefault()
+  const target = e.target
+  const form = target.form
+  const formData = new FormData(form)
+  let confirmText = target.getAttribute("data-message")
+  if (!confirmText) {
+    confirmText = "Are you sure you want to save?"
+  }
+  showConfirm(confirmText, () => {
+    const url = getCurrentURL()
+    showLoading()
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+          response.text().then((data) => {
+            const pageBody = document.getElementById("pageBody")
+            if (pageBody) {
+              pageBody.innerHTML = data
+              const forms = pageBody.querySelectorAll("form")
+              for (let i = 0; i < forms.length; i++) {
+                registerEvents(forms[i])
+              }
+            }
+            hideLoading()
+          })
+        } else {
+          console.error("Error:", response.statusText)
+          hideLoading()
+          alert("Failed to submit data.")
+        }
+      })
+      .catch((err) => {
+        console.log("Error: " + err)
+        hideLoading()
+        alert("An error occurred while submitting the form")
+      })
+  })
+}
+function save(e) {
   e.preventDefault()
   const target = e.target
   const form = target.form
   const contact = decodeFromForm(form)
   const url = getCurrentURL()
+  showLoading()
   fetch(url, {
     method: "POST",
     headers: {
@@ -483,15 +579,18 @@ function submitContact(e) {
       if (response.ok) {
         response.text().then((data) => {
           console.log("Success:", data)
+          hideLoading()
           alert("Data submitted successfully!")
         })
       } else {
         console.error("Error:", response.statusText)
+        hideLoading()
         alert("Failed to submit data.")
       }
     })
     .catch((err) => {
       console.log("Error: " + err)
+      hideLoading()
       alert("An error occurred while submitting the form")
     })
 }

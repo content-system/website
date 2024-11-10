@@ -1,6 +1,35 @@
 const r1 = / |,|\$|€|£|¥|'|٬|،| /g
 const r2 = / |\.|\$|€|£|¥|'|٬|،| /g
-const defaultLimit = 12
+
+interface Phones {
+  [key: string]: string
+}
+// tslint:disable-next-line:class-name
+class resources {
+  static defaultLimit = 12
+  static rightText?: string
+  static leftText?: string
+  static confirmHeader?: string = "Confirm"
+  static errorHeader?: string = "Error"
+  static warningHeader?: string = "Warning"
+  static infoHeader?: string = "Info"
+  static successHeader?: string = "Success"
+  static containerClass = "form-input"
+
+  static num1 = / |,|\$|€|£|¥|'|٬|،| /g
+  static num2 = / |\.|\$|€|£|¥|'|٬|،| /g
+  static phonecodes?: Phones
+  static email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/i
+  static phone = /^\d{5,14}$/
+  static password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+  static url = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+  static digit = /^\d+$/
+  static amount = /^[0-9]{0,15}(?:\.[0-9]{1,3})?$/ // const regExp = /\d+\.\d+/;
+  static percentage = /^[1-9][0-9]?$|^100$/
+  static ipv4 = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/
+  static ipv6 =
+    /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/
+}
 
 interface Locale {
   decimalSeparator: string
@@ -61,79 +90,166 @@ function trimNull(obj: any): any {
   }
   return obj
 }
-function trimNullArray<T>(arrs: T[]): T[] {
-  if (!arrs) {
-    return arrs
-  }
-  if (arrs.length > 0) {
-    for (const obj of arrs) {
-      trimNull(obj)
-    }
-  }
-  return arrs
-}
 function getCurrentURL() {
   return window.location.origin + window.location.pathname
 }
 
-function fadeIn(el: HTMLElement, display?: string): void {
-  el.style.opacity = "0"
-  el.style.display = display || "block"
-  ;(function fade() {
-    let val = parseFloat(el.style.opacity)
-    val += 0.1
-    if (!(val > 1)) {
-      el.style.opacity = val.toString()
-      requestAnimationFrame(fade)
+function getElement(form: HTMLFormElement | undefined | null, name: string): Element | null {
+  if (form) {
+    const l = form.length
+    for (let i = 0; i < l; i++) {
+      const e = form[i]
+      if (e.getAttribute("name") === name) {
+        return e
+      }
     }
-  })()
+  }
+  return null
 }
-function fadeOut(el: HTMLElement): void {
-  el.style.opacity = "1"
-  ;(function fade() {
-    let val = parseFloat(el.style.opacity)
-    val -= 0.1
-    if (val < 0) {
-      el.style.display = "none"
-    } else {
-      requestAnimationFrame(fade)
+function findParent(e: HTMLElement | null | undefined, className: string, nodeName?: string): HTMLElement | null {
+  if (!e) {
+    return null
+  }
+  if (nodeName && e.nodeName === nodeName) {
+    return e
+  }
+  let p: HTMLElement | null = e
+  while (true) {
+    p = p.parentElement
+    if (!p) {
+      return null
     }
-  })()
-}
-
-function toast(msg: string): void {
-  const sysToast = document.getElementById("sysToast") as HTMLElement
-  sysToast.innerHTML = msg
-  fadeIn(sysToast)
-  setTimeout(() => {
-    fadeOut(sysToast)
-  }, 1340)
-}
-function showLoading(isFirstTime?: boolean) {
-  const sysLoading = document.getElementById("sysLoading") as HTMLElement
-  sysLoading.style.display = "block"
-  if (isFirstTime) {
-    sysLoading.classList.add("dark")
-  } else {
-    sysLoading.classList.remove("dark")
+    if (p.classList.contains(className)) {
+      return p
+    }
+    if (nodeName && p.nodeName === nodeName) {
+      return p
+    }
   }
 }
-function hideLoading() {
-  const loading = document.getElementById("sysLoading") as HTMLElement
-  loading.style.display = "none"
-}
-
-function toggleClass(e: HTMLElement | null | undefined, className: string): boolean {
-  if (e) {
-    if (e.classList.contains(className)) {
-      e.classList.remove(className)
-      return false
-    } else {
-      e.classList.add(className)
+function addClass(ele: HTMLElement | null | undefined, className: string): boolean {
+  if (ele) {
+    if (!ele.classList.contains(className)) {
+      ele.classList.add(className)
       return true
     }
   }
   return false
+}
+function addClasses(ele: HTMLElement | null | undefined, classes: string[]): number {
+  let count = 0
+  if (ele) {
+    for (let i = 0; i < classes.length; i++) {
+      if (addClass(ele, classes[i])) {
+        count++
+      }
+    }
+  }
+  return count
+}
+function removeClass(ele: HTMLElement | null | undefined, className: string): boolean {
+  if (ele) {
+    if (ele && ele.classList.contains(className)) {
+      ele.classList.remove(className)
+      return true
+    }
+  }
+  return false
+}
+function removeClasses(ele: HTMLElement | null | undefined, classes: string[]): number {
+  let count = 0
+  if (ele) {
+    for (let i = 0; i < classes.length; i++) {
+      if (removeClass(ele, classes[i])) {
+        count++
+      }
+    }
+  }
+  return count
+}
+function getContainer(ele?: HTMLElement | null): HTMLElement | null {
+  return findParent(ele, resources.containerClass, "LABEL")
+}
+function handleMaterialFocus(ele: HTMLInputElement) {
+  if (ele.disabled || ele.readOnly) {
+    return
+  }
+  if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
+    addClass(getContainer(ele), "focused")
+  }
+}
+function materialOnFocus(event: Event) {
+  const ele = event.currentTarget as HTMLInputElement
+  if (ele.disabled || ele.readOnly) {
+    return
+  }
+  setTimeout(() => {
+    if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
+      addClass(getContainer(ele), "focused")
+    }
+  }, 0)
+}
+function materialOnBlur(event: Event): void {
+  const ele = event.currentTarget as HTMLInputElement
+  setTimeout(() => {
+    if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
+      addClasses(getContainer(ele), ["focused", "focus"])
+    }
+  }, 0)
+}
+function registerEvents(form: HTMLFormElement): void {
+  const len = form.length
+  for (let i = 0; i < len; i++) {
+    const ele = form[i] as HTMLInputElement
+    if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT") {
+      let type = ele.getAttribute("type")
+      if (type != null) {
+        type = type.toLowerCase()
+      }
+      if (ele.nodeName === "INPUT" && (type === "checkbox" || type === "radio" || type === "submit" || type === "button" || type === "reset")) {
+        continue
+      } else {
+        const parent = ele.parentElement
+        const required = ele.getAttribute("required")
+        if (parent) {
+          if (
+            parent.nodeName === "LABEL" &&
+            // tslint:disable-next-line:triple-equals
+            required != null &&
+            required !== undefined &&
+            required != "false" &&
+            !parent.classList.contains("required")
+          ) {
+            parent.classList.add("required")
+          } else if (parent.classList.contains("form-group") || parent.classList.contains("field")) {
+            const firstChild = parent.firstChild
+            if (firstChild && firstChild.nodeName === "LABEL") {
+              if (!(firstChild as HTMLLabelElement).classList.contains("required")) {
+                ;(firstChild as HTMLLabelElement).classList.add("required")
+              }
+            }
+          }
+        }
+        if (ele.getAttribute("onblur") === null && ele.getAttribute("(blur)") === null) {
+          ele.onblur = materialOnBlur
+        } else {
+          console.log("name:" + ele.getAttribute("name"))
+        }
+        if (ele.getAttribute("onfocus") === null && ele.getAttribute("(focus)") === null) {
+          ele.onfocus = materialOnFocus
+        } else {
+          console.log("name:" + ele.getAttribute("name"))
+        }
+      }
+    } else if (ele.nodeName === "TEXTAREA") {
+      if (ele.getAttribute("blur") === null) {
+        ;(ele as any).blur = materialOnBlur
+      }
+      if (ele.getAttribute("focus") === null) {
+        ;(ele as any).focus = materialOnFocus
+      }
+    }
+  }
 }
 
 function valueOf(obj: any, key: string): any {
@@ -191,24 +307,24 @@ function decodeFromForm<T>(form: HTMLFormElement, locale?: Locale, currencySymbo
   const obj = {} as T
   const len = form.length
   for (let i = 0; i < len; i++) {
-    const ctrl = form[i] as HTMLInputElement
-    let name = ctrl.getAttribute("name")
-    const id = ctrl.getAttribute("id")
+    const ele = form[i] as HTMLInputElement
+    let name = ele.getAttribute("name")
+    const id = ele.getAttribute("id")
     let val: any
     let isDate = false
-    let dataField = ctrl.getAttribute("data-field")
+    let dataField = ele.getAttribute("data-field")
     if (dataField && dataField.length > 0) {
       name = dataField
-    } else if ((!name || name === "") && ctrl.parentElement && ctrl.parentElement.classList.contains("DayPickerInput")) {
-      if (ctrl.parentElement.parentElement) {
-        dataField = ctrl.parentElement.parentElement.getAttribute("data-field")
+    } else if ((!name || name === "") && ele.parentElement && ele.parentElement.classList.contains("DayPickerInput")) {
+      if (ele.parentElement.parentElement) {
+        dataField = ele.parentElement.parentElement.getAttribute("data-field")
         isDate = true
         name = dataField
       }
     }
     if (name != null && name !== "") {
-      let nodeName = ctrl.nodeName
-      const type = ctrl.getAttribute("type")
+      let nodeName = ele.nodeName
+      const type = ele.getAttribute("type")
       if (nodeName === "INPUT" && type !== null) {
         nodeName = type.toUpperCase()
       }
@@ -221,30 +337,30 @@ function decodeFromForm<T>(form: HTMLFormElement, locale?: Locale, currencySymbo
               if (!val) {
                 val = []
               }
-              if (ctrl.checked) {
-                val.push(ctrl.value)
-                // obj[name].push(ctrl.value);
+              if (ele.checked) {
+                val.push(ele.value)
+                // obj[name].push(ele.value);
               } else {
                 // tslint:disable-next-line: triple-equals
-                val = val.filter((item: string) => item != ctrl.value)
+                val = val.filter((item: string) => item != ele.value)
               }
             } else {
-              const c0 = ctrl.checked as any
+              const c0 = ele.checked as any
               if (c0 || c0 === "checked") {
                 val = true
               }
             }
             break
           case "radio":
-            const cv = ctrl.checked as any
+            const cv = ele.checked as any
             if (cv || cv === "checked") {
-              val = ctrl.value
+              val = ele.value
             }
             break
           case "date":
-            if (ctrl.value.length === 10) {
+            if (ele.value.length === 10) {
               try {
-                val = new Date(ctrl.value) // DateUtil.parse(ctrl.value, 'YYYY-MM-DD');
+                val = new Date(ele.value) // DateUtil.parse(ele.value, 'YYYY-MM-DD');
               } catch (err) {
                 val = null
               }
@@ -253,9 +369,9 @@ function decodeFromForm<T>(form: HTMLFormElement, locale?: Locale, currencySymbo
             }
             break
           case "datetime-local":
-            if (ctrl.value.length > 0) {
+            if (ele.value.length > 0) {
               try {
-                val = new Date(ctrl.value) // DateUtil.parse(ctrl.value, 'YYYY-MM-DD');
+                val = new Date(ele.value) // DateUtil.parse(ele.value, 'YYYY-MM-DD');
               } catch (err) {
                 val = null
               }
@@ -264,7 +380,7 @@ function decodeFromForm<T>(form: HTMLFormElement, locale?: Locale, currencySymbo
             }
             break
           default:
-            val = ctrl.value
+            val = ele.value
         }
         if (isDate && dateFormat && dateFormat.length > 0) {
           try {
@@ -273,11 +389,11 @@ function decodeFromForm<T>(form: HTMLFormElement, locale?: Locale, currencySymbo
             val = null
           }
         }
-        const ctype = ctrl.getAttribute("data-type")
-        let v: any = ctrl.value
+        const ctype = ele.getAttribute("data-type")
+        let v: any = ele.value
         let symbol: string | null | undefined
         if (ctype === "currency") {
-          symbol = ctrl.getAttribute("currency-symbol")
+          symbol = ele.getAttribute("currency-symbol")
           if (!symbol) {
             symbol = currencySymbol
           }
@@ -341,7 +457,7 @@ function buildSearchUrl<F extends Filter>(ft: F, page?: string, limit?: string, 
               url += getPrefix(url) + `${key}=${objValue}`
             }
           } else if (key === limit) {
-            if (objValue != defaultLimit) {
+            if (objValue != resources.defaultLimit) {
               url += getPrefix(url) + `${key}=${objValue}`
             }
           } else {
@@ -443,6 +559,10 @@ function changePage(e: Event) {
           const pageBody = document.getElementById("pageBody")
           if (pageBody) {
             pageBody.innerHTML = data
+            const forms = pageBody.querySelectorAll("form")
+            for (let i = 0; i < forms.length; i++) {
+              registerEvents(forms[i])
+            }
           }
           window.history.pushState(undefined, "Title", newUrl)
         })
@@ -482,6 +602,10 @@ function search(e: Event) {
           const pageBody = document.getElementById("pageBody")
           if (pageBody) {
             pageBody.innerHTML = data
+            const forms = pageBody.querySelectorAll("form")
+            for (let i = 0; i < forms.length; i++) {
+              registerEvents(forms[i])
+            }
           }
           window.history.pushState(undefined, "Title", newUrl)
         })
@@ -495,12 +619,55 @@ function search(e: Event) {
       alert("An error occurred while submitting the form")
     })
 }
-function submitContact(e: Event) {
+function saveFormData(e: Event) {
+  e.preventDefault()
+  const target = e.target as HTMLButtonElement
+  const form = target.form as HTMLFormElement
+  const formData = new FormData(form)
+  let confirmText = target.getAttribute("data-message")
+  if (!confirmText) {
+    confirmText = "Are you sure you want to save?"
+  }
+  showConfirm(confirmText, () => {
+    const url = getCurrentURL()
+    showLoading()
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (response.ok) {
+          response.text().then((data) => {
+            const pageBody = document.getElementById("pageBody")
+            if (pageBody) {
+              pageBody.innerHTML = data
+              const forms = pageBody.querySelectorAll("form")
+              for (let i = 0; i < forms.length; i++) {
+                registerEvents(forms[i])
+              }
+            }
+            hideLoading()
+          })
+        } else {
+          console.error("Error:", response.statusText)
+          hideLoading()
+          alert("Failed to submit data.")
+        }
+      })
+      .catch((err) => {
+        console.log("Error: " + err)
+        hideLoading()
+        alert("An error occurred while submitting the form")
+      })
+  })
+}
+function save(e: Event) {
   e.preventDefault()
   const target = e.target as HTMLButtonElement
   const form = target.form as HTMLFormElement
   const contact = decodeFromForm(form)
   const url = getCurrentURL()
+  showLoading()
   fetch(url, {
     method: "POST",
     headers: {
@@ -512,15 +679,18 @@ function submitContact(e: Event) {
       if (response.ok) {
         response.text().then((data) => {
           console.log("Success:", data)
+          hideLoading()
           alert("Data submitted successfully!")
         })
       } else {
         console.error("Error:", response.statusText)
+        hideLoading()
         alert("Failed to submit data.")
       }
     })
     .catch((err) => {
       console.log("Error: " + err)
+      hideLoading()
       alert("An error occurred while submitting the form")
     })
 }

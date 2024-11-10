@@ -1,7 +1,7 @@
 import { merge } from "config-plus"
 import dotenv from "dotenv"
-import express, { json, Request, Response } from "express"
-import { allow, MiddlewareLogger } from "express-ext"
+import express, { Request, Response } from "express"
+import { MiddlewareLogger } from "express-ext"
 import http from "http"
 import { createLogger } from "logger-core"
 import nunjucks from "nunjucks"
@@ -31,7 +31,7 @@ app.set("view engine", "html")
 const logger = createLogger(conf.log)
 const middleware = new MiddlewareLogger(logger.info, conf.middleware)
 // app.use(allow(conf.allow), json(), middleware.log)
-app.use(allow(conf.allow), json())
+// app.use(allow(conf.allow), json())
 
 const pool = new Pool(conf.db)
 const db = new PoolManager(pool)

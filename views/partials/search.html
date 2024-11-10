@@ -4,8 +4,8 @@
     <option value="{{pageSize}}" {% if pageSize == filter.limit %} selected {% endif %}>{{pageSize}}</option>
     {% endfor %}
   </select>
-  <input type="text" id="q" name="q" maxlength="255" placeholder="{{ resource.search }}" value="{{ filter.q }}" />
-  <button type="button" hidden="" class="btn-remove-text"></button>
-  <button type="button" class="btn-filter on"></button>
+  <input type="text" id="q" name="q" maxlength="255" onchange="qOnChange(event)" placeholder="{{resource.search}}" value="{{filter.q}}" />
+  <button type="button" hidden class="btn-remove-text" onclick="removeTextOnClick(event)"></button>
+  <button type="button" class="btn-filter on" onclick="toggleSearch(event)"></button>
   <button type="submit" class="btn-search" onclick="search(event)"></button>
 </label>

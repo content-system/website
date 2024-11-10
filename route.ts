@@ -1,7 +1,10 @@
 import { Application } from "express"
 import { check } from "express-ext"
+import multer from "multer"
 import { ApplicationContext } from "./context"
 import { userModel } from "./service/user"
+
+const parser = multer()
 
 export function route(app: Application, ctx: ApplicationContext): void {
   app.get("/health", ctx.health.check)
@@ -20,4 +23,5 @@ export function route(app: Application, ctx: ApplicationContext): void {
   app.get("/news", ctx.article.render)
   app.get("/careers", ctx.job.render)
   app.get("/contact", ctx.contact.render)
+  app.post("/contact", parser.none(), ctx.contact.submit)
 }

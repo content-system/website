@@ -24,6 +24,7 @@ export const vi = {
   approve: "Approve",
   reject: "Reject",
   confirm: "Confirm",
+  submit: "Submit",
   create: "Create",
   add: "Add",
   edit: "Edit",

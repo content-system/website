@@ -23,7 +23,7 @@ export class JobController extends Controller<Job, string, JobFilter> {
   }
   render(req: Request, res: Response) {
     const filter: JobFilter = {
-      title: "Java",
+      // title: "Java",
     }
     this.jobService.search(filter, 6).then((result) => {
       res.render(getView(req, "careers"), {

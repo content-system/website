@@ -87,7 +87,7 @@ export class resources {
       } else {
         if (isDigitOnly(phoneNumber)) {
           for (let degit = 1; degit <= 3; degit++) {
-            const countryCode = phoneNumber.substr(0, degit)
+            const countryCode = phoneNumber.substring(0, degit)
             if (countryCode in resources.phonecodes) {
               return true
             }
@@ -218,7 +218,7 @@ export function isValidScale(n: number, scale?: number): boolean {
   if (i < 0) {
     return true
   }
-  const s2 = s.substr(i + 1)
+  const s2 = s.substring(i + 1)
   return s2.length <= scale
 }
 export function isValidPrecision(n: number, precision: number, scale?: number): boolean {
@@ -236,11 +236,11 @@ export function isValidPrecision(n: number, precision: number, scale?: number): 
   if (i < 0) {
     return s.length <= precision - scale
   }
-  const s2 = s.substr(i + 1)
+  const s2 = s.substring(i + 1)
   if (s2.length > scale) {
     return false
   }
-  const s3 = s.substr(0, i)
+  const s3 = s.substring(0, i)
   return s3.length <= precision - scale
 }
 export function format(...args: any[]): string {
@@ -262,7 +262,7 @@ export function format(...args: any[]): string {
   }
   return formatted
 }
-function createError(path: string, name: string, code?: string, param?: string | number | Date): ErrorMessage {
+function createError(path: string, name: string, code: string|undefined, msg: string, param?: string | number | Date): ErrorMessage {
   let x = name
   if (path && path.length > 0) {
     x = path + "." + name
@@ -273,6 +273,9 @@ function createError(path: string, name: string, code?: string, param?: string |
   const error: ErrorMessage = {
     field: x,
     code,
+  }
+  if (msg) {
+    error.message = msg
   }
   if (param) {
     error.param = param
@@ -310,32 +313,50 @@ function toDate(v: any): Date | null | undefined {
   }
 }
 
-function handleMinMax(v: number | Date, attr: Attribute, path: string, errors: ErrorMessage[]): void {
+function handleMinMax(v: number | Date, attr: Attribute, path: string, errors: ErrorMessage[], key: string, resource?: StringMap): void {
   let na = attr.name
   if (!na) {
     na = ""
   }
   if (attr.min) {
     if (getNumber(v) < getNumber(attr.min)) {
-      errors.push(createError(path, na, "min", attr.min))
+      const msg = createMessage(key, "min", "error_min", resource, attr.resource)
+      errors.push(createError(path, na, "min", msg, attr.min))
     }
   } else if (attr.gt) {
     if (getNumber(v) <= getNumber(attr.gt)) {
-      errors.push(createError(path, na, "gt", attr.gt))
+      const msg = createMessage(key, "gt", "error_gt", resource, attr.resource)
+      errors.push(createError(path, na, "gt", msg, attr.gt))
     }
   }
   if (attr.max) {
     if (getNumber(v) > getNumber(attr.max)) {
-      errors.push(createError(path, na, "max", attr.max))
+      const msg = createMessage(key, "max", "error_max", resource, attr.resource)
+      errors.push(createError(path, na, "max", msg, attr.max))
     }
   } else if (attr.lt) {
     if (getNumber(v) >= getNumber(attr.lt)) {
-      errors.push(createError(path, na, "lt", attr.lt))
+      const msg = createMessage(key, "lt", "error_lt", resource, attr.resource)
+      errors.push(createError(path, na, "lt", msg, attr.lt))
     }
   }
 }
 export function getNumber(v: number | Date): number {
   return typeof v === "number" ? v : v.getTime()
+}
+export function createMessage(field: string, code: string, errorKey: string, resource?: StringMap, resourceKey?: string, param?: string): string  {
+  if (!resource) {
+    console.log("resource undefine")
+    return ""
+  }
+  const p1b: string | undefined = resourceKey && resourceKey.length > 0 ? resource[resourceKey] : field
+  const p1 = p1b ? p1b : field
+  const um = resource[errorKey]
+  if (!um) {
+    return code
+  } else {
+    return format(um, p1, param)
+  }
 }
 function validateObject(
   obj: any,
@@ -365,7 +386,8 @@ function validateObject(
       const v = obj[na]
       if (v == null) {
         if (attr.required && !patch) {
-          errors.push(createError(path, na, "required"))
+          const msg = createMessage(key, "required", "error_required", resource, attr.resource)
+          errors.push(createError(path, na, "required", msg))
         }
       } else {
         const t = typeof v
@@ -376,13 +398,14 @@ function validateObject(
             if (date) {
               const error = date.toString()
               if (!(date instanceof Date) || error === "Invalid Date") {
-                errors.push(createError(path, na, "date"))
+                const msg = createMessage(key, "date", "error_date", resource, attr.resource)
+                errors.push(createError(path, na, "date", msg))
                 return
               } else {
                 if (!(v instanceof Date)) {
                   obj[na] = date
                 }
-                handleMinMax(v, attr, path, errors)
+                handleMinMax(v, attr, path, errors, key, resource)
               }
             }
             break
@@ -392,13 +415,14 @@ function validateObject(
               if (date2) {
                 const error2 = date2.toString()
                 if (!(date2 instanceof Date) || error2 === "Invalid Date") {
-                  errors.push(createError(path, na, "date"))
+                  const msg = createMessage(key, "date", "error_date", resource, attr.resource)
+                  errors.push(createError(path, na, "date", msg))
                   return
                 } else {
                   if (!(v instanceof Date)) {
                     obj[na] = date
                   }
-                  handleMinMax(v, attr, path, errors)
+                  handleMinMax(v, attr, path, errors, key, resource)
                 }
               }
             }
@@ -410,50 +434,61 @@ function validateObject(
                 if (at === undefined || at === "string" || at === "text" || at === "ObjectId") {
                   if (v.length === 0) {
                     if (attr.required) {
-                      errors.push(createError(path, na, "required"))
+                      const msg = createMessage(key, "required", "error_required", resource, attr.resource)
+                      const err = createError(path, na, "required", msg)
+                      console.log("error " + JSON.stringify(err))
+                      errors.push(err)
                     }
                   } else {
                     if (attr.min && typeof attr.min === "number" && attr.min > 0 && v.length < attr.min) {
-                      errors.push(createError(path, na, "minlength", attr.min))
+                      const msg = createMessage(key, "minlength", "error_minlength", resource, attr.resource)
+                      errors.push(createError(path, na, "minlength", msg, attr.min))
                     }
                     if (attr.length && attr.length > 0 && v.length > attr.length) {
-                      errors.push(createError(path, na, "maxlength", attr.length))
+                      const msg = createMessage(key, "maxlength", "error_maxlength", resource, attr.resource)
+                      errors.push(createError(path, na, "maxlength", msg, attr.length))
                     }
                     if (attr.format) {
                       switch (attr.format) {
                         case "email": {
                           if (!isEmail(v)) {
-                            errors.push(createError(path, na, "email"))
+                            const msg = createMessage(key, "email", "error_email", resource, attr.resource)
+                            errors.push(createError(path, na, "email", msg))
                           }
                           break
                         }
                         case "url": {
                           if (!isUrl(v)) {
-                            errors.push(createError(path, na, "url"))
+                            const msg = createMessage(key, "url", "error_url", resource, attr.resource)
+                            errors.push(createError(path, na, "url", msg))
                           }
                           break
                         }
                         case "phone": {
                           if (!resources.isPhone(v)) {
-                            errors.push(createError(path, na, "phone"))
+                            const msg = createMessage(key, "phone", "error_phone", resource, attr.resource)
+                            errors.push(createError(path, na, "phone", msg))
                           }
                           break
                         }
                         case "fax": {
                           if (!resources.isFax(v)) {
-                            errors.push(createError(path, na, "fax"))
+                            const msg = createMessage(key, "fax", "error_fax", resource, attr.resource)
+                            errors.push(createError(path, na, "fax", msg))
                           }
                           break
                         }
                         case "ipv4": {
                           if (!isIPv4(v)) {
-                            errors.push(createError(path, na, "ipv4"))
+                            const msg = createMessage(key, "ipv4", "error_ipv4", resource, attr.resource)
+                            errors.push(createError(path, na, "ipv4", msg))
                           }
                           break
                         }
                         case "ipv6": {
                           if (!isIPv6(v)) {
-                            errors.push(createError(path, na, "ipv6"))
+                            const msg = createMessage(key, "ipv6", "error_ipv6", resource, attr.resource)
+                            errors.push(createError(path, na, "ipv6", msg))
                           }
                           break
                         }
@@ -486,19 +521,23 @@ function validateObject(
               case "number":
                 if (attr.type === "integer") {
                   if (!Number.isInteger(v) || isNaN(v)) {
-                    errors.push(createError(path, na, "integer"))
+                    const msg = createMessage(key, "integer", "error_integer", resource, attr.resource)
+                    errors.push(createError(path, na, "integer", msg))
                   }
                 } else if (attr.type === "number") {
                   if (isNaN(v)) {
-                    errors.push(createError(path, na, "number"))
+                    const msg = createMessage(key, "number", "error_number", resource, attr.resource)
+                    errors.push(createError(path, na, "number", msg))
                   } else {
                     if (!attr.precision) {
                       if (!isValidScale(v, attr.scale)) {
-                        errors.push(createError(path, na, "scale"))
+                        const msg = createMessage(key, "scale", "error_scale", resource, attr.resource)
+                        errors.push(createError(path, na, "scale", msg))
                       }
                     } else {
                       if (!isValidPrecision(v, attr.precision, attr.scale)) {
-                        errors.push(createError(path, na, "precision"))
+                        const msg = createMessage(key, "precision", "error_precision", resource, attr.resource)
+                        errors.push(createError(path, na, "precision", msg))
                       }
                     }
                   }
@@ -506,7 +545,7 @@ function validateObject(
                   errors.push(createError(path, na, attr.type))
                   return
                 }
-                handleMinMax(v, attr, path, errors)
+                handleMinMax(v, attr, path, errors, key, resource)
                 if (attr.enum && attr.enum.length > 0) {
                   if (!exist(v, attr.enum as number[])) {
                     errors.push(createError(path, na, "enum", toString(attr.enum)))
@@ -515,7 +554,8 @@ function validateObject(
                 break
               case "boolean":
                 if (at !== "boolean") {
-                  errors.push(createError(path, na, at))
+                  const msg = createMessage(key, "boolean", "error_boolean", resource, attr.resource)
+                  errors.push(createError(path, na, at, msg))
                   return
                 }
                 break
@@ -524,32 +564,37 @@ function validateObject(
                   switch (at) {
                     case "strings": {
                       if (!isStrings(v)) {
-                        errors.push(createError(path, na, "strings"))
+                        const msg = createMessage(key, "strings", "error_strings", resource, attr.resource)
+                        errors.push(createError(path, na, "strings", msg))
                       }
                       break
                     }
                     case "numbers": {
                       if (!isNumbers(v)) {
-                        errors.push(createError(path, na, "numbers"))
+                        const msg = createMessage(key, "numbers", "error_numbers", resource, attr.resource)
+                        errors.push(createError(path, na, "numbers", msg))
                       }
                       break
                     }
                     case "integers": {
                       if (!isIntegers(v)) {
-                        errors.push(createError(path, na, "integers"))
+                        const msg = createMessage(key, "integers", "error_integers", resource, attr.resource)
+                        errors.push(createError(path, na, "integers", msg))
                       }
                       break
                     }
                     case "datetimes": {
                       if (!isDates(v)) {
-                        errors.push(createError(path, na, "datetimes"))
+                        const msg = createMessage(key, "datetimes", "error_datetimes", resource, attr.resource)
+                        errors.push(createError(path, na, "datetimes", msg))
                       }
                       break
                     }
                     case "dates": {
                       if (resources.ignoreDate) {
                         if (!isDates(v)) {
-                          errors.push(createError(path, na, "dates"))
+                          const msg = createMessage(key, "dates", "error_dates", resource, attr.resource)
+                          errors.push(createError(path, na, "dates", msg))
                         }
                       }
                       break
@@ -584,7 +629,8 @@ function validateObject(
                                     const error3 = date3.toString()
                                     if (!(date3 instanceof Date) || error3 === "Invalid Date") {
                                       const y = path != null && path.length > 0 ? path + "." + key + "[" + i + "]" : key + "[" + i + "]"
-                                      const err = createError("", y, "date")
+                                      const msg = createMessage(key, "date", "error_date", resource, attr.resource)
+                                      const err = createError("", y, "date", msg)
                                       errors.push(err)
                                     }
                                   }
@@ -611,10 +657,12 @@ function validateObject(
                       return
                   }
                   if (attr.min && typeof attr.min === "number" && attr.min > 0 && v.length < attr.min) {
-                    errors.push(createError(path, na, "min", attr.min))
+                    const msg = createMessage(key, "min", "error_min", resource, attr.resource)
+                    errors.push(createError(path, na, "min", msg, attr.min))
                   }
                   if (attr.max && typeof attr.max === "number" && attr.max > 0 && v.length > attr.max) {
-                    errors.push(createError(path, na, "max", attr.max))
+                    const msg = createMessage(key, "max", "error_max", resource, attr.resource)
+                    errors.push(createError(path, na, "max", msg, attr.max))
                   }
                 } else if (at === "object") {
                   if (typeof v !== "object") {
@@ -651,9 +699,9 @@ function validateObject(
       return
     }
   }
-  checkUndefined(obj, attributes, errors, aks)
+  checkUndefined(obj, attributes, errors, resource, aks)
 }
-export function checkUndefined<T>(obj: T, attrs: Attributes, errors: ErrorMessage[], keys?: string[]): void {
+export function checkUndefined<T>(obj: T, attrs: Attributes, errors: ErrorMessage[], resource?: StringMap, keys?: string[]): void {
   if (!keys) {
     keys = Object.keys(attrs)
   }
@@ -662,22 +710,24 @@ export function checkUndefined<T>(obj: T, attrs: Attributes, errors: ErrorMessag
     if (attr.required) {
       const v = (obj as any)[key]
       if (!v && v !== 0 && v !== false) {
-        errors.push(createError("", key, "required"))
+        const msg = createMessage(key, "required", "error_required", resource, attr.resource)
+        const err = createError("", key, "required", msg)
+        errors.push(err)
       }
     }
   }
 }
-export function check(obj: any, attributes: Attributes, allowUndefined?: boolean, patch?: boolean, max?: number): ErrorMessage[] {
+export function check<T>(obj: T, attributes: Attributes, allowUndefined?: boolean, patch?: boolean, resource?: StringMap, max?: number): ErrorMessage[] {
   const errors: ErrorMessage[] = []
   const path = ""
   if (max == null) {
     max = undefined
   }
-  validateObject(obj, attributes, errors, path, allowUndefined, patch, max)
+  validateObject(obj, attributes, errors, path, allowUndefined, patch, max, resource)
   return errors
 }
-export function validate(obj: any, attributes: Attributes, allowUndefined?: boolean, patch?: boolean, max?: number): ErrorMessage[] {
-  return check(obj, attributes, allowUndefined, patch, max)
+export function validate<T>(obj: T, attributes: Attributes, allowUndefined?: boolean, patch?: boolean, resource?: StringMap, max?: number): ErrorMessage[] {
+  return check(obj, attributes, allowUndefined, patch, resource, max)
 }
 // tslint:disable-next-line:max-classes-per-file
 export class Validator<T> {
@@ -686,8 +736,8 @@ export class Validator<T> {
     this.max = max ? max : 10
     this.validate = this.validate.bind(this)
   }
-  validate(obj: T, patch?: boolean): Promise<ErrorMessage[]> {
-    const errors = check(obj, this.attributes, this.allowUndefined, patch, this.max)
+  validate(obj: T, patch?: boolean, resource?: StringMap): Promise<ErrorMessage[]> {
+    const errors = check(obj, this.attributes, this.allowUndefined, patch, resource, this.max)
     return Promise.resolve(errors)
   }
 }
