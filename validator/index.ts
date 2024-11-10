@@ -262,7 +262,7 @@ export function format(...args: any[]): string {
   }
   return formatted
 }
-function createError(path: string, name: string, code: string|undefined, msg: string, param?: string | number | Date): ErrorMessage {
+function createError(path: string, name: string, code: string | undefined, msg?: string, param?: string | number | Date): ErrorMessage {
   let x = name
   if (path && path.length > 0) {
     x = path + "." + name
@@ -344,7 +344,7 @@ function handleMinMax(v: number | Date, attr: Attribute, path: string, errors: E
 export function getNumber(v: number | Date): number {
   return typeof v === "number" ? v : v.getTime()
 }
-export function createMessage(field: string, code: string, errorKey: string, resource?: StringMap, resourceKey?: string, param?: string): string  {
+export function createMessage(field: string, code: string, errorKey: string, resource?: StringMap, resourceKey?: string, param?: string): string {
   if (!resource) {
     console.log("resource undefine")
     return ""
