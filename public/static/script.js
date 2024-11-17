@@ -81,6 +81,16 @@ function trimNull(obj) {
 function getCurrentURL() {
   return window.location.origin + window.location.pathname
 }
+function getDecimalSeparator(ele) {
+  let decimalSeparator = ele.getAttribute("data-decimal-separator")
+  if (!decimalSeparator) {
+    const form = ele.form
+    if (form) {
+      decimalSeparator = form.getAttribute("data-decimal-separator")
+    }
+  }
+  return decimalSeparator === "," ? "," : "."
+}
 function detectCtrlKeyCombination(e) {
   var forbiddenKeys = new Array("v", "a", "x", "c")
   var key
@@ -130,10 +140,10 @@ function integerOnKeyPress(e) {
   if (key == 13 || key == 8 || key == 9 || key == 11 || key == 127 || key == "\t") {
     return key
   }
-  var ctrl = e.target
+  var ele = e.target
   var keychar = String.fromCharCode(key)
   if (keychar == "-") {
-    if (ctrl.value.indexOf("-") >= 0 || isNaN(ctrl.min) || parseInt(ctrl.min) >= 0) {
+    if (ele.value.indexOf("-") >= 0 || isNaN(ele.min) || parseInt(ele.min) >= 0) {
       return false
     }
     return key
@@ -149,16 +159,16 @@ function numberOnKeyPress(e) {
   if (key == 13 || key == 8 || key == 9 || key == 11 || key == 127 || key == "\t") {
     return key
   }
-  var ctrl = e.target
+  var ele = e.target
   var keychar = String.fromCharCode(key)
   if (keychar == "-") {
-    if (ctrl.value.indexOf("-") >= 0 || isNaN(ctrl.min) || parseInt(ctrl.min) >= 0) {
+    if (ele.value.indexOf("-") >= 0 || isNaN(ele.min) || parseInt(ele.min) >= 0) {
       return false
     }
     return key
   }
-  if (keychar == ".") {
-    if (ctrl.value.indexOf(".") >= 0) {
+  if (keychar == "." || keychar == ",") {
+    if (ele.value.indexOf(keychar) >= 0 || keychar !== getDecimalSeparator(ele)) {
       return false
     }
     return key
@@ -393,13 +403,9 @@ function registerEvents(form) {
         }
         if (ele.getAttribute("onblur") === null && ele.getAttribute("(blur)") === null) {
           ele.onblur = materialOnBlur
-        } else {
-          console.log("name:" + ele.getAttribute("name"))
         }
         if (ele.getAttribute("onfocus") === null && ele.getAttribute("(focus)") === null) {
           ele.onfocus = materialOnFocus
-        } else {
-          console.log("name:" + ele.getAttribute("name"))
         }
       }
     }
@@ -678,6 +684,7 @@ function changePage(e) {
   if (search.length > 0) {
     newUrl = newUrl + "?" + search
   }
+  const resource = getResource()
   fetch(url, { method: "GET" })
     .then((response) => {
       if (response.ok) {
@@ -693,13 +700,13 @@ function changePage(e) {
           window.history.pushState(undefined, "Title", newUrl)
         })
       } else {
-        console.error("Error:", response.statusText)
-        alert("Failed to submit data.")
+        console.error("Error: ", response.statusText)
+        alertError(resource.error_submit_failed, undefined, undefined, response.statusText)
       }
     })
     .catch((err) => {
       console.log("Error: " + err)
-      alert("An error occurred while submitting the form")
+      alertError(resource.error_submitting_form, undefined, undefined, err)
     })
 }
 function search(e) {
@@ -718,6 +725,7 @@ function search(e) {
       newUrl = newUrl + "?" + s
     }
   }
+  const resource = getResource()
   fetch(url, {
     method: "GET",
   })
@@ -735,13 +743,13 @@ function search(e) {
           window.history.pushState(undefined, "Title", newUrl)
         })
       } else {
-        console.error("Error:", response.statusText)
-        alert("Failed to submit data.")
+        console.error("Error: ", response.statusText)
+        alertError(resource.error_submit_failed, undefined, undefined, response.statusText)
       }
     })
     .catch((err) => {
       console.log("Error: " + err)
-      alert("An error occurred while submitting the form")
+      alertError(resource.error_submitting_form, undefined, undefined, err)
     })
 }
 function submitFormData(e) {
@@ -784,7 +792,7 @@ function submitFormData(e) {
           })
         } else {
           hideLoading()
-          console.error("Error:", response.statusText)
+          console.error("Error: ", response.statusText)
           alertError(resource.error_submit_failed, undefined, undefined, response.statusText)
         }
       })
@@ -795,7 +803,7 @@ function submitFormData(e) {
       })
   })
 }
-function submit(e) {
+function submitForm(e) {
   e.preventDefault()
   const target = e.target
   const form = target.form
@@ -820,7 +828,6 @@ function submit(e) {
       body: JSON.stringify(data),
     })
       .then((response) => {
-        console.log("status code " + response.status)
         if (response.ok) {
           let successText = target.getAttribute("data-success")
           if (!successText) {
