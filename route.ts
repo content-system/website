@@ -1,4 +1,4 @@
-import { Application } from "express"
+import { Application, json } from "express"
 import { check } from "express-ext"
 import multer from "multer"
 import { ApplicationContext } from "./context"
@@ -23,5 +23,5 @@ export function route(app: Application, ctx: ApplicationContext): void {
   app.get("/news", ctx.article.render)
   app.get("/careers", ctx.job.render)
   app.get("/contact", ctx.contact.render)
-  app.post("/contact", parser.none(), ctx.contact.submit)
+  app.post("/contact", json(), ctx.contact.submit)
 }

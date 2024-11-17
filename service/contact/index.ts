@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { ErrorMessage } from "express-ext"
+import { ErrorMessage, getStatusCode, handleError } from "express-ext"
 import { nanoid } from "nanoid"
 import { Log } from "onecore"
 import { DB, Repository } from "query-core"
@@ -15,7 +15,7 @@ export class SqlContactRepository extends Repository<Contact, string> implements
   }
 }
 export class ContactManager implements ContactService {
-  constructor(protected repository: ContactRepository) {}
+  constructor(private repository: ContactRepository) {}
   submit(contact: Contact): Promise<number> {
     contact.id = nanoid(10)
     return this.repository.create(contact)
@@ -23,7 +23,7 @@ export class ContactManager implements ContactService {
 }
 
 export class ContactController {
-  constructor(protected service: ContactService) {
+  constructor(protected service: ContactService, private log: Log) {
     this.render = this.render.bind(this)
     this.submit = this.submit.bind(this)
   }
@@ -42,6 +42,8 @@ export class ContactController {
     const contact = req.body
     const errors = validate<Contact>(contact, contactModel, true, false, resource)
     if (errors.length > 0) {
+      res.status(getStatusCode(errors)).json(errors).end()
+      /*
       const x = toMap(errors)
       console.log(JSON.stringify(x))
       res.render("pages/contact", {
@@ -49,13 +51,12 @@ export class ContactController {
         contact,
         errors: x,
       })
+        */
     } else {
-      this.service.submit(contact).then((result) => {
-        res.render("pages/contact", {
-          resource,
-          contact,
-        })
-      })
+      this.service
+        .submit(contact)
+        .then((result) => res.status(201).json(contact).end())
+        .catch((err) => handleError(err, res, this.log))
     }
   }
 }
@@ -75,8 +76,8 @@ export function toMap(errors: ErrorMessage[]): ErrorMap {
   return errorMap
 }
 
-export function useContactController(log: Log, db: DB): ContactController {
+export function useContactController(db: DB, log: Log): ContactController {
   const repository = new SqlContactRepository(db)
   const service = new ContactManager(repository)
-  return new ContactController(service)
+  return new ContactController(service, log)
 }

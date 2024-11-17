@@ -29,7 +29,7 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware): Appli
   const user = useUserController(logger.error, db)
   const article = useArticleController(db)
   const job = useJobController(logger.error, db)
-  const contact = useContactController(logger.error, db)
+  const contact = useContactController(db, logger.error)
 
   return { health, log, middleware, user, article, job, contact }
 }

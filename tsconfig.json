@@ -15,6 +15,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["resources/**/*.ts", "core/*.ts", "service/**/*.ts", "server.ts", "config.ts", "context.ts", "route.ts", "client/**/*.ts"],
+  "include": ["resources/**/*.ts", "core/*.ts", "service/**/*.ts", "server.ts", "config.ts", "context.ts", "route.ts", "client/**/*.ts", "build/**/*.ts"],
   "exclude": ["node_modules"]
 }

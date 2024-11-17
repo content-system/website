@@ -1,23 +1,93 @@
 "use strict"
-function fadeIn(el, display) {
-  el.style.opacity = "0"
-  el.style.display = display || "block"
+const sysNo = document.getElementById("sysNo")
+if (sysNo) {
+  sysNo.addEventListener("click", function () {
+    const sysAlert = document.getElementById("sysAlert")
+    if (sysAlert) {
+      sysAlert.style.display = "none"
+    }
+    if (window.fnoOnClick) {
+      window.fnoOnClick()
+    }
+    const input = sysYes["activeElement"]
+    if (input) {
+      try {
+        input.focus()
+      } catch (err) {}
+    }
+    sysYes["activeElement"] = undefined
+  })
+}
+const sysYes = document.getElementById("sysYes")
+if (sysYes) {
+  sysYes.addEventListener("click", function () {
+    const sysAlert = document.getElementById("sysAlert")
+    if (sysAlert) {
+      sysAlert.style.display = "none"
+    }
+    if (window.fyesOnClick) {
+      window.fyesOnClick()
+    }
+    const input = sysYes["activeElement"]
+    if (input) {
+      try {
+        input.focus()
+      } catch (err) {}
+    }
+    sysYes["activeElement"] = undefined
+  })
+}
+var yesOnClick = function () {
+  const sysAlert = document.getElementById("sysAlert")
+  if (sysAlert) {
+    sysAlert.style.display = "none"
+  }
+  if (window.fyesOnClick) {
+    window.fyesOnClick()
+  }
+  const input = sysYes["activeElement"]
+  if (input) {
+    try {
+      input.focus()
+    } catch (err) {}
+  }
+  sysYes["activeElement"] = undefined
+}
+var noOnClick = function () {
+  const sysAlert = document.getElementById("sysAlert")
+  if (sysAlert) {
+    sysAlert.style.display = "none"
+  }
+  if (window.fnoOnClick) {
+    window.fnoOnClick()
+  }
+  const input = sysYes["activeElement"]
+  if (input) {
+    try {
+      input.focus()
+    } catch (err) {}
+  }
+  sysYes["activeElement"] = undefined
+}
+function fadeIn(ele, display) {
+  ele.style.opacity = "0"
+  ele.style.display = display || "block"
   ;(function fade() {
-    let val = parseFloat(el.style.opacity)
+    let val = parseFloat(ele.style.opacity)
     val += 0.1
     if (!(val > 1)) {
-      el.style.opacity = val.toString()
+      ele.style.opacity = val.toString()
       requestAnimationFrame(fade)
     }
   })()
 }
-function fadeOut(el) {
-  el.style.opacity = "1"
+function fadeOut(ele) {
+  ele.style.opacity = "1"
   ;(function fade() {
-    let val = parseFloat(el.style.opacity)
+    let val = parseFloat(ele.style.opacity)
     val -= 0.1
     if (val < 0) {
-      el.style.display = "none"
+      ele.style.display = "none"
     } else {
       requestAnimationFrame(fade)
     }
@@ -75,13 +145,14 @@ function showAlert(msg, header, type, iconType, btnLeftText, btnRightText, yesCa
   const sysErrorDetailCaret = document.getElementById("sysErrorDetailCaret")
   const sysYes = document.getElementById("sysYes")
   const sysNo = document.getElementById("sysNo")
-  btnLeftText = btnLeftText !== undefined ? btnLeftText : resources.leftText
-  btnRightText = btnRightText !== undefined ? btnRightText : resources.rightText
   if (type === "Alert") {
+    btnRightText = btnRightText !== undefined ? btnRightText : sysYes.getAttribute("data-ok")
     if (!sysAlert.classList.contains("alert-only")) {
       sysAlert.classList.add("alert-only")
     }
   } else {
+    btnLeftText = btnLeftText ? btnLeftText : sysNo.getAttribute("data-text")
+    btnRightText = btnRightText !== undefined ? btnRightText : sysYes.getAttribute("data-text")
     sysAlert.classList.remove("alert-only")
   }
   if (sysErrorDetail && sysErrorDetailCaret && sysErrorDetailText) {
@@ -133,10 +204,8 @@ function showAlert(msg, header, type, iconType, btnLeftText, btnRightText, yesCa
   sysYes.focus()
 }
 function showConfirm(msg, yesCallback, header, btnLeftText, btnRightText, noCallback) {
-  const l = btnLeftText ? btnLeftText : resources.leftText
-  const r = btnRightText ? btnRightText : resources.rightText
   const h = header ? header : resources.confirmHeader
-  showAlert(msg, h, "Confirm", "Confirm", l, r, yesCallback, noCallback)
+  showAlert(msg, h, "Confirm", "Confirm", btnLeftText, btnRightText, yesCallback, noCallback)
 }
 function alertError(msg, callback, header, detail) {
   const h = header ? header : resources.errorHeader

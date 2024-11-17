@@ -1,12 +1,5 @@
-interface StringMap {
-  [key: string]: string
-}
-interface ErrorMessage {
-  field: string
-  code: string
-  message?: string
-}
-function addErrorMessage(ele: HTMLElement | null | undefined, msg?: string, directParent?: boolean): void {
+"use strict"
+function addErrorMessage(ele, msg, directParent) {
   if (!ele) {
     return
   }
@@ -14,15 +7,12 @@ function addErrorMessage(ele: HTMLElement | null | undefined, msg?: string, dire
     msg = "Error"
   }
   addClass(ele, "invalid")
-  // addClass(ele, "ng-touched")
   const parent = directParent ? ele.parentElement : getContainer(ele)
   if (parent === null) {
     return
   }
   addClass(parent, "invalid")
-
   const span = parent.querySelector(".span-error")
-
   if (span) {
     if (span.innerHTML !== msg) {
       span.innerHTML = msg
@@ -34,19 +24,18 @@ function addErrorMessage(ele: HTMLElement | null | undefined, msg?: string, dire
     parent.appendChild(spanError)
   }
 }
-function showFormError(form?: HTMLFormElement, errors?: ErrorMessage[], focusFirst?: boolean, directParent?: boolean, includeId?: boolean): ErrorMessage[] {
+function showFormError(form, errors, focusFirst, directParent, includeId) {
   if (!form || !errors || errors.length === 0) {
     return []
   }
-  let errorCtrl: HTMLInputElement | null = null
-  const errs: ErrorMessage[] = []
+  let errorCtrl = null
+  const errs = []
   const length = errors.length
   const len = form.length
-
   for (let i = 0; i < length; i++) {
     let hasControl = false
     for (let j = 0; j < len; j++) {
-      const ele = form[j] as HTMLInputElement
+      const ele = form[j]
       const dataField = ele.getAttribute("data-field")
       if (dataField === errors[i].field || ele.name === errors[i].field) {
         addErrorMessage(ele, errors[i].message, directParent)
@@ -60,7 +49,7 @@ function showFormError(form?: HTMLFormElement, errors?: ErrorMessage[], focusFir
       if (includeId) {
         const ele = document.getElementById(errors[i].field)
         if (ele) {
-          addErrorMessage(ele as HTMLInputElement, errors[i].message, directParent)
+          addErrorMessage(ele, errors[i].message, directParent)
         } else {
           errs.push(errors[i])
         }
@@ -79,7 +68,7 @@ function showFormError(form?: HTMLFormElement, errors?: ErrorMessage[], focusFir
   return errs
 }
 const errorArr = ["valid", "invalid", "ng-invalid", "ng-touched"]
-function removeError(ele: HTMLInputElement | null | undefined, directParent?: boolean): void {
+function removeError(ele, directParent) {
   if (!ele) {
     return
   }
@@ -93,41 +82,34 @@ function removeError(ele: HTMLInputElement | null | undefined, directParent?: bo
     }
   }
 }
-function removeErrors(form?: HTMLFormElement | null): void {
+function removeErrors(form) {
   if (form) {
     const len = form.length
     for (let i = 0; i < len; i++) {
-      const ele = form[i] as HTMLInputElement
+      const ele = form[i]
       removeError(ele)
     }
   }
 }
-
-// tslint:disable-next-line:class-name
 class formatter {
-  // private static _preg = / |\+|\-|\.|\(|\)/g;
-  static phone = / |\-|\.|\(|\)/g
-  static usPhone = /(\d{3})(\d{3})(\d{4})/
-  static removePhoneFormat(phone: string): string {
+  static removePhoneFormat(phone) {
     if (phone) {
       return phone.replace(formatter.phone, "")
     } else {
       return phone
     }
   }
-  static removeFaxFormat(fax: string): string {
+  static removeFaxFormat(fax) {
     if (fax) {
       return fax.replace(formatter.phone, "")
     } else {
       return fax
     }
   }
-  static formatPhone(phone?: string | null): string {
+  static formatPhone(phone) {
     if (!phone) {
       return ""
     }
-    // reformat phone number
-    // 555 123-4567 or (+1) 555 123-4567
     let s = phone
     const x = formatter.removePhoneFormat(phone)
     if (x.length === 10) {
@@ -144,16 +126,13 @@ class formatter {
     } else if (x.length >= 11) {
       const l = x.length
       s = `${x.substring(0, l - 7)} ${x.substring(l - 7, l - 4)}-${x.substring(l - 4, l)}`
-      // formatedPhone = `(+${phoneNumber.charAt(0)}) ${phoneNumber.substring(0, 3)} ${phoneNumber.substring(3, 6)}-${phoneNumber.substring(6, phoneNumber.length - 1)}`;
     }
     return s
   }
-  static formatFax(fax?: string | null): string {
+  static formatFax(fax) {
     if (!fax) {
       return ""
     }
-    // reformat phone number
-    // 035-456745 or 02-1234567
     let s = fax
     const x = formatter.removePhoneFormat(fax)
     const l = x.length
@@ -177,9 +156,10 @@ class formatter {
     return s
   }
 }
-// tslint:disable-next-line:class-name
+formatter.phone = / |\-|\.|\(|\)/g
+formatter.usPhone = /(\d{3})(\d{3})(\d{4})/
 class tel {
-  static isPhone(str: string | null | undefined): boolean {
+  static isPhone(str) {
     if (!str || str.length === 0 || str === "+") {
       return false
     }
@@ -204,47 +184,47 @@ class tel {
       }
     }
   }
-  static isFax(fax: string | null | undefined): boolean {
+  static isFax(fax) {
     return tel.isPhone(fax)
   }
 }
-function isPhone(str: string | null | undefined): boolean {
+function isPhone(str) {
   return tel.isPhone(str)
 }
-function isFax(str: string | null | undefined): boolean {
+function isFax(str) {
   return tel.isFax(str)
 }
-function isUrl(url: string | null | undefined): boolean {
+function isUrl(url) {
   if (!url || url.length === 0) {
     return false
   }
   return resources.url.test(url)
 }
-function isEmail(email: string | null | undefined): boolean {
+function isEmail(email) {
   if (!email || email.length === 0) {
     return false
   }
   return resources.email.test(email)
 }
-function isPercentage(v: string): boolean {
+function isPercentage(v) {
   return resources.percentage.test(v)
 }
-function isIPv6(ipv6: string | null | undefined): boolean {
+function isIPv6(ipv6) {
   if (!ipv6 || ipv6.length === 0) {
     return false
   }
   return resources.ipv6.test(ipv6)
 }
-function isIPv4(ipv4: string | null | undefined): boolean {
+function isIPv4(ipv4) {
   if (!ipv4 || ipv4.length === 0) {
     return false
   }
   return resources.ipv4.test(ipv4)
 }
-function isEmpty(str: string | null | undefined): boolean {
+function isEmpty(str) {
   return !str || str === ""
 }
-function isValidPattern(v: string, pattern: string, flags?: string | null): boolean {
+function isValidPattern(v, pattern, flags) {
   if (!isEmpty(pattern)) {
     if (flags === null) {
       flags = undefined
@@ -255,10 +235,10 @@ function isValidPattern(v: string, pattern: string, flags?: string | null): bool
     return false
   }
 }
-function isValidCode(str: string): boolean {
+function isValidCode(str) {
   return resources.digitAndChar.test(str)
 }
-function isDashCode(str: string | null | undefined): boolean {
+function isDashCode(str) {
   if (!str || str.length === 0) {
     return false
   }
@@ -271,29 +251,28 @@ function isDashCode(str: string | null | undefined): boolean {
   }
   return true
 }
-function isDigitOnly(v: string | null | undefined): boolean {
+function isDigitOnly(v) {
   if (!v) {
     return false
   }
   return resources.digit.test(v)
 }
-function isDashDigit(v: string): boolean {
+function isDashDigit(v) {
   return resources.digitAndDash.test(v)
 }
-function isCheckNumber(v: string): boolean {
+function isCheckNumber(v) {
   return resources.checkNumber.test(v)
 }
-function isAmountNumber(v: string): boolean {
+function isAmountNumber(v) {
   return resources.amount.test(v)
 }
-function isUSPostalCode(postcode: string): boolean {
+function isUSPostalCode(postcode) {
   return resources.usPostcode.test(postcode)
 }
-function isCAPostalCode(postcode: string): boolean {
+function isCAPostalCode(postcode) {
   return resources.caPostcode.test(postcode)
 }
-
-function format(...args: any[]): string {
+function format(...args) {
   let formatted = args[0]
   if (!formatted || formatted === "") {
     return ""
@@ -312,7 +291,7 @@ function format(...args: any[]): string {
   }
   return formatted
 }
-function getLabel(ele?: HTMLElement | null): string {
+function getLabel(ele) {
   if (!ele) {
     return ""
   }
@@ -330,13 +309,13 @@ function getLabel(ele?: HTMLElement | null): string {
     } else {
       const firstChild = parent.firstChild
       if (firstChild && firstChild.nodeName === "LABEL") {
-        return (firstChild as HTMLLabelElement).innerHTML
+        return firstChild.innerHTML
       }
     }
   }
   return ""
 }
-function checkRequired(ele: HTMLInputElement | HTMLSelectElement, label?: string, r?: StringMap): boolean {
+function checkRequired(ele, label, r) {
   const value = ele.value
   if (ele.required) {
     if (value.length === 0) {
@@ -351,7 +330,7 @@ function checkRequired(ele: HTMLInputElement | HTMLSelectElement, label?: string
   }
   return false
 }
-function checkMaxLength(ele: HTMLInputElement, label?: string, r?: StringMap): boolean {
+function checkMaxLength(ele, label, r) {
   if (ele.value.length > ele.maxLength) {
     if (!label) {
       label = getLabel(ele)
@@ -363,7 +342,7 @@ function checkMaxLength(ele: HTMLInputElement, label?: string, r?: StringMap): b
   }
   return false
 }
-function checkMinLength(ele: HTMLInputElement, label?: string, r?: StringMap): boolean {
+function checkMinLength(ele, label, r) {
   if (ele.value.length < ele.minLength) {
     if (!label) {
       label = getLabel(ele)
@@ -375,16 +354,16 @@ function checkMinLength(ele: HTMLInputElement, label?: string, r?: StringMap): b
   }
   return false
 }
-function validOnBlur(event: Event): void {
-  const ele = event.target as HTMLInputElement
+function validOnBlur(event) {
+  const ele = event.target
   if (!ele || ele.readOnly || ele.disabled) {
     return
   }
   materialOnBlur(event)
   removeError(ele)
 }
-function requiredOnBlur(event: Event): void {
-  const ele = event.target as HTMLInputElement
+function requiredOnBlur(event) {
+  const ele = event.target
   if (!ele || ele.readOnly || ele.disabled) {
     return
   }
@@ -395,8 +374,8 @@ function requiredOnBlur(event: Event): void {
     checkRequired(ele)
   }, 40)
 }
-function checkOnBlur(event: Event, key: string, check: (v: string | null | undefined) => boolean, formatF?: (m0: string) => string): void {
-  const ele = event.currentTarget as HTMLInputElement
+function checkOnBlur(event, key, check, formatF) {
+  const ele = event.currentTarget
   if (!ele || ele.readOnly || ele.disabled) {
     return
   }
@@ -419,26 +398,26 @@ function checkOnBlur(event: Event, key: string, check: (v: string | null | undef
     }
   }, 40)
 }
-function emailOnBlur(event: Event): void {
+function emailOnBlur(event) {
   checkOnBlur(event, "error_email", isEmail)
 }
-function urlOnBlur(event: Event): void {
+function urlOnBlur(event) {
   checkOnBlur(event, "error_url", isUrl)
 }
-function phoneOnBlur(event: Event): void {
+function phoneOnBlur(event) {
   checkOnBlur(event, "error_phone", tel.isPhone, formatter.removePhoneFormat)
 }
-function faxOnBlur(event: Event): void {
+function faxOnBlur(event) {
   checkOnBlur(event, "error_fax", tel.isFax, formatter.removeFaxFormat)
 }
-function ipv4OnBlur(event: Event): void {
+function ipv4OnBlur(event) {
   checkOnBlur(event, "error_ipv4", isIPv4)
 }
-function ipv6OnBlur(event: Event): void {
+function ipv6OnBlur(event) {
   checkOnBlur(event, "error_ipv6", isIPv6)
 }
-function patternOnBlur(event: Event): void {
-  const ele = event.currentTarget as HTMLInputElement
+function patternOnBlur(event) {
+  const ele = event.currentTarget
   if (!ele || ele.readOnly || ele.disabled) {
     return
   }
@@ -462,9 +441,8 @@ function patternOnBlur(event: Event): void {
     }
   }, 40)
 }
-
-function dateOnBlur(event: Event, dateOnly?: boolean) {
-  const target = event.currentTarget as HTMLInputElement
+function dateOnBlur(event, dateOnly) {
+  const target = event.currentTarget
   if (!target || target.readOnly || target.disabled) {
     return true
   }
@@ -474,7 +452,7 @@ function dateOnBlur(event: Event, dateOnly?: boolean) {
   const resource = getResource()
   checkDate(target, label, resource, dateOnly)
 }
-function checkDate(ele: HTMLInputElement, label: string, resource: StringMap, dateOnly?: boolean): boolean {
+function checkDate(ele, label, resource, dateOnly) {
   const v = new Date(ele.value)
   if (isNaN(v.getTime())) {
     const msg = format(resource["error_date"], label)
@@ -539,7 +517,7 @@ function checkDate(ele: HTMLInputElement, label: string, resource: StringMap, da
     if (minField && minField.length > 0) {
       const form = ele.form
       if (form) {
-        const minElement = getElement(form, minField) as HTMLInputElement
+        const minElement = getElement(form, minField)
         if (minElement && minElement.value.length > 0) {
           const min = new Date(minElement.value)
           if (v < min) {
@@ -552,21 +530,20 @@ function checkDate(ele: HTMLInputElement, label: string, resource: StringMap, da
       }
     }
   }
-
   return true
 }
-function isCommaSeparator(locale?: Locale | null | string) {
+function isCommaSeparator(locale) {
   if (!locale) {
     return false
   }
   return typeof locale === "string" ? locale !== "." : locale.decimalSeparator !== "."
 }
-function correctNumber(v: string, locale?: Locale | null | string, keepFormat?: boolean): string {
+function correctNumber(v, locale, keepFormat) {
   const l = v.length
   if (l === 0) {
     return v
   }
-  const arr: string[] = []
+  const arr = []
   let i = 0
   if ((v[i] >= "0" && v[i] <= "9") || v[i] === "-") {
     arr.push(v[i])
@@ -595,9 +572,8 @@ function correctNumber(v: string, locale?: Locale | null | string, keepFormat?: 
   }
   return r
 }
-
-function numberOnFocus(event: Event): void {
-  const ele = event.currentTarget as HTMLInputElement
+function numberOnFocus(event) {
+  const ele = event.currentTarget
   handleMaterialFocus(ele)
   if (ele.readOnly || ele.disabled || ele.value.length === 0) {
     return
@@ -609,7 +585,7 @@ function numberOnFocus(event: Event): void {
     }
   }
 }
-function validateMinMax(ele: HTMLInputElement, n: number, label: string, resource: StringMap, locale?: Locale | null | string): boolean {
+function validateMinMax(ele, n, label, resource, locale) {
   if (ele.min.length > 0) {
     const min = parseFloat(ele.min)
     if (n < min) {
@@ -636,10 +612,10 @@ function validateMinMax(ele: HTMLInputElement, n: number, label: string, resourc
   if (minField && minField.length > 0) {
     const form = ele.form
     if (form) {
-      const minElement = getElement(form, minField) as HTMLInputElement
+      const minElement = getElement(form, minField)
       if (minElement) {
-        let smin2 = correctNumber(minElement.value, locale) // const smin2 = minElement.value.replace(this._nreg, '');
-        if (smin2.length > 0 && !isNaN(smin2 as any)) {
+        let smin2 = correctNumber(minElement.value, locale)
+        if (smin2.length > 0 && !isNaN(smin2)) {
           const min2 = parseFloat(smin2)
           if (n < min2) {
             const minLabel = getLabel(minElement)
@@ -653,8 +629,8 @@ function validateMinMax(ele: HTMLInputElement, n: number, label: string, resourc
   }
   return true
 }
-function checkNumberEvent(event: Event, locale?: Locale | string | null): boolean | string {
-  const target = event.currentTarget as HTMLInputElement
+function checkNumberEvent(event, locale) {
+  const target = event.currentTarget
   if (!target || target.readOnly || target.disabled) {
     return true
   }
@@ -663,7 +639,7 @@ function checkNumberEvent(event: Event, locale?: Locale | string | null): boolea
   target.value = target.value.trim()
   return checkNumber(target, locale)
 }
-function checkNumber(target: HTMLInputElement, locale?: Locale | string | null, r?: StringMap): boolean | string {
+function checkNumber(target, locale, r) {
   const value = correctNumber(target.value, locale)
   const label = getLabel(target)
   if (checkRequired(target, label)) {
@@ -671,7 +647,7 @@ function checkNumber(target: HTMLInputElement, locale?: Locale | string | null, 
   }
   const resource = r ? r : getResource()
   if (value.length > 0) {
-    if (isNaN(value as any)) {
+    if (isNaN(value)) {
       const msg = format(resource["error_number"], label)
       addErrorMessage(target, msg)
       return false
@@ -689,16 +665,16 @@ function checkNumber(target: HTMLInputElement, locale?: Locale | string | null, 
   }
   return true
 }
-function checkNumberOnBlur(event: Event) {
-  const target = event.currentTarget as HTMLInputElement
+function checkNumberOnBlur(event) {
+  const target = event.currentTarget
   const decimalSeparator = target.getAttribute("data-decimal-separator")
   const v = checkNumberEvent(event, decimalSeparator)
   if (typeof v === "string") {
     target.value = v
   }
 }
-function numberOnBlur(event: Event) {
-  const target = event.currentTarget as HTMLInputElement
+function numberOnBlur(event) {
+  const target = event.currentTarget
   const decimalSeparator = target.getAttribute("data-decimal-separator")
   const v = checkNumberEvent(event, decimalSeparator)
   if (typeof v === "string") {
@@ -708,8 +684,8 @@ function numberOnBlur(event: Event) {
     target.value = formatNumber(n, scale, decimalSeparator)
   }
 }
-function currencyOnBlur(event: Event) {
-  const target = event.currentTarget as HTMLInputElement
+function currencyOnBlur(event) {
+  const target = event.currentTarget
   const decimalSeparator = target.getAttribute("data-decimal-separator")
   const v = checkNumberEvent(event, decimalSeparator)
   if (typeof v === "string") {
@@ -720,7 +696,7 @@ function currencyOnBlur(event: Event) {
     target.value = formatCurrency(value, target)
   }
 }
-function formatCurrency(v: string, ele: HTMLInputElement): string {
+function formatCurrency(v, ele) {
   const symbol = ele.getAttribute("data-currency-symbol")
   if (!symbol) {
     return v
@@ -739,7 +715,7 @@ function formatCurrency(v: string, ele: HTMLInputElement): string {
     }
   }
 }
-function formatNumber(v: number, scale?: number, d?: string | null, g?: string): string {
+function formatNumber(v, scale, d, g) {
   if (!v) {
     return ""
   }
@@ -752,7 +728,7 @@ function formatNumber(v: number, scale?: number, d?: string | null, g?: string):
   const s = scale === 0 || scale ? v.toFixed(scale) : v.toString()
   const x = s.split(".", 2)
   const y = x[0]
-  const arr: string[] = []
+  const arr = []
   const len = y.length - 1
   for (let k = 0; k < len; k++) {
     arr.push(y[len - k])
@@ -767,21 +743,19 @@ function formatNumber(v: number, scale?: number, d?: string | null, g?: string):
     return arr.reverse().join("") + d + x[1]
   }
 }
-
-function validateOnBlur(event: Event, includeReadOnly?: boolean): void {
-  const target = event.target as HTMLInputElement
+function validateOnBlur(event, includeReadOnly) {
+  const target = event.target
   if (!target || (target.readOnly && includeReadOnly === false) || target.disabled || target.hidden || target.style.display === "none") {
     return
   }
   materialOnBlur(event)
   removeError(target)
-  validateElement(event.target as HTMLInputElement, undefined, includeReadOnly)
+  validateElement(event.target, undefined, includeReadOnly)
 }
-function validateElement(ele: HTMLInputElement, locale?: Locale | string | null, includeReadOnly?: boolean): boolean {
+function validateElement(ele, locale, includeReadOnly) {
   if (!ele) {
     return true
   }
-
   if (!ele || (ele.readOnly && includeReadOnly === false) || ele.disabled || ele.hidden || ele.style.display === "none") {
     return true
   }
@@ -798,7 +772,6 @@ function validateElement(ele: HTMLInputElement, locale?: Locale | string | null,
   if (nodeName === "BUTTON" || nodeName === "RESET" || nodeName === "SUBMIT") {
     return true
   }
-
   const parent = getContainer(ele)
   if (parent) {
     if (parent.hidden || parent.style.display === "none") {
@@ -810,19 +783,15 @@ function validateElement(ele: HTMLInputElement, locale?: Locale | string | null,
       }
     }
   }
-
   let value = ele.value
-
   const label = getLabel(ele)
   const resource = getResource()
   if (checkRequired(ele, label, resource) || checkMinLength(ele, label, resource) || checkMaxLength(ele, label, resource)) {
     return false
   }
-
   if (!value || value === "") {
     return true
   }
-
   let ctype = ele.getAttribute("type")
   if (ctype) {
     ctype = ctype.toLowerCase()
@@ -839,7 +808,6 @@ function validateElement(ele: HTMLInputElement, locale?: Locale | string | null,
       datatype = "date"
     }
   }
-
   if (ele.pattern && ele.pattern.length > 0) {
     let flags = ele.getAttribute("data-flags")
     if (!isValidPattern(value, ele.pattern, flags)) {
@@ -920,7 +888,6 @@ function validateElement(ele: HTMLInputElement, locale?: Locale | string | null,
       return false
     }
   } else if (datatype === "routing-number") {
-    // business-tax-id
     if (!isDashDigit(value)) {
       const msg = format(resource["error_routing_number"], label)
       addErrorMessage(ele, msg)
@@ -972,13 +939,12 @@ function validateElement(ele: HTMLInputElement, locale?: Locale | string | null,
   removeError(ele)
   return true
 }
-
-function isValidForm(form: HTMLFormElement, focusFirst?: boolean, scroll?: boolean): boolean {
+function isValidForm(form, focusFirst, scroll) {
   const valid = true
   let i = 0
   const len = form.length
   for (i = 0; i < len; i++) {
-    const ele = form[i] as HTMLInputElement
+    const ele = form[i]
     const parent = ele.parentElement
     if (ele.classList.contains("invalid") || ele.classList.contains("ng-invalid") || (parent && parent.classList.contains("invalid"))) {
       if (focusFirst !== false && !focusFirst) {
@@ -995,16 +961,16 @@ function isValidForm(form: HTMLFormElement, focusFirst?: boolean, scroll?: boole
   }
   return valid
 }
-function validateForm(form?: HTMLFormElement, locale?: Locale | string | null, focusFirst?: boolean, scroll?: boolean, includeReadOnly?: boolean): boolean {
+function validateForm(form, locale, focusFirst, scroll, includeReadOnly) {
   if (!form) {
     return true
   }
   let valid = true
-  let errorCtrl: HTMLInputElement | null = null
+  let errorCtrl = null
   let i = 0
   const len = form.length
   for (i = 0; i < len; i++) {
-    const ele = form[i] as HTMLInputElement
+    const ele = form[i]
     let type = ele.getAttribute("type")
     if (type != null) {
       type = type.toLowerCase()
@@ -1033,9 +999,9 @@ function validateForm(form?: HTMLFormElement, locale?: Locale | string | null, f
   }
   return valid
 }
-function validateElements(elements: HTMLInputElement[], locale?: Locale | string | null): boolean {
+function validateElements(elements, locale) {
   let valid = true
-  let errorCtrl: HTMLInputElement | null = null
+  let errorCtrl = null
   for (const c of elements) {
     if (!validateElement(c, locale)) {
       valid = false

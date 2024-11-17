@@ -15,6 +15,9 @@ import { route } from "./route"
 dotenv.config()
 const conf = merge(config, process.env, env, process.env.ENV)
 
+// buildJavascript()
+// buildCSS()
+
 const app = express()
 // Define public folder :
 app.use(express.static(__dirname + "/public"))

@@ -2,7 +2,7 @@ function findParentNode(e: HTMLElement | null | undefined, nodeName: string): HT
   if (!e) {
     return null
   }
-  if (e.nodeName == nodeName) {
+  if (e.nodeName == nodeName || e.getAttribute("data-field")) {
     return e
   }
   let p: HTMLElement | null = e
@@ -11,7 +11,7 @@ function findParentNode(e: HTMLElement | null | undefined, nodeName: string): HT
     if (!p) {
       return null
     }
-    if (p.nodeName == nodeName) {
+    if (p.nodeName == nodeName || p.getAttribute("data-field")) {
       return p
     }
   }
@@ -176,17 +176,19 @@ window.onload = function () {
       }
     }
     const sysNav = document.getElementById("sysNav") as HTMLElement
-    const firstPath = getFirstPath(window.location.origin + window.location.pathname)
-    const activePath = window.location.origin + firstPath
-    const elA = sysNav.querySelectorAll("a")
-    const l = elA.length
-    for (let i = 0; i < l; i++) {
-      if (elA[i].href === activePath) {
-        const parent = elA[i].parentElement
-        if (parent) {
-          parent.classList.add("active")
+    if (sysNav) {
+      const firstPath = getFirstPath(window.location.origin + window.location.pathname)
+      const activePath = window.location.origin + firstPath
+      const elA = sysNav.querySelectorAll("a")
+      const l = elA.length
+      for (let i = 0; i < l; i++) {
+        if (elA[i].href === activePath) {
+          const parent = elA[i].parentElement
+          if (parent) {
+            parent.classList.add("active")
+          }
+          return
         }
-        return
       }
     }
   }, 50)
