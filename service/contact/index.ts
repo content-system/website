@@ -31,9 +31,7 @@ export class ContactController {
     const resource = getResource()
     res.render(getView(req, "contact"), {
       resource,
-      contact: {
-        name: "Duc Nguyen",
-      },
+      contact: {},
     })
   }
   submit(req: Request, res: Response) {

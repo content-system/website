@@ -49,12 +49,20 @@
       <div class="alert">
         <div>
           <div id="sysIcon" class="alert-icon"></div>
-          <h4 id="sysMessageHeader"></h4>
+          <h4
+            id="sysMessageHeader"
+            data-confirm="{{resource.header_confirm}}"
+            data-error="{{resource.header_error}}"
+            data-warning="{{resource.header_warning}}"
+            data-info="{{resource.header_info}}"
+            data-success="{{resource.header_success}}"
+            data-ok="{{resource.button_ok}}"
+          ></h4>
           <p id="sysMessage"></p>
         </div>
         <footer>
-          <button type="button" class="btn-cancel" id="sysNo" name="btnCancel" onclick="noOnClick()"></button>
-          <button type="submit" class="btn-accept" id="sysYes" name="btnAccept" onclick="yesOnClick()"></button>
+          <button type="button" id="sysNo" name="btnCancel" class="btn-cancel" onclick="noOnClick()" data-text="{{resource.button_no}}"></button>
+          <button type="submit" id="sysYes" name="btnAccept" class="btn-accept" onclick="yesOnClick()" data-text="{{resource.button_yes}}"></button>
         </footer>
       </div>
     </div>

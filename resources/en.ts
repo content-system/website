@@ -67,6 +67,15 @@ export const en = {
   sort_date: "Date",
   sort_rating: "Rank",
 
+  header_confirm: "Confirm",
+  header_error: "Error",
+  header_warning: "Warning",
+  header_info: "Info",
+  header_success: "Success",
+  button_ok: "",
+  button_yes: "Yes",
+  button_no: "No",
+
   error_undefined: "{0} is not allowed to exist.",
   error_exp: "{0} does not match the regular expression.",
   error_type: "Invalid datatype. Type of {0} cannot be {1}.",

@@ -3,11 +3,6 @@ const r1 = / |,|\$|€|£|¥|'|٬|،| /g
 const r2 = / |\.|\$|€|£|¥|'|٬|،| /g
 class resources {}
 resources.defaultLimit = 12
-resources.confirmHeader = "Confirm"
-resources.errorHeader = "Error"
-resources.warningHeader = "Warning"
-resources.infoHeader = "Info"
-resources.successHeader = "Success"
 resources.containerClass = "form-input"
 resources.num1 = / |,|\$|€|£|¥|'|٬|،| /g
 resources.num2 = / |\.|\$|€|£|¥|'|٬|،| /g
@@ -82,14 +77,14 @@ function getCurrentURL() {
   return window.location.origin + window.location.pathname
 }
 function getDecimalSeparator(ele) {
-  let decimalSeparator = ele.getAttribute("data-decimal-separator")
-  if (!decimalSeparator) {
+  let separator = ele.getAttribute("data-decimal-separator")
+  if (!separator) {
     const form = ele.form
     if (form) {
-      decimalSeparator = form.getAttribute("data-decimal-separator")
+      separator = form.getAttribute("data-decimal-separator")
     }
   }
-  return decimalSeparator === "," ? "," : "."
+  return separator === "," ? "," : "."
 }
 function detectCtrlKeyCombination(e) {
   var forbiddenKeys = new Array("v", "a", "x", "c")
