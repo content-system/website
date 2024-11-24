@@ -1,10 +1,9 @@
 import { Request, Response } from "express"
-import { getStatusCode, handleError } from "express-ext"
+import { getStatusCode, getView, handleError } from "express-ext"
 import { nanoid } from "nanoid"
 import { Log } from "onecore"
 import { DB, Repository } from "query-core"
 import { validate } from "xvalidators"
-import { getView } from "../../core"
 import { getResource } from "../../resources"
 import { Contact, contactModel, ContactRepository, ContactService } from "./contact"
 export * from "./contact"
@@ -14,7 +13,7 @@ export class SqlContactRepository extends Repository<Contact, string> implements
     super(db, "contacts", contactModel)
   }
 }
-export class ContactManager implements ContactService {
+export class ContactUseCase implements ContactService {
   constructor(private repository: ContactRepository) {}
   submit(contact: Contact): Promise<number> {
     contact.id = nanoid(10)
@@ -42,15 +41,6 @@ export class ContactController {
     const errors = validate<Contact>(contact, contactModel, resource)
     if (errors.length > 0) {
       res.status(getStatusCode(errors)).json(errors).end()
-      /*
-      const x = toMap(errors)
-      console.log(JSON.stringify(x))
-      res.render("pages/contact", {
-        resource,
-        contact,
-        errors: x,
-      })
-        */
     } else {
       this.service
         .submit(contact)
@@ -62,6 +52,6 @@ export class ContactController {
 
 export function useContactController(db: DB, log: Log): ContactController {
   const repository = new SqlContactRepository(db)
-  const service = new ContactManager(repository)
+  const service = new ContactUseCase(repository)
   return new ContactController(service, log)
 }

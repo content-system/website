@@ -44,13 +44,7 @@
           value="{{contact.company}}"
           maxlength="100"
           required
-          min="0"
-          max="10000"
-          onkeypress="return numberOnKeyPress(event)"
-          onfocus="numberOnFocus(event)"
-          onblur="numberOnBlur(event)"
-          data-decimal-separator=","
-          data-scale="3"
+          onblur="requiredOnBlur(event)"
           placeholder="{{resource.company}}"
         />
         {% if errors.country %}
