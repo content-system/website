@@ -1,4 +1,7 @@
 const resource: StringMap = {
+  msg_confirm_save: "Are you sure you want to save?",
+  msg_save_success: "Data have been saved successfully.",
+
   error_undefined: "{0} is not allowed to exist.",
   error_exp: "{0} does not match the regular expression.",
   error_type: "Invalid datatype. Type of {0} cannot be {1}.",
@@ -29,6 +32,7 @@ const resource: StringMap = {
   error_code: "{0} must contain characters and digits only.",
   error_dash_code: "{0} must contain characters and digits and dash only.",
   error_routing_number: "{0} is not a valid routing number.",
+  error_check_number: "{0} is not a valid check number.",
   error_post_code: "{0} is not a valid post code.",
   error_ca_post_code: "{0} is not a valid Canada post code.",
   error_us_post_code: "{0} is not a valid US post code.",
@@ -52,9 +56,6 @@ const resource: StringMap = {
   error_409: "Request could not be processed because of conflict in the current state of the resource.",
   error_submit_failed: "Failed to submit data.",
   error_submitting_form: "An error occurred while submitting the form.",
-
-  msg_confirm_save: "Are you sure you want to save?",
-  msg_save_success: "Data have been saved successfully.",
 }
 function getResource(): StringMap {
   return resource

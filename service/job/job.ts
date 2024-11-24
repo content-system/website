@@ -62,7 +62,7 @@ export const jobModel: Attributes = {
     type: "datetime",
   },
   skills: {
-    type: "primitives",
+    type: "strings",
   },
   location: {
     length: 120,

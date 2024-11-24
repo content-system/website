@@ -52,7 +52,7 @@ export const articleModel: Attributes = {
     required: true,
   },
   tags: {
-    type: "primitives",
+    type: "strings",
   },
   type: {},
 }

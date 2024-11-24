@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { ErrorMessage, getStatusCode, handleError } from "express-ext"
+import { getStatusCode, handleError } from "express-ext"
 import { nanoid } from "nanoid"
 import { Log } from "onecore"
 import { DB, Repository } from "query-core"
@@ -38,7 +38,7 @@ export class ContactController {
     const resource = getResource()
     console.log("Enter post contact " + JSON.stringify(req.body))
     const contact = req.body
-    const errors = validate<Contact>(contact, contactModel, true, false, resource)
+    const errors = validate<Contact>(contact, contactModel, resource)
     if (errors.length > 0) {
       res.status(getStatusCode(errors)).json(errors).end()
       /*
@@ -57,21 +57,6 @@ export class ContactController {
         .catch((err) => handleError(err, res, this.log))
     }
   }
-}
-
-export interface ErrorMap {
-  [key: string]: ErrorMessage
-}
-export function toMap(errors: ErrorMessage[]): ErrorMap {
-  const errorMap: ErrorMap = {}
-  if (!errors) {
-    return errorMap
-  }
-  for (let i = 0; i < errors.length; i++) {
-    ;(errors[i] as any)["invalid"] = "invalid"
-    errorMap[errors[i].field] = errors[i]
-  }
-  return errorMap
 }
 
 export function useContactController(db: DB, log: Log): ContactController {

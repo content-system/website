@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { Controller } from "express-ext"
+import { Controller, resources } from "express-ext"
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
 import { getView } from "../../core"
@@ -23,6 +23,7 @@ export class JobController extends Controller<Job, string, JobFilter> {
   }
   render(req: Request, res: Response) {
     const filter: JobFilter = {
+      limit: resources.defaultLimit,
       // title: "Java",
     }
     this.jobService.search(filter, 6).then((result) => {

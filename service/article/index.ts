@@ -39,8 +39,8 @@ export class ArticleController {
     const dateFormat = getDateFormat()
     const resource = getResource()
     let filter: ArticleFilter = {
-      q: "",
       limit: resources.defaultLimit,
+      q: "",
     }
     if (hasSearch(req)) {
       filter = fromRequest<ArticleFilter>(req)
@@ -58,7 +58,7 @@ export class ArticleController {
       const sort = buildSortFromRequest(req)
       res.render(getView(req, "news"), {
         resource,
-        pageSizes: resources.pageSizes,
+        limits: resources.limits,
         filter,
         list: result.list,
         pages: buildPages(limit, result.total),
