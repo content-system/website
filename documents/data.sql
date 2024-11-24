@@ -127,6 +127,10 @@ CREATE TABLE companies (
   cover_url varchar(500),
   sequence integer
 );
+insert into companies (id,name,description,slogan,image_url,cover_url,sequence) values
+	 ('fpt-automotive','FPT Automotive','With two decades of experience in the Automotive industry, FPT Software''s automotive technology subsidiary, FPT Automotive was launched in 2023 with a mission to drive the advancement of software-defined vehicles and shape the new mobility era.
+
+Our team of automotive experts is equipped and experienced to accompany car manufacturers and suppliers in advancing the mobility ecosystem, having enabled the world''s leading automakers, OEMs, Tier-1 suppliers, and semiconductor companies to innovate, optimize and maintain a competitive edge in the automotive industry. This support is crucial for navigating challenges such as industry volatility, disrupted supply chains, and rapidly evolving market demands.','Moving into the fast lane of smart, software-defined mobility.','https://fptsoftware.com/-/media/project/fpt-software/fso/industries/automotive/automotive-lp_banner-3_mobile.png','https://fptsoftware.com/-/media/project/fpt-software/fso/industries/automotive/automotive-lp_banner-3.png',1);
 
 create table if not exists contacts (
   id varchar(40) not null,
@@ -143,10 +147,16 @@ create table if not exists contacts (
   primary key (id)
 );
 	 
-insert into contacts (id,name,country,company,job_title,email,phone,message,submitted_at,contacted_by,contacted_at) values
-	 ('E7UBXeHrp','Duc Nguyen','Vietnam','TMA','Manager','duc.n@tma.com.vn','93 334-7686','I want to hire 8 developers','2024-10-20 18:59:47.820962+07',null,null),
-	 ('xRjjveHrM','Hieu Vo','Vietnam','TMA','Developer','hieu.v@tma.com.vn','123 456-78','I want to hire 6 developers','2024-10-20 19:01:04.940217+07',null,null),
-	 ('l74fvAHrp','Phu Huynh','Vietname','FPT','Developer','phu.h@tma.com.vn','876 543-21','I want to hire 5 developers','2024-10-20 19:02:12.209824+07',null,null),
-	 ('XTotvATrp','Tan Truong','Vietname','FPT','Senior Developer','tan.t@fpt.com.vn','876 543-21','I want to hire 4 developers','2024-10-20 19:02:39.317878+07',null,null),
-	 ('SrmtXAH9p','Bao Nguyen','Vietname','Cho Tot','Senior Developer','bao.n@chotot.com.vn','876 543-21','I want to hire 4 developers','2024-10-20 19:03:10.218696+07',null,null),
-	 ('hS1KKeH9M','Tin Hoang','Vietname','TMA','Senior Developer','tin.h@tma.com.vn','876 543-21','I want to hire 4 developers','2024-10-20 19:29:21.103008+07',null,null);
+insert into contacts (id,"name",country,company,job_title,email,phone,message,submitted_at) values
+  ('E7UBXeHrp','Duc Nguyen','Vietnam','TMA','Manager','duc.n@tma.com.vn','93 334-7686','I want to hire 8 developers','2024-10-20 18:59:47.820962+07'),
+  ('xRjjveHrM','Hieu Vo','Vietnam','TMA','Developer','hieu.v@tma.com.vn','123 456-78','I want to hire 6 developers','2024-10-20 19:01:04.940217+07'),
+  ('bPyY39I842','Minh Ha','Vietnam','OhStem','Product Owner','minh.h@ohstem.vn','0987654321','I need 4 developers',NULL),
+  ('mkiJ5_vXKo','Triet Nguyen','Vietnam','KMS','Test Enginner','triet.n@kms.com.vn','0987654321','I need 6 testers',NULL),
+  ('yoobcu9kvR','Trinh Minh Chieu','Vietnam','Shinhan','Manager','chieu.t@shinhan.com.vn','0987654321','I need 7 developers',NULL),
+  ('V5Ua8be1Wg','Quy Nguyen','New Zealand','TMA','Project Manager','quy.n@tma.com.vn','0987654321','I need 10 developers',NULL),
+  ('PxnNIy6LVf','Hiep Nguyen','Vietnam','2.222,000','Software engineer','hiep.n@kbtgvn.tech','0987654321','I need 5 developers',NULL),
+  ('6EnNY-kISB','Nguyen Viet Anh','Vietnam','2.222,000','Android Developer','anh.n@kbtgvn.tech','0987654321','I need 5 developers',NULL),
+  ('l74fvAHrp','Phu Huynh','Vietnam','FPT','Developer','phu.h@tma.com.vn','876 543-21','I want to hire 5 developers','2024-10-20 19:02:12.209824+07'),
+  ('XTotvATrp','Tan Truong','Vietnam','FPT','Senior Developer','tan.t@fpt.com.vn','876 543-21','I want to hire 4 developers','2024-10-20 19:02:39.317878+07'),
+  ('SrmtXAH9p','Bao Nguyen','Vietnam','Cho Tot','Senior Developer','bao.n@chotot.com.vn','876 543-21','I want to hire 4 developers','2024-10-20 19:03:10.218696+07'),
+  ('hS1KKeH9M','Tin Hoang','Vietnam','TMA','Senior Developer','tin.h@tma.com.vn','876 543-21','I want to hire 4 developers','2024-10-20 19:29:21.103008+07');

@@ -3,9 +3,9 @@ import { getStatusCode, handleError } from "express-ext"
 import { nanoid } from "nanoid"
 import { Log } from "onecore"
 import { DB, Repository } from "query-core"
+import { validate } from "xvalidators"
 import { getView } from "../../core"
 import { getResource } from "../../resources"
-import { validate } from "../../validator"
 import { Contact, contactModel, ContactRepository, ContactService } from "./contact"
 export * from "./contact"
 
@@ -18,6 +18,7 @@ export class ContactManager implements ContactService {
   constructor(private repository: ContactRepository) {}
   submit(contact: Contact): Promise<number> {
     contact.id = nanoid(10)
+    contact.submittedAt = new Date()
     return this.repository.create(contact)
   }
 }
