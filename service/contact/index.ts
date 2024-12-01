@@ -1,10 +1,10 @@
 import { Request, Response } from "express"
-import { getStatusCode, getView, handleError } from "express-ext"
+import { getView, handleError } from "express-ext"
 import { nanoid } from "nanoid"
-import { Log } from "onecore"
+import { ErrorMessage, Log } from "onecore"
 import { DB, Repository } from "query-core"
 import { validate } from "xvalidators"
-import { getResource } from "../../resources"
+import { getResource } from "../resources"
 import { Contact, contactModel, ContactRepository, ContactService } from "./contact"
 export * from "./contact"
 
@@ -40,11 +40,24 @@ export class ContactController {
     const contact = req.body
     const errors = validate<Contact>(contact, contactModel, resource)
     if (errors.length > 0) {
-      res.status(getStatusCode(errors)).json(errors).end()
+      // res.status(getStatusCode(errors)).json(errors).end()
+      const errorMap = toMap(errors)
+      console.log(JSON.stringify(errorMap))
+      res.render("pages/contact", {
+        resource,
+        contact,
+        errors: errorMap,
+      })
     } else {
       this.service
         .submit(contact)
-        .then((result) => res.status(201).json(contact).end())
+        .then((result) => {
+          // res.status(201).json(contact).end()
+          res.render("pages/contact", {
+            resource,
+            contact,
+          })
+        })
         .catch((err) => handleError(err, res, this.log))
     }
   }
@@ -54,4 +67,19 @@ export function useContactController(db: DB, log: Log): ContactController {
   const repository = new SqlContactRepository(db)
   const service = new ContactUseCase(repository)
   return new ContactController(service, log)
+}
+
+export interface ErrorMap {
+  [key: string]: ErrorMessage
+}
+export function toMap(errors: ErrorMessage[]): ErrorMap {
+  const errorMap: ErrorMap = {}
+  if (!errors) {
+    return errorMap
+  }
+  for (let i = 0; i < errors.length; i++) {
+    ;(errors[i] as any)["invalid"] = "invalid"
+    errorMap[errors[i].field] = errors[i]
+  }
+  return errorMap
 }

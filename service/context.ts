@@ -2,10 +2,10 @@ import { HealthController, LogController, Logger, Middleware, MiddlewareControll
 import { createChecker, DB } from "query-core"
 import { check } from "types-validation"
 import { createValidator } from "xvalidators"
-import { ArticleController, useArticleController } from "./service/article"
-import { ContactController, useContactController } from "./service/contact"
-import { JobController, useJobController } from "./service/job"
-import { UserController, useUserController } from "./service/user"
+import { ArticleController, useArticleController } from "./article"
+import { ContactController, useContactController } from "./contact"
+import { JobController, useJobController } from "./job"
+import { UserController, useUserController } from "./user"
 
 resources.createValidator = createValidator
 resources.check = check
@@ -27,8 +27,8 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware): Appli
   const health = new HealthController([sqlChecker])
 
   const user = useUserController(logger.error, db)
-  const article = useArticleController(db)
-  const job = useJobController(logger.error, db)
+  const article = useArticleController(db, logger.error)
+  const job = useJobController(db, logger.error)
   const contact = useContactController(db, logger.error)
 
   return { health, log, middleware, user, article, job, contact }

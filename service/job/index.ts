@@ -5,11 +5,12 @@ import {
   buildSortFromRequest,
   buildSortSearch,
   cloneFilter,
-  Controller,
   format,
   fromRequest,
   getSearch,
+  getStatusCode,
   getView,
+  handleError,
   hasSearch,
   queryNumber,
   resources,
@@ -17,7 +18,8 @@ import {
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
 import { formatDateTime, getDateFormat } from "ui-formatter"
-import { getResource } from "../../resources"
+import { validate } from "xvalidators"
+import { getResource } from "../resources"
 import { Job, JobFilter, jobModel, JobRepository, JobService } from "./job"
 export * from "./job"
 
@@ -33,12 +35,40 @@ export class JobUseCase extends Manager<Job, string, JobFilter> implements JobSe
 }
 
 const fields = ["title", "publishedAt", "description"]
-export class JobController extends Controller<Job, string, JobFilter> {
-  constructor(log: Log, protected jobService: JobService) {
-    super(log, jobService)
-    this.render = this.render.bind(this)
+export class JobController {
+  constructor(private jobService: JobService, private log: Log) {
+    this.view = this.view.bind(this)
+    this.submit = this.submit.bind(this)
+    this.search = this.search.bind(this)
   }
-  render(req: Request, res: Response) {
+  view(req: Request, res: Response) {
+    const resource = getResource()
+    const id = req.params["id"]
+    this.jobService.load(id).then((job) => {
+      res.render(getView(req, "job"), {
+        resource,
+        job,
+      })
+    })
+  }
+  submit(req: Request, res: Response) {
+    const resource = getResource()
+    const job = req.body
+    console.log("job " + JSON.stringify(job))
+    const errors = validate<Job>(job, jobModel, resource)
+    if (errors.length > 0) {
+      res.status(getStatusCode(errors)).json(errors).end()
+    } else {
+      this.jobService
+        .update(job)
+        .then((result) => {
+          console.log("result " + result)
+          res.status(200).json(job).end()
+        })
+        .catch((err) => handleError(err, res, this.log))
+    }
+  }
+  search(req: Request, res: Response) {
     const dateFormat = getDateFormat()
     const resource = getResource()
     let filter: JobFilter = {
@@ -75,6 +105,6 @@ export function useJobService(db: DB): JobService {
   const repository = new SqlJobRepository(db)
   return new JobUseCase(builder.search, repository)
 }
-export function useJobController(log: Log, db: DB): JobController {
-  return new JobController(log, useJobService(db))
+export function useJobController(db: DB, log: Log): JobController {
+  return new JobController(useJobService(db), log)
 }

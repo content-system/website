@@ -8,15 +8,18 @@ import {
   format,
   fromRequest,
   getSearch,
+  getStatusCode,
   getView,
+  handleError,
   hasSearch,
   queryNumber,
   resources,
 } from "express-ext"
-import { Manager, Search } from "onecore"
+import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
 import { formatDateTime, getDateFormat } from "ui-formatter"
-import { getResource } from "../../resources"
+import { validate } from "xvalidators"
+import { getResource } from "../resources"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 export * from "./article"
 
@@ -33,10 +36,39 @@ export class ArticleUseCase extends Manager<Article, string, ArticleFilter> impl
 
 const fields = ["title", "publishedAt", "description"]
 export class ArticleController {
-  constructor(protected service: ArticleService) {
-    this.render = this.render.bind(this)
+  constructor(private service: ArticleService, private log: Log) {
+    this.view = this.view.bind(this)
+    this.submit = this.submit.bind(this)
+    this.search = this.search.bind(this)
   }
-  render(req: Request, res: Response) {
+  view(req: Request, res: Response) {
+    const resource = getResource()
+    const id = req.params["id"]
+    this.service.load(id).then((article) => {
+      res.render(getView(req, "article"), {
+        resource,
+        article,
+      })
+    })
+  }
+  submit(req: Request, res: Response) {
+    const resource = getResource()
+    const article = req.body
+    console.log("article " + JSON.stringify(article))
+    const errors = validate<Article>(article, articleModel, resource)
+    if (errors.length > 0) {
+      res.status(getStatusCode(errors)).json(errors).end()
+    } else {
+      this.service
+        .update(article)
+        .then((result) => {
+          console.log("result " + result)
+          res.status(200).json(article).end()
+        })
+        .catch((err) => handleError(err, res, this.log))
+    }
+  }
+  search(req: Request, res: Response) {
     const dateFormat = getDateFormat()
     const resource = getResource()
     let filter: ArticleFilter = {
@@ -72,6 +104,6 @@ export function useArticleService(db: DB): ArticleService {
   const repository = new SqlArticleRepository(db)
   return new ArticleUseCase(builder.search, repository)
 }
-export function useArticleController(db: DB): ArticleController {
-  return new ArticleController(useArticleService(db))
+export function useArticleController(db: DB, log: Log): ArticleController {
+  return new ArticleController(useArticleService(db), log)
 }

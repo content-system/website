@@ -35,6 +35,9 @@
         <table class="table">
           <thead>
             <tr>
+              <th data-field="id">
+                <a href="{{sort.id.url}}">{{resource.id}} {{sort.id.tag}}</a>
+              </th>
               <th data-field="title">
                 <a href="{{sort.title.url}}">{{resource.title}} {{sort.title.tag}}</a>
               </th>
@@ -50,8 +53,9 @@
             {% for item in list %}
             <tr>
               <td>
-                <a>{{item.title}}</a>
+                <a href="/news/{{item.id}}" onclick="navigate(event)">{{item.id}}</a>
               </td>
+              <td>{{item.title}}</td>
               <td>{{item.publishedAt}}</td>
               <td>{{item.description}}</td>
             </tr>

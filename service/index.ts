@@ -1,8 +1,10 @@
-import { Application, json } from "express"
+import { Application } from "express"
 import { check } from "express-ext"
 import multer from "multer"
 import { ApplicationContext } from "./context"
-import { userModel } from "./service/user"
+import { userModel } from "./user"
+
+export * from "./context"
 
 const parser = multer()
 
@@ -20,8 +22,12 @@ export function route(app: Application, ctx: ApplicationContext): void {
   app.patch("/users/:id", checkUser, ctx.user.patch)
   app.delete("/users/:id", ctx.user.delete)
 
-  app.get("/news", ctx.article.render)
-  app.get("/careers", ctx.job.render)
+  app.get("/news", ctx.article.search)
+  app.get("/news/:id", ctx.article.view)
+
+  app.get("/careers", ctx.job.search)
+  app.get("/careers/:id", ctx.job.view)
+
   app.get("/contact", ctx.contact.render)
-  app.post("/contact", json(), ctx.contact.submit)
+  app.post("/contact", parser.none(), ctx.contact.submit)
 }
