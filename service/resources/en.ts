@@ -81,7 +81,7 @@ export const en = {
   error_exp: "{0} does not match the regular expression.",
   error_type: "Invalid datatype. Type of {0} cannot be {1}.",
 
-  error_boolean: "{0} must be boolean.",
+  error_boolean: "{0} cannot be boolean.",
   error_strings: "{0} must be an string array.",
   error_numbers: "{0} must be an number array.",
   error_integers: "{0} must be an number array.",

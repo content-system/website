@@ -31,38 +31,18 @@
       <input type="hidden" id="_message" name="_message" value="{{message}}" />
     </form>
     <form class="list-result">
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th data-field="id">
-                <a href="{{sort.id.url}}">{{resource.id}} {{sort.id.tag}}</a>
-              </th>
-              <th data-field="title">
-                <a href="{{sort.title.url}}">{{resource.title}} {{sort.title.tag}}</a>
-              </th>
-              <th data-field="publishedAt" class="datetime">
-                <a href="{{sort.publishedAt.url}}">{{resource.published_at}} {{sort.publishedAt.tag}}</a>
-              </th>
-              <th data-field="description">
-                <a href="{{sort.description.url}}">{{resource.description}} {{sort.description.tag}}</a>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for item in list %}
-            <tr>
-              <td>
-                <a href="/news/{{item.id}}" onclick="navigate(event)">{{item.id}}</a>
-              </td>
-              <td>{{item.title}}</td>
-              <td>{{item.publishedAt}}</td>
-              <td>{{item.description}}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+      <ul class="row list-view">
+        {% for item in list %}
+        <li class="col s12 m6 l4 xl3 card">
+          <section>
+            <div class="cover" style="background-image: url('{{ item.thumbnail }}')"></div>
+            <a href="/news/{{ item.id }}">{{ item.title }}</a>
+            <p>{{ item.publishedAt }}</p>
+            <p>{{ item.description }}</p>
+          </section>
+        </li>
+        {% endfor %}
+      </ul>
     </form>
   </div>
 </div>

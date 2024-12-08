@@ -5,6 +5,7 @@ import {
   buildSortFromRequest,
   buildSortSearch,
   cloneFilter,
+  escapeArray,
   format,
   fromRequest,
   getSearch,
@@ -82,7 +83,8 @@ export class JobController {
     const page = queryNumber(req, resources.page, 1)
     const limit = queryNumber(req, resources.limit, resources.defaultLimit)
     this.jobService.search(cloneFilter(filter, page, limit), limit, page).then((result) => {
-      for (const item of result.list) {
+      const list = escapeArray(result.list)
+      for (const item of list) {
         item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
       }
       const search = getSearch(req.url)
@@ -91,7 +93,7 @@ export class JobController {
         resource,
         limits: resources.limits,
         filter,
-        list: result.list,
+        list,
         pages: buildPages(limit, result.total),
         pageSearch: buildPageSearch(search),
         sort: buildSortSearch(search, fields, sort),

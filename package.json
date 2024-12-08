@@ -15,7 +15,7 @@
     "config-plus": "^0.0.4",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "express-ext": "^0.3.3",
+    "express-ext": "^0.3.4",
     "locale-service": "^0.1.0",
     "logger-core": "^0.3.1",
     "multer": "^1.4.5-lts.1",

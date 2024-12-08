@@ -5,6 +5,7 @@ import {
   buildSortFromRequest,
   buildSortSearch,
   cloneFilter,
+  escapeArray,
   format,
   fromRequest,
   getSearch,
@@ -82,6 +83,7 @@ export class ArticleController {
     const page = queryNumber(req, resources.page, 1)
     const limit = queryNumber(req, resources.limit, resources.defaultLimit)
     this.service.search(cloneFilter(filter, page, limit), limit, page).then((result) => {
+      const list = escapeArray(result.list)
       for (const item of result.list) {
         item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
       }
@@ -91,7 +93,7 @@ export class ArticleController {
         resource,
         limits: resources.limits,
         filter,
-        list: result.list,
+        list,
         pages: buildPages(limit, result.total),
         pageSearch: buildPageSearch(search),
         sort: buildSortSearch(search, fields, sort),
