@@ -1,4 +1,4 @@
-import { Application, urlencoded } from "express"
+import { Application } from "express"
 import { check } from "express-ext"
 import multer from "multer"
 import { ApplicationContext } from "./context"
@@ -14,7 +14,12 @@ export function route(app: Application, ctx: ApplicationContext): void {
   app.patch("/middleware", ctx.middleware.config)
 
   app.get("/login", ctx.login.render)
-  app.post("/login", urlencoded(), ctx.login.submit)
+  // app.post("/login", json(), parser.none(), ctx.login.submit)
+  app.post("/login", parser.none(), ctx.login.submit)
+
+  app.get("/signup", ctx.signup.render)
+  // app.post("/login", json(), parser.none(), ctx.login.submit)
+  app.post("/signup", ctx.signup.submit)
 
   const checkUser = check(userModel)
   app.post("/users/search", ctx.user.search)

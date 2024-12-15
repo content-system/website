@@ -33,6 +33,8 @@ export const config = {
       success: 1,
       password_expired: 3,
       locked: 4,
+      suspended: 5,
+      disabled: 6,
     },
     lockedMinutes: 2,
     maxPasswordFailed: 2,

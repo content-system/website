@@ -10,6 +10,7 @@ import { ArticleController, useArticleController } from "./article"
 import { LoginController } from "./authentication"
 import { ContactController, useContactController } from "./contact"
 import { JobController, useJobController } from "./job"
+import { SignUpController } from "./signup"
 import { UserController, useUserController } from "./user"
 
 resources.createValidator = createValidator
@@ -25,6 +26,7 @@ export interface ApplicationContext {
   log: LogController
   middleware: MiddlewareController
   login: LoginController
+  signup: SignUpController
   user: UserController
   article: ArticleController
   job: JobController
@@ -53,11 +55,12 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
     2,
   )
   const login = new LoginController(authenticator)
+  const signup = new SignUpController()
 
   const user = useUserController(logger.error, db)
   const article = useArticleController(db, logger.error)
   const job = useJobController(db, logger.error)
   const contact = useContactController(db, logger.error)
 
-  return { health, log, middleware, login, user, article, job, contact }
+  return { health, log, middleware, login, signup, user, article, job, contact }
 }

@@ -1,6 +1,5 @@
-import { Authenticator } from "authen-service"
 import { Request, Response } from "express"
-import { Attributes, StringMap } from "onecore"
+import { Attributes } from "onecore"
 import { validate } from "xvalidators"
 import { getResource } from "../resources"
 
@@ -10,6 +9,11 @@ export const userModel: Attributes = {
     length: 100,
     resource: "username",
   },
+  email: {
+    required: true,
+    length: 120,
+    resource: "email",
+  },
   password: {
     required: true,
     length: 100,
@@ -18,26 +22,22 @@ export const userModel: Attributes = {
 }
 export interface User {
   username: string
+  email: string
   password: string
 }
 
-export const map: StringMap = {
-  "2": "fail_authentication",
-  "3": "fail_expired_password",
-  "4": "fail_locked_account",
-  "9": "fail_disabled_account",
-}
-export class LoginController {
-  constructor(private authenticator: Authenticator<User, string>) {
+export class SignUpController {
+  constructor() {
     this.render = this.render.bind(this)
     this.submit = this.submit.bind(this)
   }
   render(req: Request, res: Response) {
     const resource = getResource()
-    res.render("login", {
+    res.render("signup", {
       resource,
       user: {
-        username: "kaka",
+        username: "minhduc",
+        email: "minhduc140583@gmail.com",
         password: "Password1!",
       },
       message: "Enter login",
@@ -52,14 +52,7 @@ export class LoginController {
       console.log("Login error: " + JSON.stringify(errors))
       res.status(422).json(errors)
     } else {
-      this.authenticator.authenticate(user).then((result) => {
-        console.log("Result " + JSON.stringify(result))
-        if (result.status === 1) {
-          res.status(200).json(result.user).end()
-        } else {
-          res.status(403).json(result).end()
-        }
-      })
+      res.status(200).json(user).end()
     }
   }
 }

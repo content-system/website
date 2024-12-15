@@ -1,39 +1,43 @@
 "use strict"
-const r1 = / |,|\$|€|£|¥|'|٬|،| /g
-const r2 = / |\.|\$|€|£|¥|'|٬|،| /g
-class resources {}
-resources.defaultLimit = 12
-resources.containerClass = "form-input"
-resources.hiddenMessage = "hidden-message"
-resources.num1 = / |,|\$|€|£|¥|'|٬|،| /g
-resources.num2 = / |\.|\$|€|£|¥|'|٬|،| /g
-resources.email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/i
-resources.phone = /^\d{5,14}$/
-resources.password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-resources.url = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
-resources.digit = /^\d+$/
-resources.amount = /^[0-9]{0,15}(?:\.[0-9]{1,3})?$/
-resources.digitAndDash = /^[0-9-]*$/
-resources.digitAndChar = /^\w*\d*$/
-resources.checkNumber = /^\d{0,8}$/
-resources.percentage = /^[1-9][0-9]?$|^100$/
-resources.ipv4 = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/
-resources.usPostcode = /(^\d{5}$)|(^\d{5}-\d{4}$)/
-resources.caPostcode =
-  /^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz][ -]?[0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz][0-9]$/
-resources.ipv6 =
-  /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/
+var r1 = / |,|\$|€|£|¥|'|٬|،| /g
+var r2 = / |\.|\$|€|£|¥|'|٬|،| /g
+var resources = (function () {
+  function resources() {}
+  resources.defaultLimit = 12
+  resources.containerClass = "form-input"
+  resources.hiddenMessage = "hidden-message"
+  resources.token = "token"
+  resources.num1 = / |,|\$|€|£|¥|'|٬|،| /g
+  resources.num2 = / |\.|\$|€|£|¥|'|٬|،| /g
+  resources.email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/i
+  resources.phone = /^\d{5,14}$/
+  resources.password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+  resources.url = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+  resources.digit = /^\d+$/
+  resources.amount = /^[0-9]{0,15}(?:\.[0-9]{1,3})?$/
+  resources.digitAndDash = /^[0-9-]*$/
+  resources.digitAndChar = /^\w*\d*$/
+  resources.checkNumber = /^\d{0,8}$/
+  resources.percentage = /^[1-9][0-9]?$|^100$/
+  resources.ipv4 = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/
+  resources.usPostcode = /(^\d{5}$)|(^\d{5}-\d{4}$)/
+  resources.caPostcode =
+    /^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz][ -]?[0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz][0-9]$/
+  resources.ipv6 =
+    /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/
+  return resources
+})()
 function parseDate(v, format) {
   if (!format || format.length === 0) {
     format = "MM/DD/YYYY"
   } else {
     format = format.toUpperCase()
   }
-  const dateItems = format.split(/\/|\.| |-/)
-  const valueItems = v.split(/\/|\.| |-/)
-  let imonth = dateItems.indexOf("M")
-  let iday = dateItems.indexOf("D")
-  let iyear = dateItems.indexOf("YYYY")
+  var dateItems = format.split(/\/|\.| |-/)
+  var valueItems = v.split(/\/|\.| |-/)
+  var imonth = dateItems.indexOf("M")
+  var iday = dateItems.indexOf("D")
+  var iyear = dateItems.indexOf("YYYY")
   if (imonth === -1) {
     imonth = dateItems.indexOf("MM")
   }
@@ -43,28 +47,30 @@ function parseDate(v, format) {
   if (iyear === -1) {
     iyear = dateItems.indexOf("YY")
   }
-  const month = parseInt(valueItems[imonth], 10) - 1
-  let year = parseInt(valueItems[iyear], 10)
+  var month = parseInt(valueItems[imonth], 10) - 1
+  var year = parseInt(valueItems[iyear], 10)
   if (year < 100) {
     year += 2000
   }
-  const day = parseInt(valueItems[iday], 10)
+  var day = parseInt(valueItems[iday], 10)
   return new Date(year, month, day)
 }
-const o = "object"
+var o = "object"
 function trimNull(obj) {
   if (!obj || typeof obj !== o) {
     return obj
   }
-  const keys = Object.keys(obj)
-  for (const key of keys) {
-    const v = obj[key]
+  var keys = Object.keys(obj)
+  for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+    var key = keys_1[_i]
+    var v = obj[key]
     if (v === null) {
       delete obj[key]
     } else if (Array.isArray(v) && v.length > 0) {
-      const v1 = v[0]
+      var v1 = v[0]
       if (typeof v1 === o && !(v1 instanceof Date)) {
-        for (const item of v) {
+        for (var _a = 0, v_1 = v; _a < v_1.length; _a++) {
+          var item = v_1[_a]
           trimNull(item)
         }
       }
@@ -78,9 +84,9 @@ function getCurrentURL() {
   return window.location.origin + window.location.pathname
 }
 function getDecimalSeparator(ele) {
-  let separator = ele.getAttribute("data-decimal-separator")
+  var separator = ele.getAttribute("data-decimal-separator")
   if (!separator) {
-    const form = ele.form
+    var form = ele.form
     if (form) {
       separator = form.getAttribute("data-decimal-separator")
     }
@@ -108,7 +114,7 @@ function detectCtrlKeyCombination(e) {
   }
   if (isCtrl) {
     var chr = String.fromCharCode(key).toLowerCase()
-    for (let i = 0; i < forbiddenKeys.length; i++) {
+    for (var i = 0; i < forbiddenKeys.length; i++) {
       if (forbiddenKeys[i] == chr) {
         return true
       }
@@ -120,7 +126,7 @@ function digitOnKeyPress(e) {
   if (detectCtrlKeyCombination(e)) {
     return true
   }
-  const key = window.event ? e.keyCode : e.which
+  var key = window.event ? e.keyCode : e.which
   if (key == 13 || key == 8 || key == 9 || key == 11 || key == 127 || key == "\t") {
     return key
   }
@@ -132,7 +138,7 @@ function integerOnKeyPress(e) {
   if (detectCtrlKeyCombination(e)) {
     return true
   }
-  const key = window.event ? e.keyCode : e.which
+  var key = window.event ? e.keyCode : e.which
   if (key == 13 || key == 8 || key == 9 || key == 11 || key == 127 || key == "\t") {
     return key
   }
@@ -151,7 +157,7 @@ function numberOnKeyPress(e) {
   if (detectCtrlKeyCombination(e)) {
     return true
   }
-  const key = window.event ? e.keyCode : e.which
+  var key = window.event ? e.keyCode : e.which
   if (key == 13 || key == 8 || key == 9 || key == 11 || key == 127 || key == "\t") {
     return key
   }
@@ -176,7 +182,7 @@ function trimTime(d) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate())
 }
 function addDays(d, n) {
-  const newDate = new Date(d)
+  var newDate = new Date(d)
   newDate.setDate(newDate.getDate() + n)
   return newDate
 }
@@ -184,18 +190,18 @@ function formatDate(d, dateFormat, full, upper) {
   if (!d) {
     return ""
   }
-  let format = dateFormat && dateFormat.length > 0 ? dateFormat : "M/D/YYYY"
+  var format = dateFormat && dateFormat.length > 0 ? dateFormat : "M/D/YYYY"
   if (upper) {
     format = format.toUpperCase()
   }
-  let arr = ["", "", ""]
-  const items = format.split(/\/|\.| |-/)
-  let iday = items.indexOf("D")
-  let im = items.indexOf("M")
-  let iyear = items.indexOf("YYYY")
-  let fm = full ? full : false
-  let fd = full ? full : false
-  let fy = true
+  var arr = ["", "", ""]
+  var items = format.split(/\/|\.| |-/)
+  var iday = items.indexOf("D")
+  var im = items.indexOf("M")
+  var iyear = items.indexOf("YYYY")
+  var fm = full ? full : false
+  var fd = full ? full : false
+  var fy = true
   if (iday === -1) {
     iday = items.indexOf("DD")
     fd = true
@@ -211,15 +217,15 @@ function formatDate(d, dateFormat, full, upper) {
   arr[iday] = getD(d.getDate(), fd)
   arr[im] = getD(d.getMonth() + 1, fm)
   arr[iyear] = getYear(d.getFullYear(), fy)
-  const s = detectSeparator(format)
-  const e = detectLastSeparator(format)
-  const l = items.length === 4 ? format[format.length - 1] : ""
+  var s = detectSeparator(format)
+  var e = detectLastSeparator(format)
+  var l = items.length === 4 ? format[format.length - 1] : ""
   return arr[0] + s + arr[1] + e + arr[2] + l
 }
 function detectSeparator(format) {
-  const len = format.length
-  for (let i = 0; i < len; i++) {
-    const c = format[i]
+  var len = format.length
+  for (var i = 0; i < len; i++) {
+    var c = format[i]
     if (!((c >= "A" && c <= "Z") || (c >= "a" && c <= "z"))) {
       return c
     }
@@ -227,9 +233,9 @@ function detectSeparator(format) {
   return "/"
 }
 function detectLastSeparator(format) {
-  const len = format.length - 3
-  for (let i = len; i > -0; i--) {
-    const c = format[i]
+  var len = format.length - 3
+  for (var i = len; i > -0; i--) {
+    var c = format[i]
     if (!((c >= "A" && c <= "Z") || (c >= "a" && c <= "z"))) {
       return c
     }
@@ -240,7 +246,7 @@ function getYear(y, full) {
   if (full || (y <= 99 && y >= -99)) {
     return y.toString()
   }
-  const s = y.toString()
+  var s = y.toString()
   return s.substring(s.length - 2)
 }
 function getD(n, fu) {
@@ -262,17 +268,28 @@ function formatLongDateTime(date, dateFormat, full, upper) {
   if (!date) {
     return ""
   }
-  const sd = formatDate(date, dateFormat, full, upper)
+  var sd = formatDate(date, dateFormat, full, upper)
   if (sd.length === 0) {
     return sd
   }
   return sd + " " + formatLongTime(date)
 }
+function getValue(form, name) {
+  if (form) {
+    for (var i = 0; i < form.length; i++) {
+      var ele = form[i]
+      if (ele.name === name) {
+        return ele.value
+      }
+    }
+  }
+  return null
+}
 function getElement(form, name) {
   if (form) {
-    const l = form.length
-    for (let i = 0; i < l; i++) {
-      const e = form[i]
+    var l = form.length
+    for (var i = 0; i < l; i++) {
+      var e = form[i]
       if (e.getAttribute("name") === name) {
         return e
       }
@@ -287,7 +304,7 @@ function findParent(e, className, nodeName) {
   if (nodeName && e.nodeName === nodeName) {
     return e
   }
-  let p = e
+  var p = e
   while (true) {
     p = p.parentElement
     if (!p) {
@@ -311,9 +328,9 @@ function addClass(ele, className) {
   return false
 }
 function addClasses(ele, classes) {
-  let count = 0
+  var count = 0
   if (ele) {
-    for (let i = 0; i < classes.length; i++) {
+    for (var i = 0; i < classes.length; i++) {
       if (addClass(ele, classes[i])) {
         count++
       }
@@ -331,9 +348,9 @@ function removeClass(ele, className) {
   return false
 }
 function removeClasses(ele, classes) {
-  let count = 0
+  var count = 0
   if (ele) {
-    for (let i = 0; i < classes.length; i++) {
+    for (var i = 0; i < classes.length; i++) {
       if (removeClass(ele, classes[i])) {
         count++
       }
@@ -353,43 +370,43 @@ function handleMaterialFocus(ele) {
   }
 }
 function materialOnFocus(event) {
-  const ele = event.currentTarget
+  var ele = event.currentTarget
   if (ele.disabled || ele.readOnly) {
     return
   }
-  setTimeout(() => {
+  setTimeout(function () {
     if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
       addClass(getContainer(ele), "focused")
     }
   }, 0)
 }
 function materialOnBlur(event) {
-  const ele = event.currentTarget
-  setTimeout(() => {
+  var ele = event.currentTarget
+  setTimeout(function () {
     if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
       removeClasses(getContainer(ele), ["focused", "focus"])
     }
   }, 0)
 }
 function registerEvents(form) {
-  const len = form.length
-  for (let i = 0; i < len; i++) {
-    const ele = form[i]
+  var len = form.length
+  for (var i = 0; i < len; i++) {
+    var ele = form[i]
     if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
-      let type = ele.getAttribute("type")
+      var type = ele.getAttribute("type")
       if (type != null) {
         type = type.toLowerCase()
       }
       if (ele.nodeName === "INPUT" && (type === "checkbox" || type === "radio" || type === "submit" || type === "button" || type === "reset")) {
         continue
       } else {
-        const parent = ele.parentElement
-        const required = ele.getAttribute("required")
-        if (parent) {
-          if (parent.nodeName === "LABEL" && required != null && required !== undefined && required != "false" && !parent.classList.contains("required")) {
-            parent.classList.add("required")
-          } else if (parent.classList.contains("form-group") || parent.classList.contains("field")) {
-            const firstChild = parent.firstChild
+        var parent_1 = ele.parentElement
+        var required = ele.getAttribute("required")
+        if (parent_1) {
+          if (parent_1.nodeName === "LABEL" && required != null && required !== undefined && required != "false" && !parent_1.classList.contains("required")) {
+            parent_1.classList.add("required")
+          } else if (parent_1.classList.contains("form-group") || parent_1.classList.contains("field")) {
+            var firstChild = parent_1.firstChild
             if (firstChild && firstChild.nodeName === "LABEL") {
               if (!firstChild.classList.contains("required")) {
                 firstChild.classList.add("required")
@@ -408,12 +425,12 @@ function registerEvents(form) {
   }
 }
 function valueOf(obj, key) {
-  const mapper = key.split(".").map((item) => {
+  var mapper = key.split(".").map(function (item) {
     return item.replace(/\[/g, ".[").replace(/\[|\]/g, "")
   })
-  const reSplit = mapper.join(".").split(".")
-  return reSplit.reduce((acc, current, index, source) => {
-    const value = getDirectValue(acc, current)
+  var reSplit = mapper.join(".").split(".")
+  return reSplit.reduce(function (acc, current, index, source) {
+    var value = getDirectValue(acc, current)
     if (!value) {
       source.splice(1)
     }
@@ -427,19 +444,19 @@ function getDirectValue(obj, key) {
   return null
 }
 function setValue(obj, key, value) {
-  let replaceKey = key.replace(/\[/g, ".[").replace(/\.\./g, ".")
+  var replaceKey = key.replace(/\[/g, ".[").replace(/\.\./g, ".")
   if (replaceKey.indexOf(".") === 0) {
     replaceKey = replaceKey.slice(1, replaceKey.length)
   }
-  const keys = replaceKey.split(".")
-  let firstKey = keys.shift()
+  var keys = replaceKey.split(".")
+  var firstKey = keys.shift()
   if (!firstKey) {
     return
   }
-  const isArrayKey = /\[([0-9]+)\]/.test(firstKey)
+  var isArrayKey = /\[([0-9]+)\]/.test(firstKey)
   if (keys.length > 0) {
-    const firstKeyValue = obj[firstKey] || {}
-    const returnValue = setValue(firstKeyValue, keys.join("."), value)
+    var firstKeyValue = obj[firstKey] || {}
+    var returnValue = setValue(firstKeyValue, keys.join("."), value)
     return setKey(obj, isArrayKey, firstKey, returnValue)
   }
   return setKey(obj, isArrayKey, firstKey, value)
@@ -457,58 +474,60 @@ function setKey(_object, _isArrayKey, _key, _nextValue) {
   return _object
 }
 function decodeFromForm(form, currencySymbol) {
-  const dateFormat = form.getAttribute("data-date-format")
-  const obj = {}
-  const len = form.length
-  for (let i = 0; i < len; i++) {
-    const ele = form[i]
-    let name = ele.getAttribute("name")
-    const id = ele.getAttribute("id")
-    let val
-    let isDate = false
-    let dataField = ele.getAttribute("data-field")
+  var dateFormat = form.getAttribute("data-date-format")
+  var obj = {}
+  var len = form.length
+  var _loop_1 = function (i) {
+    var ele = form[i]
+    var name_1 = ele.getAttribute("name")
+    var id = ele.getAttribute("id")
+    var val = void 0
+    var isDate = false
+    var dataField = ele.getAttribute("data-field")
     if (dataField && dataField.length > 0) {
-      name = dataField
-    } else if ((!name || name === "") && ele.parentElement && ele.parentElement.classList.contains("DayPickerInput")) {
+      name_1 = dataField
+    } else if ((!name_1 || name_1 === "") && ele.parentElement && ele.parentElement.classList.contains("DayPickerInput")) {
       if (ele.parentElement.parentElement) {
         dataField = ele.parentElement.parentElement.getAttribute("data-field")
         isDate = true
-        name = dataField
+        name_1 = dataField
       }
     }
     if (isDate === false && ele.getAttribute("data-type") === "date") {
       isDate = true
     }
-    if (name != null && name !== "") {
-      let nodeName = ele.nodeName
-      const type = ele.getAttribute("type")
+    if (name_1 != null && name_1 !== "") {
+      var nodeName = ele.nodeName
+      var type = ele.getAttribute("type")
       if (nodeName === "INPUT" && type !== null) {
         nodeName = type.toUpperCase()
       }
       if (nodeName !== "BUTTON" && nodeName !== "RESET" && nodeName !== "SUBMIT") {
         switch (type) {
           case "checkbox":
-            if (id && name !== id) {
-              val = valueOf(obj, name)
+            if (id && name_1 !== id) {
+              val = valueOf(obj, name_1)
               if (!val) {
                 val = []
               }
               if (ele.checked) {
                 val.push(ele.value)
               } else {
-                val = val.filter((item) => item != ele.value)
+                val = val.filter(function (item) {
+                  return item != ele.value
+                })
               }
             } else {
               val = ele.value.length > 0 ? ele.value : ele.checked
             }
-            setValue(obj, name, val)
-            continue
+            setValue(obj, name_1, val)
+            return "continue"
           case "radio":
             if (ele.checked) {
               val = ele.value.length > 0 ? ele.value : ele.checked
-              setValue(obj, name, val)
+              setValue(obj, name_1, val)
             }
-            continue
+            return "continue"
           case "date":
             val = ele.value.length === 10 ? ele.value : null
             break
@@ -527,12 +546,12 @@ function decodeFromForm(form, currencySymbol) {
             val = ele.value
         }
         if (isDate && dateFormat && dateFormat.length > 0) {
-          const d = parseDate(val, dateFormat)
+          var d = parseDate(val, dateFormat)
           val = d.toString() === "Invalid Date" ? null : d
         }
-        const datatype = ele.getAttribute("data-type")
-        let v = ele.value
-        let symbol
+        var datatype = ele.getAttribute("data-type")
+        var v = ele.value
+        var symbol = void 0
         if (datatype === "currency" || datatype === "string-currency") {
           symbol = ele.getAttribute("data-currency-symbol")
           if (!symbol) {
@@ -543,18 +562,21 @@ function decodeFromForm(form, currencySymbol) {
           }
         }
         if (type === "number" || datatype === "currency" || datatype === "integer" || datatype === "number") {
-          const decimalSeparator = getDecimalSeparator(ele)
+          var decimalSeparator = getDecimalSeparator(ele)
           v = decimalSeparator === "," ? v.replace(r2, "") : (v = v.replace(r1, ""))
           val = isNaN(v) ? null : parseFloat(v)
         }
-        setValue(obj, name, val)
+        setValue(obj, name_1, val)
       }
     }
+  }
+  for (var i = 0; i < len; i++) {
+    _loop_1(i)
   }
   return obj
 }
 function removeFormatUrl(url) {
-  const startParams = url.indexOf("?")
+  var startParams = url.indexOf("?")
   return startParams !== -1 ? url.substring(0, startParams) : url
 }
 function getPrefix(url) {
@@ -570,52 +592,55 @@ function buildSearchUrl(ft, page, limit, fields) {
   if (!fields || fields.length === 0) {
     fields = "fields"
   }
-  const pageIndex = ft.page
+  var pageIndex = ft.page
   if (pageIndex && !isNaN(pageIndex) && pageIndex <= 1) {
     delete ft.page
   }
-  const keys = Object.keys(ft)
-  let url = "?partial=true"
-  for (const key of keys) {
-    const objValue = ft[key]
+  var keys = Object.keys(ft)
+  var url = "?partial=true"
+  for (var _i = 0, keys_2 = keys; _i < keys_2.length; _i++) {
+    var key = keys_2[_i]
+    var objValue = ft[key]
     if (objValue) {
       if (key !== fields) {
         if (typeof objValue === "string" || typeof objValue === "number") {
           if (key === page) {
             if (objValue != 1) {
-              url += getPrefix(url) + `${key}=${objValue}`
+              url += getPrefix(url) + (key + "=" + objValue)
             }
           } else if (key === limit) {
             if (objValue != resources.defaultLimit) {
-              url += getPrefix(url) + `${key}=${objValue}`
+              url += getPrefix(url) + (key + "=" + objValue)
             }
           } else {
-            url += getPrefix(url) + `${key}=${objValue}`
+            url += getPrefix(url) + (key + "=" + objValue)
           }
         } else if (typeof objValue === "object") {
           if (objValue instanceof Date) {
-            url += getPrefix(url) + `${key}=${objValue.toISOString()}`
+            url += getPrefix(url) + (key + "=" + objValue.toISOString())
           } else {
             if (Array.isArray(objValue)) {
               if (objValue.length > 0) {
-                const strs = []
-                for (const subValue of objValue) {
+                var strs = []
+                for (var _a = 0, objValue_1 = objValue; _a < objValue_1.length; _a++) {
+                  var subValue = objValue_1[_a]
                   if (typeof subValue === "string") {
                     strs.push(subValue)
                   } else if (typeof subValue === "number") {
                     strs.push(subValue.toString())
                   }
                 }
-                url += getPrefix(url) + `${key}=${strs.join(",")}`
+                url += getPrefix(url) + (key + "=" + strs.join(","))
               }
             } else {
-              const keysLvl2 = Object.keys(objValue)
-              for (const key2 of keysLvl2) {
-                const objValueLvl2 = objValue[key2]
+              var keysLvl2 = Object.keys(objValue)
+              for (var _b = 0, keysLvl2_1 = keysLvl2; _b < keysLvl2_1.length; _b++) {
+                var key2 = keysLvl2_1[_b]
+                var objValueLvl2 = objValue[key2]
                 if (objValueLvl2 instanceof Date) {
-                  url += getPrefix(url) + `${key}.${key2}=${objValueLvl2.toISOString()}`
+                  url += getPrefix(url) + (key + "." + key2 + "=" + objValueLvl2.toISOString())
                 } else {
-                  url += getPrefix(url) + `${key}.${key2}=${objValueLvl2}`
+                  url += getPrefix(url) + (key + "." + key2 + "=" + objValueLvl2)
                 }
               }
             }
@@ -627,7 +652,7 @@ function buildSearchUrl(ft, page, limit, fields) {
   return url
 }
 function removeField(search, fieldName) {
-  let i = search.indexOf(fieldName + "=")
+  var i = search.indexOf(fieldName + "=")
   if (i < 0) {
     return search
   }
@@ -640,11 +665,11 @@ function removeField(search, fieldName) {
       i = i + 1
     }
   }
-  const j = search.indexOf("&", i + fieldName.length)
+  var j = search.indexOf("&", i + fieldName.length)
   return j >= 0 ? search.substring(0, i) + search.substring(j + 1) : search.substring(0, i - 1)
 }
 function getField(search, fieldName) {
-  let i = search.indexOf(fieldName + "=")
+  var i = search.indexOf(fieldName + "=")
   if (i < 0) {
     return ""
   }
@@ -657,41 +682,44 @@ function getField(search, fieldName) {
       i = i + 1
     }
   }
-  const j = search.indexOf("&", i + fieldName.length)
+  var j = search.indexOf("&", i + fieldName.length)
   return j >= 0 ? search.substring(i, j) : search.substring(i)
 }
 function changePage(e) {
   e.preventDefault()
-  const target = e.target
-  let search = target.search
+  var target = e.target
+  var search = target.search
   if (search.length > 0) {
     search = search.substring(1)
   }
   search = removeField(search, "partial")
-  const p = getField(search, "page")
+  var p = getField(search, "page")
   if (p === "page=1") {
     search = removeField(search, "page")
   }
-  let url = window.location.origin + window.location.pathname
+  var url = window.location.origin + window.location.pathname
   url = url + (search.length === 0 ? "?partial=true" : "?" + search + "&partial=true")
-  let newUrl = window.location.origin + window.location.pathname
+  var newUrl = window.location.origin + window.location.pathname
   if (search.length > 0) {
     newUrl = newUrl + "?" + search
   }
-  const resource = getResource()
-  fetch(url, { method: "GET" })
-    .then((response) => {
+  var resource = getResource()
+  fetch(url, {
+    method: "GET",
+    headers: getHeaders(),
+  })
+    .then(function (response) {
       if (response.ok) {
-        response.text().then((data) => {
-          const pageBody = document.getElementById("pageBody")
+        response.text().then(function (data) {
+          var pageBody = document.getElementById("pageBody")
           if (pageBody) {
             pageBody.innerHTML = data
-            const forms = pageBody.querySelectorAll("form")
-            for (let i = 0; i < forms.length; i++) {
-              registerEvents(forms[i])
+            var forms_1 = pageBody.querySelectorAll("form")
+            for (var i = 0; i < forms_1.length; i++) {
+              registerEvents(forms_1[i])
             }
             setTimeout(function () {
-              const msg = getHiddenMessage(forms, resources.hiddenMessage)
+              var msg = getHiddenMessage(forms_1, resources.hiddenMessage)
               if (msg && msg.length > 0) {
                 toast(msg)
               }
@@ -704,43 +732,44 @@ function changePage(e) {
         alertError(resource.error_submit_failed, undefined, undefined, response.statusText)
       }
     })
-    .catch((err) => {
+    .catch(function (err) {
       console.log("Error: " + err)
       alertError(resource.error_submitting_form, undefined, undefined, err)
     })
 }
 function search(e) {
   e.preventDefault()
-  const target = e.target
-  const form = target.form
-  const initFilter = decodeFromForm(form)
-  const filter = trimNull(initFilter)
+  var target = e.target
+  var form = target.form
+  var initFilter = decodeFromForm(form)
+  var filter = trimNull(initFilter)
   filter.page = 1
-  const search = buildSearchUrl(filter)
-  const url = getCurrentURL() + search
-  let newUrl = getCurrentURL()
+  var search = buildSearchUrl(filter)
+  var url = getCurrentURL() + search
+  var newUrl = getCurrentURL()
   if (search.length > 0) {
-    const s = removeField(search.substring(1), "partial")
+    var s = removeField(search.substring(1), "partial")
     if (s.length > 0) {
       newUrl = newUrl + "?" + s
     }
   }
-  const resource = getResource()
+  var resource = getResource()
   fetch(url, {
     method: "GET",
+    headers: getHeaders(),
   })
-    .then((response) => {
+    .then(function (response) {
       if (response.ok) {
-        response.text().then((data) => {
-          const pageBody = document.getElementById("pageBody")
+        response.text().then(function (data) {
+          var pageBody = document.getElementById("pageBody")
           if (pageBody) {
             pageBody.innerHTML = data
-            const forms = pageBody.querySelectorAll("form")
-            for (let i = 0; i < forms.length; i++) {
-              registerEvents(forms[i])
+            var forms_2 = pageBody.querySelectorAll("form")
+            for (var i = 0; i < forms_2.length; i++) {
+              registerEvents(forms_2[i])
             }
             setTimeout(function () {
-              const msg = getHiddenMessage(forms, resources.hiddenMessage)
+              var msg = getHiddenMessage(forms_2, resources.hiddenMessage)
               if (msg && msg.length > 0) {
                 toast(msg)
               }
@@ -753,28 +782,17 @@ function search(e) {
         alertError(resource.error_submit_failed, undefined, undefined, response.statusText)
       }
     })
-    .catch((err) => {
+    .catch(function (err) {
       console.log("Error: " + err)
       alertError(resource.error_submitting_form, undefined, undefined, err)
     })
 }
-function getValue(form, name) {
-  if (form) {
-    for (let i = 0; i < form.length; i++) {
-      const ele = form[i]
-      if (ele.name === name) {
-        return ele.value
-      }
-    }
-  }
-  return null
-}
 function getHiddenMessage(nodes, name, i) {
-  const index = i !== undefined && i >= 0 ? i : 0
+  var index = i !== undefined && i >= 0 ? i : 0
   if (nodes.length > index) {
-    const form = nodes[index]
-    const n = name && name.length > 0 ? name : "hidden-message"
-    const ele = form.querySelector("." + n)
+    var form = nodes[index]
+    var n = name && name.length > 0 ? name : "hidden-message"
+    var ele = form.querySelector("." + n)
     if (ele) {
       return ele.innerHTML
     }
@@ -782,7 +800,7 @@ function getHiddenMessage(nodes, name, i) {
   return null
 }
 function showErrorMessage(form, msg) {
-  const ele = form.querySelector(".message")
+  var ele = form.querySelector(".message")
   if (ele) {
     if (!ele.classList.contains("alert-error")) {
       ele.classList.add("alert-error")
@@ -793,8 +811,8 @@ function showErrorMessage(form, msg) {
 }
 function setInputValue(form, name, value) {
   if (form) {
-    for (let i = 0; i < form.length; i++) {
-      const ele = form[i]
+    for (var i = 0; i < form.length; i++) {
+      var ele = form[i]
       if (ele.name === name) {
         ele.value = value
         return true
@@ -803,36 +821,41 @@ function setInputValue(form, name, value) {
   }
   return false
 }
+function getToken() {
+  var token = localStorage.getItem(resources.token)
+  return token
+}
 function submitFormData(e) {
   e.preventDefault()
-  const target = e.target
-  const form = target.form
-  const valid = validateForm(form)
+  var target = e.target
+  var form = target.form
+  var valid = validateForm(form)
   if (!valid) {
     return
   }
-  const resource = getResource()
-  let successText = target.getAttribute("data-success")
-  let confirmText = target.getAttribute("data-message")
+  var resource = getResource()
+  var successText = target.getAttribute("data-success")
+  var confirmText = target.getAttribute("data-message")
   if (!confirmText) {
     confirmText = resource.msg_confirm_save
   }
-  showConfirm(confirmText, () => {
+  showConfirm(confirmText, function () {
     showLoading()
-    const url = getCurrentURL()
-    const formData = new FormData(form)
+    var url = getCurrentURL()
+    var formData = new FormData(form)
     fetch(url, {
       method: "POST",
+      headers: getHttpHeaders(),
       body: formData,
     })
-      .then((response) => {
+      .then(function (response) {
         if (response.ok) {
-          response.text().then((data) => {
-            const pageBody = document.getElementById("pageBody")
+          response.text().then(function (data) {
+            var pageBody = document.getElementById("pageBody")
             if (pageBody) {
               pageBody.innerHTML = data
-              const forms = pageBody.querySelectorAll("form")
-              for (let i = 0; i < forms.length; i++) {
+              var forms = pageBody.querySelectorAll("form")
+              for (var i = 0; i < forms.length; i++) {
                 registerEvents(forms[i])
               }
             }
@@ -847,47 +870,66 @@ function submitFormData(e) {
           alertError(resource.error_submit_failed, undefined, undefined, response.statusText)
         }
       })
-      .catch((err) => {
+      .catch(function (err) {
         hideLoading()
         console.log("Error: " + err)
         alertError(resource.error_submitting_form, undefined, undefined, err)
       })
   })
 }
+function getHeaders() {
+  var token = getToken()
+  if (token && token.length > 0) {
+    return { Authorization: "Bearer " + token }
+  } else {
+    return {}
+  }
+}
+function getHttpHeaders() {
+  var token = getToken()
+  if (token && token.length > 0) {
+    return {
+      "Content-Type": "application/json;charset=utf-8",
+      Authorization: "Bearer " + token,
+    }
+  } else {
+    return {
+      "Content-Type": "application/json;charset=utf-8",
+    }
+  }
+}
 function submitForm(e) {
   e.preventDefault()
-  const target = e.target
-  const form = target.form
-  const valid = validateForm(form)
+  var target = e.target
+  var form = target.form
+  var valid = validateForm(form)
   if (!valid) {
     return
   }
-  const resource = getResource()
-  let confirmText = target.getAttribute("data-message")
+  var resource = getResource()
+  var confirmText = target.getAttribute("data-message")
   if (!confirmText) {
     confirmText = resource.msg_confirm_save
   }
-  showConfirm(confirmText, () => {
+  showConfirm(confirmText, function () {
     showLoading()
-    const data = decodeFromForm(form)
-    const url = getCurrentURL()
+    var data = decodeFromForm(form)
+    var url = getCurrentURL()
     fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
+      headers: getHttpHeaders(),
       body: JSON.stringify(data),
     })
-      .then((response) => {
+      .then(function (response) {
         if (response.ok) {
-          let successText = target.getAttribute("data-success")
+          var successText = target.getAttribute("data-success")
           if (!successText) {
             successText = resource.msg_save_success
           }
           alertSuccess(successText)
         } else {
           if (response.status === 422) {
-            response.json().then((errors) => {
+            response.json().then(function (errors) {
               showFormError(form, errors)
             })
           } else if (response.status === 409) {
@@ -900,7 +942,7 @@ function submitForm(e) {
         }
         hideLoading()
       })
-      .catch((err) => {
+      .catch(function (err) {
         hideLoading()
         console.log("Error: " + err)
         alertError(resource.error_submitting_form, undefined, undefined, err)
