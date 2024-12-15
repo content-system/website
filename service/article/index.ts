@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
 import {
+  buildMessage,
   buildPages,
   buildPageSearch,
-  buildSortFromRequest,
   buildSortSearch,
   cloneFilter,
   escapeArray,
@@ -88,7 +88,6 @@ export class ArticleController {
         item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
       }
       const search = getSearch(req.url)
-      const sort = buildSortFromRequest(req)
       res.render(getView(req, "news"), {
         resource,
         limits: resources.limits,
@@ -96,7 +95,8 @@ export class ArticleController {
         list,
         pages: buildPages(limit, result.total),
         pageSearch: buildPageSearch(search),
-        sort: buildSortSearch(search, fields, sort),
+        sort: buildSortSearch(search, fields, filter.sort),
+        message: buildMessage(resource, list, limit, page, result.total),
       })
     })
   }

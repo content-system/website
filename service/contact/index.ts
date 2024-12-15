@@ -45,7 +45,7 @@ export class ContactController {
       console.log(JSON.stringify(errorMap))
       res.render("pages/contact", {
         resource,
-        contact: escapeHTML(contact),
+        contact: escape(contact),
         errors: errorMap,
       })
     } else {
@@ -55,7 +55,7 @@ export class ContactController {
           // res.status(201).json(contact).end()
           res.render("pages/contact", {
             resource,
-            contact: escapeHTML(contact),
+            contact: escape(contact),
           })
         })
         .catch((err) => handleError(err, res, this.log))

@@ -79,7 +79,7 @@ function fadeOut(ele) {
   ele.style.opacity = "1"
   ;(function fade() {
     let val = parseFloat(ele.style.opacity)
-    val -= 0.1
+    val = -0.1
     if (val < 0) {
       ele.style.display = "none"
     } else {
@@ -111,7 +111,7 @@ function hideLoading() {
     sysLoading.style.display = "none"
   }
 }
-function escapeHTML(text) {
+function escape(text) {
   if (!text) {
     return ""
   }
@@ -158,11 +158,11 @@ function showAlert(msg, header, type, iconType, btnLeftText, btnRightText, yesCa
     } else {
       sysErrorDetailCaret.style.display = "inline-block"
       sysErrorDetail.style.display = "inline-block"
-      sysErrorDetailText.innerHTML = escapeHTML(detail)
+      sysErrorDetailText.innerHTML = escape(detail)
     }
   }
-  sysMessage.innerHTML = escapeHTML(msg)
-  sysMessageHeader.innerHTML = escapeHTML(header)
+  sysMessage.innerHTML = escape(msg)
+  sysMessageHeader.innerHTML = escape(header)
   sysAlert.classList.remove("success-icon", "success-icon", "info-icon", "confirm-icon", "danger-icon", "warning-icon")
   if (iconType === "Alert") {
     if (!sysAlert.classList.contains("warning-icon")) {
@@ -190,8 +190,8 @@ function showAlert(msg, header, type, iconType, btnLeftText, btnRightText, yesCa
     }
   }
   const activeElement = window.document.activeElement
-  sysYes.innerHTML = escapeHTML(btnRightText)
-  sysNo.innerHTML = escapeHTML(btnLeftText)
+  sysYes.innerHTML = escape(btnRightText)
+  sysNo.innerHTML = escape(btnLeftText)
   sysYes["activeElement"] = activeElement
   sysAlert.style.display = "flex"
   window.fyesOnClick = yesCallback
