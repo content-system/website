@@ -64,6 +64,9 @@ export const jobModel: Attributes = {
   skills: {
     type: "strings",
   },
+  position: {
+    length: 100,
+  },
   location: {
     length: 120,
   },

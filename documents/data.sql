@@ -41,6 +41,15 @@ create table users (
   updated_at timestamptz,
   lastlogin timestamptz
 );
+create table passwords (
+    user_id varchar(40) primary key,
+    password varchar(255),
+    success_time timestamptz,
+    fail_time timestamptz,
+    fail_count integer,
+    locked_until_time timestamptz,
+    history character varying[]
+);
 
 create table roles (
   role_id varchar(40) primary key,
@@ -134,6 +143,10 @@ insert into users (user_id,username,email,display_name,image_url,status,gender,p
 insert into users (user_id,username,email,display_name,image_url,status,gender,phone,title,position) values ('00040','marco.verratti','marco.verratti@gmail.com','Marco Verratti','https://upload.wikimedia.org/wikipedia/commons/d/d0/Kiev-PSG_%289%29.jpg','A','M','0987654321','Mr','E');
 
 update users set language = 'en', dateformat = 'd/M/yyyy';
+
+insert into passwords(user_id, password)
+select user_id, '$2b$10$LWBgFYSRFpw/lysdne3ybuODJRAk1/qi2z.nhu9fXKA5vH/10AYY.'
+from users;
 
 insert into user_roles(user_id, role_id) values ('00001','admin');
 insert into user_roles(user_id, role_id) values ('00003','admin');
@@ -283,7 +296,7 @@ insert into categories (id,name,status,path,resource_key,icon,sequence,actions,p
 insert into categories (id,name,status,path,resource_key,icon,sequence,actions,parent) values ('leadership','Leadership','A','/leadership','leadership','public',2,7,'about');
 insert into categories (id,name,status,path,resource_key,icon,sequence,actions,parent) values ('companies','companies','A','/companies','companies','zoom_in',2,7,'about');
 
-create table news (
+create table articles (
   id varchar(80) primary key,
   title varchar(255) not null,
   description varchar(1200) not null,
@@ -295,7 +308,7 @@ create table news (
   status char(1)
 );
 
-insert into news (id,title,description,content,published_at,tags,thumbnail,high_thumbnail,status) values
+insert into articles (id,title,description,content,published_at,tags,thumbnail,high_thumbnail,status) values
 	 ('20240917001','FPT Expands Global Workforce to 80,000 amid Its 36th Anniversary','FPT Corporation recently announced a significant milestone, passing 80,000 employees across 30 countries. The milestone coincides with the company’s 36th anniversary and underscores its remarkable growth and global expansion.','FPT Corporation recently announced a significant milestone, passing 80,000 employees across 30 countries. The milestone coincides with the company’s 36th anniversary and underscores its remarkable growth and global expansion.','2024-09-17 16:46:34.763+07','{}','https://fptsoftware.com/-/media/project/fpt-software/global/80000.png','https://fptsoftware.com/-/media/project/fpt-software/global/80000.png','A'),
 	 ('20240722001','FPT to Bolster Growth among Francophone Community, Emphasizing Workforce Development','FPT Corporation recently hosted the FPT Francophone Day, a dynamic networking and culture exchange platform for the French-speaking community in Vietnam. The event also marked the inauguration of FPT Francophone Association, highlighting the IT firm’s commitment to fostering its French-proficient professionals and nurturing opportunities for business and culture exchange.','Global technology corporation FPT recently hosted the FPT Francophone Day, a dynamic networking and culture exchange platform for the French-speaking community in Vietnam. At the event, FPT introduced the FPT Francophone Association, a move to foster its French-proficient professionals and nurture opportunities for business and culture exchange.','2024-07-22 17:06:23.844+07','{}','https://fptsoftware.com/-/media/project/fpt-software/global/common/fptsoftware_building_d/francophone-day-2024_1.webp','https://fptsoftware.com/-/media/project/fpt-software/global/common/fptsoftware_building_d/francophone-day-2024_1.webp','A'),
 	 ('20240912001','FPT Software Earns First Hong Kong Business Technology Excellence Award for its Agent Digital Platform in Insurtech','Global leading IT company FPT Software has earned recognition at the Hong Kong Business Technology Excellence Awards in the Software - Insurtech category. This marks the first time the company has received this prestigious award, reinforcing its status as a trusted service provider in the insurance sector.','Global leading IT company FPT Software has earned recognition at the Hong Kong Business Technology Excellence Awards in the Software - Insurtech category for its groundbreaking Agent Digital Platform (ADP). This marks the first time the company has received this prestigious award, reinforcing its status as a trusted service provider in the insurance sector.','2024-09-12 16:48:10.238+07','{}','https://fptsoftware.com/-/media/project/fpt-software/fso/675a1663.webp','https://fptsoftware.com/-/media/project/fpt-software/fso/675a1663.webp','A'),
@@ -342,6 +355,7 @@ create table jobs (
   description character varying(2000),
   published_at timestamptz,
   expired_at timestamptz,
+  position character varying(100),
   location character varying(1000),
   quantity integer default 1,
   applicant_count integer default 1,
@@ -351,13 +365,13 @@ create table jobs (
   company_id character varying(40)
 );
 
-insert into jobs(id, title, description, published_at, expired_at, location, quantity, applicant_count, requirements, benefit, company_id)  values ('senior-backend-developer', 'Senior Backend Developer (Java, Kotlin, MySQL)', '• Analyze and organize raw data
+insert into jobs(id, title, description, published_at, expired_at, position, location, quantity, applicant_count, requirements, benefit, company_id)  values ('senior-backend-developer', 'Senior Backend Developer (Java, Kotlin, MySQL)', '• Analyze and organize raw data
 • Build data systems and pipelines
 • Prepare data for prescriptive and predictive modeling
 • Combine raw information from different sources
 • Explore ways to enhance data quality and reliability
 • Identify opportunities for data acquisition
-• Data pipeline maintenance/testing.', '2023-05-24 17:00:00+00', '2023-05-29 17:00:00+00', 'Hanoi', 1, 1, 'asdsadasd', 'Analyze and organize raw data
+• Data pipeline maintenance/testing.', '2023-05-24 17:00:00+00', '2023-05-29 17:00:00+00', 'Senior Backend Developer', 'Hanoi', 1, 1, 'asdsadasd', 'Analyze and organize raw data
 
 Build data systems and pipelines
 
@@ -367,7 +381,7 @@ Combine raw information from different sources
 Explore ways to enhance data quality and reliability
 Identify opportunities for data acquisition
 Data pipeline maintenance/testing.', 'mb-bank');
-insert into jobs(id, title, description, published_at, expired_at, location, quantity, applicant_count, requirements, benefit, company_id) values ('business-analyst-jp', 'Business Analyst (Japanese)', 'Previous experience as a data engineer or in a similar role
+insert into jobs(id, title, description, published_at, expired_at, position, location, quantity, applicant_count, requirements, benefit, company_id) values ('business-analyst-jp', 'Business Analyst (Japanese)', 'Previous experience as a data engineer or in a similar role
 
 Technical expertise with data models, data mining, and segmentation techniques
 
@@ -379,16 +393,16 @@ Great numerical and analytical skills
 Degree in Computer Science, IT, or similar field; a Masters is a plus
 
 Data engineering certification (e.g IBM Certified Data Engineer) is a plus
-', '2023-05-24 17:00:00+00', '2023-05-30 17:00:00+00', 'Danang', 1, 2, '<ul style="padding: 0px 0px 0px 2rem; margin-right: 0px; margin-bottom: 1rem; margin-left: 0px; color: rgb(58, 58, 58); font-family: Roboto, sans-serif; font-size: 16px; letter-spacing: normal;"><li>Previous experience as a data engineer or in a similar role</li><li>Technical expertise with data models, data mining, and segmentation techniques</li><li>Knowledge of programming languages (e.g. Java and Python)</li><li>Experience with data architecture and data modeling</li><li>Hands-on experience with SQL database design</li><li>Great numerical and analytical skills</li><li>Degree in Computer Science, IT, or similar field; a Masters is a plus</li><li>Data engineering certification (e.g IBM Certified Data Engineer) is a plus</li></ul>', '• • • Previous experience as a data engineer or in a similar role
+', '2023-05-24 17:00:00+00', '2023-05-30 17:00:00+00', 'Business Analyst', 'Danang', 1, 2, '<ul style="padding: 0px 0px 0px 2rem; margin-right: 0px; margin-bottom: 1rem; margin-left: 0px; color: rgb(58, 58, 58); font-family: Roboto, sans-serif; font-size: 16px; letter-spacing: normal;"><li>Previous experience as a data engineer or in a similar role</li><li>Technical expertise with data models, data mining, and segmentation techniques</li><li>Knowledge of programming languages (e.g. Java and Python)</li><li>Experience with data architecture and data modeling</li><li>Hands-on experience with SQL database design</li><li>Great numerical and analytical skills</li><li>Degree in Computer Science, IT, or similar field; a Masters is a plus</li><li>Data engineering certification (e.g IBM Certified Data Engineer) is a plus</li></ul>', '• • • Previous experience as a data engineer or in a similar role
 • • • Technical expertise with data models, data mining, and segmentation techniques
 • • • Knowledge of programming languages (e.g. Java and Python)
 • • • Experience with data architecture and data modeling', 'mb-bank');
-insert into jobs(id, title, description, published_at, expired_at, location, quantity, applicant_count, requirements, benefit, company_id) values ('senior-devops-engineer', 'Senior DevOps Engineer - Salary Up to $2800', '1. Collaborate with Front-End Developers to integrate user-facing elements with server-side logic and other applications APIs;
+insert into jobs(id, title, description, published_at, expired_at, position, location, quantity, applicant_count, requirements, benefit, company_id) values ('senior-devops-engineer', 'Senior DevOps Engineer - Salary Up to $2800', '1. Collaborate with Front-End Developers to integrate user-facing elements with server-side logic and other applications APIs;
 2. Maintain and improve running-functionality as well as design and develop new system, new feature; d
 3. Develop and maintain Back-End Code that improves analytical and statistical modeling and forecasting methods to support business tribes in their decision-making process;
 4. Create data structures from scratch;
 5. Actively test and debug code defect;
-6. Research to learn technology and knowledge needed to develop products for the global market.', '2023-05-24 17:00:00+00', '2023-05-30 17:00:00+00', 'Cantho', 1, 1, '1. Analyze and organize raw data
+6. Research to learn technology and knowledge needed to develop products for the global market.', '2023-05-24 17:00:00+00', '2023-05-30 17:00:00+00', 'Senior Devops Engineer', 'Cantho', 1, 1, '1. Analyze and organize raw data
 2. Build data systems and pipelines
 3. Prepare data for prescriptive and predictive modeling
 4. Combine raw information from different sources

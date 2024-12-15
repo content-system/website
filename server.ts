@@ -13,7 +13,7 @@ import { route } from "./service"
 import { useContext } from "./service/context"
 
 dotenv.config()
-const conf = merge(config, process.env, env, process.env.ENV)
+const cfg = merge(config, process.env, env, process.env.ENV)
 
 // buildJavascript()
 // buildCSS()
@@ -31,14 +31,14 @@ nunjucks.configure("views", {
 })
 app.set("view engine", "html")
 
-const logger = createLogger(conf.log)
-const middleware = new MiddlewareLogger(logger.info, conf.middleware)
+const logger = createLogger(cfg.log)
+const middleware = new MiddlewareLogger(logger.info, cfg.middleware)
 // app.use(allow(conf.allow), json(), middleware.log)
 // app.use(allow(conf.allow), json())
 
-const pool = new Pool(conf.db)
+const pool = new Pool(cfg.db)
 const db = new PoolManager(pool)
-const ctx = useContext(db, logger, middleware)
+const ctx = useContext(db, logger, middleware, cfg)
 route(app, ctx)
 
 app.locals.datetimeToString = datetimeToString
@@ -73,6 +73,6 @@ app.get("/leadership", (req: Request, res: Response) => {
   })
 })
 
-http.createServer(app).listen(conf.port, () => {
-  console.log("Start server at port " + conf.port)
+http.createServer(app).listen(cfg.port, () => {
+  console.log("Start server at port " + cfg.port)
 })
