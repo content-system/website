@@ -1,6 +1,7 @@
 import { Authenticator } from "authen-service"
 import { Request, Response } from "express"
-import { Attributes, StringMap } from "onecore"
+import { handleError } from "express-ext"
+import { Attributes, Log, StringMap } from "onecore"
 import { validate } from "xvalidators"
 import { getResource } from "../resources"
 
@@ -27,8 +28,8 @@ export const map: StringMap = {
   "4": "fail_locked_account",
   "9": "fail_disabled_account",
 }
-export class LoginController {
-  constructor(private authenticator: Authenticator<User, string>) {
+export class SigninController {
+  constructor(private authenticator: Authenticator<User, string>, private log: Log) {
     this.render = this.render.bind(this)
     this.submit = this.submit.bind(this)
   }
@@ -52,14 +53,17 @@ export class LoginController {
       console.log("Login error: " + JSON.stringify(errors))
       res.status(422).json(errors)
     } else {
-      this.authenticator.authenticate(user).then((result) => {
-        console.log("Result " + JSON.stringify(result))
-        if (result.status === 1) {
-          res.status(200).json(result.user).end()
-        } else {
-          res.status(403).json(result).end()
-        }
-      })
+      this.authenticator
+        .authenticate(user)
+        .then((result) => {
+          console.log("Result " + JSON.stringify(result))
+          if (result.status === 1) {
+            res.status(200).json(result.user).end()
+          } else {
+            res.status(403).json(result).end()
+          }
+        })
+        .catch((err) => handleError(err, res, this.log))
     }
   }
 }

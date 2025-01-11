@@ -73,6 +73,7 @@ export const en = {
   button_ok: "",
   button_yes: "Yes",
   button_no: "No",
+  button_home: "Home",
 
   msg_confirm_save: "Are you sure you want to save?",
   msg_save_success: "Data have been saved successfully.",

@@ -111,7 +111,7 @@ function hideLoading() {
     sysLoading.style.display = "none"
   }
 }
-function escape(text) {
+function escapeHTML(text) {
   if (!text) {
     return ""
   }
@@ -158,11 +158,11 @@ function showAlert(msg, header, type, iconType, btnLeftText, btnRightText, yesCa
     } else {
       sysErrorDetailCaret.style.display = "inline-block"
       sysErrorDetail.style.display = "inline-block"
-      sysErrorDetailText.innerHTML = escape(detail)
+      sysErrorDetailText.innerHTML = escapeHTML(detail)
     }
   }
-  sysMessage.innerHTML = escape(msg)
-  sysMessageHeader.innerHTML = escape(header)
+  sysMessage.innerHTML = escapeHTML(msg)
+  sysMessageHeader.innerHTML = escapeHTML(header)
   sysAlert.classList.remove("success-icon", "success-icon", "info-icon", "confirm-icon", "danger-icon", "warning-icon")
   if (iconType === "Alert") {
     if (!sysAlert.classList.contains("warning-icon")) {
@@ -190,8 +190,8 @@ function showAlert(msg, header, type, iconType, btnLeftText, btnRightText, yesCa
     }
   }
   const activeElement = window.document.activeElement
-  sysYes.innerHTML = escape(btnRightText)
-  sysNo.innerHTML = escape(btnLeftText)
+  sysYes.innerHTML = escapeHTML(btnRightText)
+  sysNo.innerHTML = escapeHTML(btnLeftText)
   sysYes["activeElement"] = activeElement
   sysAlert.style.display = "flex"
   window.fyesOnClick = yesCallback

@@ -1,43 +1,40 @@
 "use strict"
-var r1 = / |,|\$|€|£|¥|'|٬|،| /g
-var r2 = / |\.|\$|€|£|¥|'|٬|،| /g
-var resources = (function () {
-  function resources() {}
-  resources.defaultLimit = 12
-  resources.containerClass = "form-input"
-  resources.hiddenMessage = "hidden-message"
-  resources.token = "token"
-  resources.num1 = / |,|\$|€|£|¥|'|٬|،| /g
-  resources.num2 = / |\.|\$|€|£|¥|'|٬|،| /g
-  resources.email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/i
-  resources.phone = /^\d{5,14}$/
-  resources.password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-  resources.url = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
-  resources.digit = /^\d+$/
-  resources.amount = /^[0-9]{0,15}(?:\.[0-9]{1,3})?$/
-  resources.digitAndDash = /^[0-9-]*$/
-  resources.digitAndChar = /^\w*\d*$/
-  resources.checkNumber = /^\d{0,8}$/
-  resources.percentage = /^[1-9][0-9]?$|^100$/
-  resources.ipv4 = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/
-  resources.usPostcode = /(^\d{5}$)|(^\d{5}-\d{4}$)/
-  resources.caPostcode =
-    /^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz][ -]?[0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz][0-9]$/
-  resources.ipv6 =
-    /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/
-  return resources
-})()
+const r1 = / |,|\$|€|£|¥|'|٬|،| /g
+const r2 = / |\.|\$|€|£|¥|'|٬|،| /g
+class resources {}
+resources.defaultLimit = 12
+resources.containerClass = "form-input"
+resources.hiddenMessage = "hidden-message"
+resources.token = "token"
+resources.num1 = / |,|\$|€|£|¥|'|٬|،| /g
+resources.num2 = / |\.|\$|€|£|¥|'|٬|،| /g
+resources.email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/i
+resources.phone = /^\d{5,14}$/
+resources.password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+resources.url = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+resources.digit = /^\d+$/
+resources.amount = /^[0-9]{0,15}(?:\.[0-9]{1,3})?$/
+resources.digitAndDash = /^[0-9-]*$/
+resources.digitAndChar = /^\w*\d*$/
+resources.checkNumber = /^\d{0,8}$/
+resources.percentage = /^[1-9][0-9]?$|^100$/
+resources.ipv4 = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/
+resources.usPostcode = /(^\d{5}$)|(^\d{5}-\d{4}$)/
+resources.caPostcode =
+  /^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz][ -]?[0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz][0-9]$/
+resources.ipv6 =
+  /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/
 function parseDate(v, format) {
   if (!format || format.length === 0) {
     format = "MM/DD/YYYY"
   } else {
     format = format.toUpperCase()
   }
-  var dateItems = format.split(/\/|\.| |-/)
-  var valueItems = v.split(/\/|\.| |-/)
-  var imonth = dateItems.indexOf("M")
-  var iday = dateItems.indexOf("D")
-  var iyear = dateItems.indexOf("YYYY")
+  const dateItems = format.split(/\/|\.| |-/)
+  const valueItems = v.split(/\/|\.| |-/)
+  let imonth = dateItems.indexOf("M")
+  let iday = dateItems.indexOf("D")
+  let iyear = dateItems.indexOf("YYYY")
   if (imonth === -1) {
     imonth = dateItems.indexOf("MM")
   }
@@ -47,30 +44,28 @@ function parseDate(v, format) {
   if (iyear === -1) {
     iyear = dateItems.indexOf("YY")
   }
-  var month = parseInt(valueItems[imonth], 10) - 1
-  var year = parseInt(valueItems[iyear], 10)
+  const month = parseInt(valueItems[imonth], 10) - 1
+  let year = parseInt(valueItems[iyear], 10)
   if (year < 100) {
     year += 2000
   }
-  var day = parseInt(valueItems[iday], 10)
+  const day = parseInt(valueItems[iday], 10)
   return new Date(year, month, day)
 }
-var o = "object"
+const o = "object"
 function trimNull(obj) {
   if (!obj || typeof obj !== o) {
     return obj
   }
-  var keys = Object.keys(obj)
-  for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
-    var key = keys_1[_i]
-    var v = obj[key]
+  const keys = Object.keys(obj)
+  for (const key of keys) {
+    const v = obj[key]
     if (v === null) {
       delete obj[key]
     } else if (Array.isArray(v) && v.length > 0) {
-      var v1 = v[0]
+      const v1 = v[0]
       if (typeof v1 === o && !(v1 instanceof Date)) {
-        for (var _a = 0, v_1 = v; _a < v_1.length; _a++) {
-          var item = v_1[_a]
+        for (const item of v) {
           trimNull(item)
         }
       }
@@ -80,13 +75,28 @@ function trimNull(obj) {
   }
   return obj
 }
+let eleHtml
+let isGetHtml = false
+function getLang() {
+  if (!isGetHtml) {
+    eleHtml = document.querySelector("html")
+    isGetHtml = true
+  }
+  if (isGetHtml && eleHtml) {
+    const lang = eleHtml.getAttribute("lang")
+    if (lang && lang.length > 0) {
+      return lang
+    }
+  }
+  return undefined
+}
 function getCurrentURL() {
   return window.location.origin + window.location.pathname
 }
 function getDecimalSeparator(ele) {
-  var separator = ele.getAttribute("data-decimal-separator")
+  let separator = ele.getAttribute("data-decimal-separator")
   if (!separator) {
-    var form = ele.form
+    const form = ele.form
     if (form) {
       separator = form.getAttribute("data-decimal-separator")
     }
@@ -114,7 +124,7 @@ function detectCtrlKeyCombination(e) {
   }
   if (isCtrl) {
     var chr = String.fromCharCode(key).toLowerCase()
-    for (var i = 0; i < forbiddenKeys.length; i++) {
+    for (let i = 0; i < forbiddenKeys.length; i++) {
       if (forbiddenKeys[i] == chr) {
         return true
       }
@@ -126,7 +136,7 @@ function digitOnKeyPress(e) {
   if (detectCtrlKeyCombination(e)) {
     return true
   }
-  var key = window.event ? e.keyCode : e.which
+  const key = window.event ? e.keyCode : e.which
   if (key == 13 || key == 8 || key == 9 || key == 11 || key == 127 || key == "\t") {
     return key
   }
@@ -138,7 +148,7 @@ function integerOnKeyPress(e) {
   if (detectCtrlKeyCombination(e)) {
     return true
   }
-  var key = window.event ? e.keyCode : e.which
+  const key = window.event ? e.keyCode : e.which
   if (key == 13 || key == 8 || key == 9 || key == 11 || key == 127 || key == "\t") {
     return key
   }
@@ -157,7 +167,7 @@ function numberOnKeyPress(e) {
   if (detectCtrlKeyCombination(e)) {
     return true
   }
-  var key = window.event ? e.keyCode : e.which
+  const key = window.event ? e.keyCode : e.which
   if (key == 13 || key == 8 || key == 9 || key == 11 || key == 127 || key == "\t") {
     return key
   }
@@ -182,7 +192,7 @@ function trimTime(d) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate())
 }
 function addDays(d, n) {
-  var newDate = new Date(d)
+  const newDate = new Date(d)
   newDate.setDate(newDate.getDate() + n)
   return newDate
 }
@@ -190,18 +200,18 @@ function formatDate(d, dateFormat, full, upper) {
   if (!d) {
     return ""
   }
-  var format = dateFormat && dateFormat.length > 0 ? dateFormat : "M/D/YYYY"
+  let format = dateFormat && dateFormat.length > 0 ? dateFormat : "M/D/YYYY"
   if (upper) {
     format = format.toUpperCase()
   }
-  var arr = ["", "", ""]
-  var items = format.split(/\/|\.| |-/)
-  var iday = items.indexOf("D")
-  var im = items.indexOf("M")
-  var iyear = items.indexOf("YYYY")
-  var fm = full ? full : false
-  var fd = full ? full : false
-  var fy = true
+  let arr = ["", "", ""]
+  const items = format.split(/\/|\.| |-/)
+  let iday = items.indexOf("D")
+  let im = items.indexOf("M")
+  let iyear = items.indexOf("YYYY")
+  let fm = full ? full : false
+  let fd = full ? full : false
+  let fy = true
   if (iday === -1) {
     iday = items.indexOf("DD")
     fd = true
@@ -217,15 +227,15 @@ function formatDate(d, dateFormat, full, upper) {
   arr[iday] = getD(d.getDate(), fd)
   arr[im] = getD(d.getMonth() + 1, fm)
   arr[iyear] = getYear(d.getFullYear(), fy)
-  var s = detectSeparator(format)
-  var e = detectLastSeparator(format)
-  var l = items.length === 4 ? format[format.length - 1] : ""
+  const s = detectSeparator(format)
+  const e = detectLastSeparator(format)
+  const l = items.length === 4 ? format[format.length - 1] : ""
   return arr[0] + s + arr[1] + e + arr[2] + l
 }
 function detectSeparator(format) {
-  var len = format.length
-  for (var i = 0; i < len; i++) {
-    var c = format[i]
+  const len = format.length
+  for (let i = 0; i < len; i++) {
+    const c = format[i]
     if (!((c >= "A" && c <= "Z") || (c >= "a" && c <= "z"))) {
       return c
     }
@@ -233,9 +243,9 @@ function detectSeparator(format) {
   return "/"
 }
 function detectLastSeparator(format) {
-  var len = format.length - 3
-  for (var i = len; i > -0; i--) {
-    var c = format[i]
+  const len = format.length - 3
+  for (let i = len; i > -0; i--) {
+    const c = format[i]
     if (!((c >= "A" && c <= "Z") || (c >= "a" && c <= "z"))) {
       return c
     }
@@ -246,7 +256,7 @@ function getYear(y, full) {
   if (full || (y <= 99 && y >= -99)) {
     return y.toString()
   }
-  var s = y.toString()
+  const s = y.toString()
   return s.substring(s.length - 2)
 }
 function getD(n, fu) {
@@ -268,7 +278,7 @@ function formatLongDateTime(date, dateFormat, full, upper) {
   if (!date) {
     return ""
   }
-  var sd = formatDate(date, dateFormat, full, upper)
+  const sd = formatDate(date, dateFormat, full, upper)
   if (sd.length === 0) {
     return sd
   }
@@ -276,8 +286,8 @@ function formatLongDateTime(date, dateFormat, full, upper) {
 }
 function getValue(form, name) {
   if (form) {
-    for (var i = 0; i < form.length; i++) {
-      var ele = form[i]
+    for (let i = 0; i < form.length; i++) {
+      const ele = form[i]
       if (ele.name === name) {
         return ele.value
       }
@@ -287,9 +297,9 @@ function getValue(form, name) {
 }
 function getElement(form, name) {
   if (form) {
-    var l = form.length
-    for (var i = 0; i < l; i++) {
-      var e = form[i]
+    const l = form.length
+    for (let i = 0; i < l; i++) {
+      const e = form[i]
       if (e.getAttribute("name") === name) {
         return e
       }
@@ -304,7 +314,7 @@ function findParent(e, className, nodeName) {
   if (nodeName && e.nodeName === nodeName) {
     return e
   }
-  var p = e
+  let p = e
   while (true) {
     p = p.parentElement
     if (!p) {
@@ -328,9 +338,9 @@ function addClass(ele, className) {
   return false
 }
 function addClasses(ele, classes) {
-  var count = 0
+  let count = 0
   if (ele) {
-    for (var i = 0; i < classes.length; i++) {
+    for (let i = 0; i < classes.length; i++) {
       if (addClass(ele, classes[i])) {
         count++
       }
@@ -348,9 +358,9 @@ function removeClass(ele, className) {
   return false
 }
 function removeClasses(ele, classes) {
-  var count = 0
+  let count = 0
   if (ele) {
-    for (var i = 0; i < classes.length; i++) {
+    for (let i = 0; i < classes.length; i++) {
       if (removeClass(ele, classes[i])) {
         count++
       }
@@ -370,43 +380,52 @@ function handleMaterialFocus(ele) {
   }
 }
 function materialOnFocus(event) {
-  var ele = event.currentTarget
+  const ele = event.currentTarget
   if (ele.disabled || ele.readOnly) {
     return
   }
-  setTimeout(function () {
+  setTimeout(() => {
     if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
       addClass(getContainer(ele), "focused")
     }
   }, 0)
 }
 function materialOnBlur(event) {
-  var ele = event.currentTarget
-  setTimeout(function () {
+  const ele = event.currentTarget
+  setTimeout(() => {
     if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
       removeClasses(getContainer(ele), ["focused", "focus"])
     }
   }, 0)
 }
 function registerEvents(form) {
-  var len = form.length
-  for (var i = 0; i < len; i++) {
-    var ele = form[i]
+  const len = form.length
+  for (let i = 0; i < len; i++) {
+    const ele = form[i]
     if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
-      var type = ele.getAttribute("type")
+      let type = ele.getAttribute("type")
       if (type != null) {
         type = type.toLowerCase()
       }
-      if (ele.nodeName === "INPUT" && (type === "checkbox" || type === "radio" || type === "submit" || type === "button" || type === "reset")) {
+      if (
+        ele.nodeName === "INPUT" &&
+        (type === "checkbox" || type === "radio" || type === "submit" || type === "button" || type === "reset")
+      ) {
         continue
       } else {
-        var parent_1 = ele.parentElement
-        var required = ele.getAttribute("required")
-        if (parent_1) {
-          if (parent_1.nodeName === "LABEL" && required != null && required !== undefined && required != "false" && !parent_1.classList.contains("required")) {
-            parent_1.classList.add("required")
-          } else if (parent_1.classList.contains("form-group") || parent_1.classList.contains("field")) {
-            var firstChild = parent_1.firstChild
+        const parent = ele.parentElement
+        const required = ele.getAttribute("required")
+        if (parent) {
+          if (
+            parent.nodeName === "LABEL" &&
+            required != null &&
+            required !== undefined &&
+            required != "false" &&
+            !parent.classList.contains("required")
+          ) {
+            parent.classList.add("required")
+          } else if (parent.classList.contains("form-group") || parent.classList.contains("field")) {
+            const firstChild = parent.firstChild
             if (firstChild && firstChild.nodeName === "LABEL") {
               if (!firstChild.classList.contains("required")) {
                 firstChild.classList.add("required")
@@ -425,12 +444,12 @@ function registerEvents(form) {
   }
 }
 function valueOf(obj, key) {
-  var mapper = key.split(".").map(function (item) {
+  const mapper = key.split(".").map((item) => {
     return item.replace(/\[/g, ".[").replace(/\[|\]/g, "")
   })
-  var reSplit = mapper.join(".").split(".")
-  return reSplit.reduce(function (acc, current, index, source) {
-    var value = getDirectValue(acc, current)
+  const reSplit = mapper.join(".").split(".")
+  return reSplit.reduce((acc, current, index, source) => {
+    const value = getDirectValue(acc, current)
     if (!value) {
       source.splice(1)
     }
@@ -444,19 +463,19 @@ function getDirectValue(obj, key) {
   return null
 }
 function setValue(obj, key, value) {
-  var replaceKey = key.replace(/\[/g, ".[").replace(/\.\./g, ".")
+  let replaceKey = key.replace(/\[/g, ".[").replace(/\.\./g, ".")
   if (replaceKey.indexOf(".") === 0) {
     replaceKey = replaceKey.slice(1, replaceKey.length)
   }
-  var keys = replaceKey.split(".")
-  var firstKey = keys.shift()
+  const keys = replaceKey.split(".")
+  let firstKey = keys.shift()
   if (!firstKey) {
     return
   }
-  var isArrayKey = /\[([0-9]+)\]/.test(firstKey)
+  const isArrayKey = /\[([0-9]+)\]/.test(firstKey)
   if (keys.length > 0) {
-    var firstKeyValue = obj[firstKey] || {}
-    var returnValue = setValue(firstKeyValue, keys.join("."), value)
+    const firstKeyValue = obj[firstKey] || {}
+    const returnValue = setValue(firstKeyValue, keys.join("."), value)
     return setKey(obj, isArrayKey, firstKey, returnValue)
   }
   return setKey(obj, isArrayKey, firstKey, value)
@@ -474,60 +493,58 @@ function setKey(_object, _isArrayKey, _key, _nextValue) {
   return _object
 }
 function decodeFromForm(form, currencySymbol) {
-  var dateFormat = form.getAttribute("data-date-format")
-  var obj = {}
-  var len = form.length
-  var _loop_1 = function (i) {
-    var ele = form[i]
-    var name_1 = ele.getAttribute("name")
-    var id = ele.getAttribute("id")
-    var val = void 0
-    var isDate = false
-    var dataField = ele.getAttribute("data-field")
+  const dateFormat = form.getAttribute("data-date-format")
+  const obj = {}
+  const len = form.length
+  for (let i = 0; i < len; i++) {
+    const ele = form[i]
+    let name = ele.getAttribute("name")
+    const id = ele.getAttribute("id")
+    let val
+    let isDate = false
+    let dataField = ele.getAttribute("data-field")
     if (dataField && dataField.length > 0) {
-      name_1 = dataField
-    } else if ((!name_1 || name_1 === "") && ele.parentElement && ele.parentElement.classList.contains("DayPickerInput")) {
+      name = dataField
+    } else if ((!name || name === "") && ele.parentElement && ele.parentElement.classList.contains("DayPickerInput")) {
       if (ele.parentElement.parentElement) {
         dataField = ele.parentElement.parentElement.getAttribute("data-field")
         isDate = true
-        name_1 = dataField
+        name = dataField
       }
     }
     if (isDate === false && ele.getAttribute("data-type") === "date") {
       isDate = true
     }
-    if (name_1 != null && name_1 !== "") {
-      var nodeName = ele.nodeName
-      var type = ele.getAttribute("type")
+    if (name != null && name !== "") {
+      let nodeName = ele.nodeName
+      const type = ele.getAttribute("type")
       if (nodeName === "INPUT" && type !== null) {
         nodeName = type.toUpperCase()
       }
       if (nodeName !== "BUTTON" && nodeName !== "RESET" && nodeName !== "SUBMIT") {
         switch (type) {
           case "checkbox":
-            if (id && name_1 !== id) {
-              val = valueOf(obj, name_1)
+            if (id && name !== id) {
+              val = valueOf(obj, name)
               if (!val) {
                 val = []
               }
               if (ele.checked) {
                 val.push(ele.value)
               } else {
-                val = val.filter(function (item) {
-                  return item != ele.value
-                })
+                val = val.filter((item) => item != ele.value)
               }
             } else {
               val = ele.value.length > 0 ? ele.value : ele.checked
             }
-            setValue(obj, name_1, val)
-            return "continue"
+            setValue(obj, name, val)
+            continue
           case "radio":
             if (ele.checked) {
               val = ele.value.length > 0 ? ele.value : ele.checked
-              setValue(obj, name_1, val)
+              setValue(obj, name, val)
             }
-            return "continue"
+            continue
           case "date":
             val = ele.value.length === 10 ? ele.value : null
             break
@@ -546,12 +563,12 @@ function decodeFromForm(form, currencySymbol) {
             val = ele.value
         }
         if (isDate && dateFormat && dateFormat.length > 0) {
-          var d = parseDate(val, dateFormat)
+          const d = parseDate(val, dateFormat)
           val = d.toString() === "Invalid Date" ? null : d
         }
-        var datatype = ele.getAttribute("data-type")
-        var v = ele.value
-        var symbol = void 0
+        const datatype = ele.getAttribute("data-type")
+        let v = ele.value
+        let symbol
         if (datatype === "currency" || datatype === "string-currency") {
           symbol = ele.getAttribute("data-currency-symbol")
           if (!symbol) {
@@ -562,21 +579,18 @@ function decodeFromForm(form, currencySymbol) {
           }
         }
         if (type === "number" || datatype === "currency" || datatype === "integer" || datatype === "number") {
-          var decimalSeparator = getDecimalSeparator(ele)
+          const decimalSeparator = getDecimalSeparator(ele)
           v = decimalSeparator === "," ? v.replace(r2, "") : (v = v.replace(r1, ""))
           val = isNaN(v) ? null : parseFloat(v)
         }
-        setValue(obj, name_1, val)
+        setValue(obj, name, val)
       }
     }
-  }
-  for (var i = 0; i < len; i++) {
-    _loop_1(i)
   }
   return obj
 }
 function removeFormatUrl(url) {
-  var startParams = url.indexOf("?")
+  const startParams = url.indexOf("?")
   return startParams !== -1 ? url.substring(0, startParams) : url
 }
 function getPrefix(url) {
@@ -592,55 +606,52 @@ function buildSearchUrl(ft, page, limit, fields) {
   if (!fields || fields.length === 0) {
     fields = "fields"
   }
-  var pageIndex = ft.page
+  const pageIndex = ft.page
   if (pageIndex && !isNaN(pageIndex) && pageIndex <= 1) {
     delete ft.page
   }
-  var keys = Object.keys(ft)
-  var url = "?partial=true"
-  for (var _i = 0, keys_2 = keys; _i < keys_2.length; _i++) {
-    var key = keys_2[_i]
-    var objValue = ft[key]
+  const keys = Object.keys(ft)
+  let url = "?partial=true"
+  for (const key of keys) {
+    const objValue = ft[key]
     if (objValue) {
       if (key !== fields) {
         if (typeof objValue === "string" || typeof objValue === "number") {
           if (key === page) {
             if (objValue != 1) {
-              url += getPrefix(url) + (key + "=" + objValue)
+              url += getPrefix(url) + `${key}=${objValue}`
             }
           } else if (key === limit) {
             if (objValue != resources.defaultLimit) {
-              url += getPrefix(url) + (key + "=" + objValue)
+              url += getPrefix(url) + `${key}=${objValue}`
             }
           } else {
-            url += getPrefix(url) + (key + "=" + objValue)
+            url += getPrefix(url) + `${key}=${objValue}`
           }
         } else if (typeof objValue === "object") {
           if (objValue instanceof Date) {
-            url += getPrefix(url) + (key + "=" + objValue.toISOString())
+            url += getPrefix(url) + `${key}=${objValue.toISOString()}`
           } else {
             if (Array.isArray(objValue)) {
               if (objValue.length > 0) {
-                var strs = []
-                for (var _a = 0, objValue_1 = objValue; _a < objValue_1.length; _a++) {
-                  var subValue = objValue_1[_a]
+                const strs = []
+                for (const subValue of objValue) {
                   if (typeof subValue === "string") {
                     strs.push(subValue)
                   } else if (typeof subValue === "number") {
                     strs.push(subValue.toString())
                   }
                 }
-                url += getPrefix(url) + (key + "=" + strs.join(","))
+                url += getPrefix(url) + `${key}=${strs.join(",")}`
               }
             } else {
-              var keysLvl2 = Object.keys(objValue)
-              for (var _b = 0, keysLvl2_1 = keysLvl2; _b < keysLvl2_1.length; _b++) {
-                var key2 = keysLvl2_1[_b]
-                var objValueLvl2 = objValue[key2]
+              const keysLvl2 = Object.keys(objValue)
+              for (const key2 of keysLvl2) {
+                const objValueLvl2 = objValue[key2]
                 if (objValueLvl2 instanceof Date) {
-                  url += getPrefix(url) + (key + "." + key2 + "=" + objValueLvl2.toISOString())
+                  url += getPrefix(url) + `${key}.${key2}=${objValueLvl2.toISOString()}`
                 } else {
-                  url += getPrefix(url) + (key + "." + key2 + "=" + objValueLvl2)
+                  url += getPrefix(url) + `${key}.${key2}=${objValueLvl2}`
                 }
               }
             }
@@ -652,7 +663,7 @@ function buildSearchUrl(ft, page, limit, fields) {
   return url
 }
 function removeField(search, fieldName) {
-  var i = search.indexOf(fieldName + "=")
+  let i = search.indexOf(fieldName + "=")
   if (i < 0) {
     return search
   }
@@ -665,11 +676,11 @@ function removeField(search, fieldName) {
       i = i + 1
     }
   }
-  var j = search.indexOf("&", i + fieldName.length)
+  const j = search.indexOf("&", i + fieldName.length)
   return j >= 0 ? search.substring(0, i) + search.substring(j + 1) : search.substring(0, i - 1)
 }
 function getField(search, fieldName) {
-  var i = search.indexOf(fieldName + "=")
+  let i = search.indexOf(fieldName + "=")
   if (i < 0) {
     return ""
   }
@@ -682,44 +693,44 @@ function getField(search, fieldName) {
       i = i + 1
     }
   }
-  var j = search.indexOf("&", i + fieldName.length)
+  const j = search.indexOf("&", i + fieldName.length)
   return j >= 0 ? search.substring(i, j) : search.substring(i)
 }
 function changePage(e) {
   e.preventDefault()
-  var target = e.target
-  var search = target.search
+  const target = e.target
+  let search = target.search
   if (search.length > 0) {
     search = search.substring(1)
   }
   search = removeField(search, "partial")
-  var p = getField(search, "page")
+  const p = getField(search, "page")
   if (p === "page=1") {
     search = removeField(search, "page")
   }
-  var url = window.location.origin + window.location.pathname
+  let url = window.location.origin + window.location.pathname
   url = url + (search.length === 0 ? "?partial=true" : "?" + search + "&partial=true")
-  var newUrl = window.location.origin + window.location.pathname
+  let newUrl = window.location.origin + window.location.pathname
   if (search.length > 0) {
     newUrl = newUrl + "?" + search
   }
-  var resource = getResource()
+  const resource = getResource()
   fetch(url, {
     method: "GET",
     headers: getHeaders(),
   })
-    .then(function (response) {
+    .then((response) => {
       if (response.ok) {
-        response.text().then(function (data) {
-          var pageBody = document.getElementById("pageBody")
+        response.text().then((data) => {
+          const pageBody = document.getElementById("pageBody")
           if (pageBody) {
             pageBody.innerHTML = data
-            var forms_1 = pageBody.querySelectorAll("form")
-            for (var i = 0; i < forms_1.length; i++) {
-              registerEvents(forms_1[i])
+            const forms = pageBody.querySelectorAll("form")
+            for (let i = 0; i < forms.length; i++) {
+              registerEvents(forms[i])
             }
             setTimeout(function () {
-              var msg = getHiddenMessage(forms_1, resources.hiddenMessage)
+              const msg = getHiddenMessage(forms, resources.hiddenMessage)
               if (msg && msg.length > 0) {
                 toast(msg)
               }
@@ -732,44 +743,44 @@ function changePage(e) {
         alertError(resource.error_submit_failed, undefined, undefined, response.statusText)
       }
     })
-    .catch(function (err) {
+    .catch((err) => {
       console.log("Error: " + err)
       alertError(resource.error_submitting_form, undefined, undefined, err)
     })
 }
 function search(e) {
   e.preventDefault()
-  var target = e.target
-  var form = target.form
-  var initFilter = decodeFromForm(form)
-  var filter = trimNull(initFilter)
+  const target = e.target
+  const form = target.form
+  const initFilter = decodeFromForm(form)
+  const filter = trimNull(initFilter)
   filter.page = 1
-  var search = buildSearchUrl(filter)
-  var url = getCurrentURL() + search
-  var newUrl = getCurrentURL()
+  const search = buildSearchUrl(filter)
+  const url = getCurrentURL() + search
+  let newUrl = getCurrentURL()
   if (search.length > 0) {
-    var s = removeField(search.substring(1), "partial")
+    const s = removeField(search.substring(1), "partial")
     if (s.length > 0) {
       newUrl = newUrl + "?" + s
     }
   }
-  var resource = getResource()
+  const resource = getResource()
   fetch(url, {
     method: "GET",
     headers: getHeaders(),
   })
-    .then(function (response) {
+    .then((response) => {
       if (response.ok) {
-        response.text().then(function (data) {
-          var pageBody = document.getElementById("pageBody")
+        response.text().then((data) => {
+          const pageBody = document.getElementById("pageBody")
           if (pageBody) {
             pageBody.innerHTML = data
-            var forms_2 = pageBody.querySelectorAll("form")
-            for (var i = 0; i < forms_2.length; i++) {
-              registerEvents(forms_2[i])
+            const forms = pageBody.querySelectorAll("form")
+            for (let i = 0; i < forms.length; i++) {
+              registerEvents(forms[i])
             }
             setTimeout(function () {
-              var msg = getHiddenMessage(forms_2, resources.hiddenMessage)
+              const msg = getHiddenMessage(forms, resources.hiddenMessage)
               if (msg && msg.length > 0) {
                 toast(msg)
               }
@@ -782,37 +793,81 @@ function search(e) {
         alertError(resource.error_submit_failed, undefined, undefined, response.statusText)
       }
     })
-    .catch(function (err) {
+    .catch((err) => {
       console.log("Error: " + err)
       alertError(resource.error_submitting_form, undefined, undefined, err)
     })
 }
 function getHiddenMessage(nodes, name, i) {
-  var index = i !== undefined && i >= 0 ? i : 0
+  const index = i !== undefined && i >= 0 ? i : 0
   if (nodes.length > index) {
-    var form = nodes[index]
-    var n = name && name.length > 0 ? name : "hidden-message"
-    var ele = form.querySelector("." + n)
+    const form = nodes[index]
+    const n = name && name.length > 0 ? name : "hidden-message"
+    const ele = form.querySelector("." + n)
     if (ele) {
       return ele.innerHTML
     }
   }
   return null
 }
-function showErrorMessage(form, msg) {
-  var ele = form.querySelector(".message")
+function showErrorMessage(ele, msg) {
   if (ele) {
-    if (!ele.classList.contains("alert-error")) {
-      ele.classList.add("alert-error")
-    }
+    removeClasses(ele, ["alert-error", "alert-warning", "alert-info"])
+    ele.classList.add("alert-error")
     ele.innerHTML = msg + '<span onclick="clearMessage(event)"></span>'
   }
   return false
 }
+function showErrorMessageOfForm(form, msg) {
+  const ele = form.querySelector(".message")
+  return showErrorMessage(ele, msg)
+}
+function showWarningMessage(ele, msg) {
+  if (ele) {
+    removeClasses(ele, ["alert-error", "alert-warning", "alert-info"])
+    ele.classList.add("alert-warning")
+    ele.innerHTML = msg + '<span onclick="clearMessage(event)"></span>'
+  }
+  return false
+}
+function showWarningMessageOfForm(form, msg) {
+  const ele = form.querySelector(".message")
+  return showWarningMessage(ele, msg)
+}
+function showInfoMessage(ele, msg) {
+  if (ele) {
+    removeClasses(ele, ["alert-error", "alert-warning", "alert-info"])
+    ele.classList.add("alert-info")
+    ele.innerHTML = msg + '<span onclick="clearMessage(event)"></span>'
+  }
+  return false
+}
+function showInfoMessageOfForm(form, msg) {
+  const ele = form.querySelector(".message")
+  return showInfoMessage(ele, msg)
+}
+function checkRequiredElements(form, names) {
+  const resource = getResource()
+  const eleMsg = form.querySelector(".message")
+  if (eleMsg) {
+    for (let i = 0; i < names.length; i++) {
+      const ele = getElement(form, names[i])
+      if (ele) {
+        if (ele.value === "") {
+          const label = getLabel(ele)
+          const msg = format(resource.error_required, label)
+          showErrorMessage(eleMsg, msg)
+          return false
+        }
+      }
+    }
+  }
+  return true
+}
 function setInputValue(form, name, value) {
   if (form) {
-    for (var i = 0; i < form.length; i++) {
-      var ele = form[i]
+    for (let i = 0; i < form.length; i++) {
+      const ele = form[i]
       if (ele.name === name) {
         ele.value = value
         return true
@@ -822,40 +877,40 @@ function setInputValue(form, name, value) {
   return false
 }
 function getToken() {
-  var token = localStorage.getItem(resources.token)
+  const token = localStorage.getItem(resources.token)
   return token
 }
 function submitFormData(e) {
   e.preventDefault()
-  var target = e.target
-  var form = target.form
-  var valid = validateForm(form)
+  const target = e.target
+  const form = target.form
+  const valid = validateForm(form)
   if (!valid) {
     return
   }
-  var resource = getResource()
-  var successText = target.getAttribute("data-success")
-  var confirmText = target.getAttribute("data-message")
+  const resource = getResource()
+  let successText = target.getAttribute("data-success")
+  let confirmText = target.getAttribute("data-message")
   if (!confirmText) {
     confirmText = resource.msg_confirm_save
   }
-  showConfirm(confirmText, function () {
+  showConfirm(confirmText, () => {
     showLoading()
-    var url = getCurrentURL()
-    var formData = new FormData(form)
+    const url = getCurrentURL()
+    const formData = new FormData(form)
     fetch(url, {
       method: "POST",
       headers: getHttpHeaders(),
       body: formData,
     })
-      .then(function (response) {
+      .then((response) => {
         if (response.ok) {
-          response.text().then(function (data) {
-            var pageBody = document.getElementById("pageBody")
+          response.text().then((data) => {
+            const pageBody = document.getElementById("pageBody")
             if (pageBody) {
               pageBody.innerHTML = data
-              var forms = pageBody.querySelectorAll("form")
-              for (var i = 0; i < forms.length; i++) {
+              const forms = pageBody.querySelectorAll("form")
+              for (let i = 0; i < forms.length; i++) {
                 registerEvents(forms[i])
               }
             }
@@ -870,7 +925,7 @@ function submitFormData(e) {
           alertError(resource.error_submit_failed, undefined, undefined, response.statusText)
         }
       })
-      .catch(function (err) {
+      .catch((err) => {
         hideLoading()
         console.log("Error: " + err)
         alertError(resource.error_submitting_form, undefined, undefined, err)
@@ -878,58 +933,83 @@ function submitFormData(e) {
   })
 }
 function getHeaders() {
-  var token = getToken()
-  if (token && token.length > 0) {
-    return { Authorization: "Bearer " + token }
+  const token = getToken()
+  const lang = getLang()
+  if (lang) {
+    if (token && token.length > 0) {
+      return { "Content-Language": lang, Authorization: `Bearer ${token}` }
+    } else {
+      return { "Content-Language": lang }
+    }
   } else {
-    return {}
+    if (token && token.length > 0) {
+      return { Authorization: `Bearer ${token}` }
+    } else {
+      return {}
+    }
   }
 }
 function getHttpHeaders() {
-  var token = getToken()
-  if (token && token.length > 0) {
-    return {
-      "Content-Type": "application/json;charset=utf-8",
-      Authorization: "Bearer " + token,
+  const token = getToken()
+  const lang = getLang()
+  if (lang) {
+    if (token && token.length > 0) {
+      return {
+        "Content-Type": "application/json;charset=utf-8",
+        "Content-Language": lang,
+        Authorization: `Bearer ${token}`,
+      }
+    } else {
+      return {
+        "Content-Type": "application/json;charset=utf-8",
+        "Content-Language": lang,
+      }
     }
   } else {
-    return {
-      "Content-Type": "application/json;charset=utf-8",
+    if (token && token.length > 0) {
+      return {
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: `Bearer ${token}`,
+      }
+    } else {
+      return {
+        "Content-Type": "application/json;charset=utf-8",
+      }
     }
   }
 }
 function submitForm(e) {
   e.preventDefault()
-  var target = e.target
-  var form = target.form
-  var valid = validateForm(form)
+  const target = e.target
+  const form = target.form
+  const valid = validateForm(form)
   if (!valid) {
     return
   }
-  var resource = getResource()
-  var confirmText = target.getAttribute("data-message")
+  const resource = getResource()
+  let confirmText = target.getAttribute("data-message")
   if (!confirmText) {
     confirmText = resource.msg_confirm_save
   }
-  showConfirm(confirmText, function () {
+  showConfirm(confirmText, () => {
     showLoading()
-    var data = decodeFromForm(form)
-    var url = getCurrentURL()
+    const data = decodeFromForm(form)
+    const url = getCurrentURL()
     fetch(url, {
       method: "POST",
       headers: getHttpHeaders(),
       body: JSON.stringify(data),
     })
-      .then(function (response) {
+      .then((response) => {
         if (response.ok) {
-          var successText = target.getAttribute("data-success")
+          let successText = target.getAttribute("data-success")
           if (!successText) {
             successText = resource.msg_save_success
           }
           alertSuccess(successText)
         } else {
           if (response.status === 422) {
-            response.json().then(function (errors) {
+            response.json().then((errors) => {
               showFormError(form, errors)
             })
           } else if (response.status === 409) {
@@ -942,7 +1022,7 @@ function submitForm(e) {
         }
         hideLoading()
       })
-      .catch(function (err) {
+      .catch((err) => {
         hideLoading()
         console.log("Error: " + err)
         alertError(resource.error_submitting_form, undefined, undefined, err)

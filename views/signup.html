@@ -48,7 +48,7 @@
     </div>
     <div id="root">
       <div id="pageContainer" class="view-container central-full sign-in-view-container">
-        <form id="signinForm" name="signinForm" novalidate autocomplete="off" method="post">
+        <form id="signupForm" name="signupForm" novalidate autocomplete="off" method="post">
           <div>
             <img class="logo" src="/images/logo.png" alt="logo" />
             <h2>{{resource.signup}}</h2>
@@ -67,12 +67,20 @@
             </label>
             <label class="required {{errors.email.invalid}}">
               {{resource.email}}
-              <input type="text" id="email" name="email" value="{{user.email}}" maxlength="100" required placeholder="{{resource.placeholder_email}}" />
+              <input
+                type="text"
+                id="email"
+                name="email"
+                value="{{user.email}}"
+                maxlength="100"
+                required
+                placeholder="{{resource.placeholder_email}}"
+              />
             </label>
             <label class="required {{errors.password.invalid}}">
               {{resource.password}}
               <input
-                type="password"
+                type="text"
                 id="password"
                 name="password"
                 value="{{user.password}}"
@@ -93,8 +101,7 @@
                 placeholder="{{resource.placeholder_confirm_password}}"
               />
             </label>
-            <button type="submit" id="btnSignin" name="btnSignin" onclick="login(event)">{{resource.button_signup}}</button>
-            <a id="btnForgotPassword" href="/forgot-password">{{resource.button_forgot_password}}</a>
+            <button type="submit" id="btnSignin" name="btnSignin" onclick="signup(event)">{{resource.button_signup}}</button>
             <a id="btnSignin" href="/login">{{resource.button_signin}}</a>
             <a id="btnHome" href="/">{{resource.button_home}}</a>
           </div>

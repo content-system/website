@@ -13,13 +13,16 @@ export function route(app: Application, ctx: ApplicationContext): void {
   app.patch("/log", ctx.log.config)
   app.patch("/middleware", ctx.middleware.config)
 
-  app.get("/login", ctx.login.render)
+  app.get("/login", ctx.signin.render)
   // app.post("/login", json(), parser.none(), ctx.login.submit)
-  app.post("/login", parser.none(), ctx.login.submit)
+  app.post("/login", parser.none(), ctx.signin.submit)
 
   app.get("/signup", ctx.signup.render)
   // app.post("/login", json(), parser.none(), ctx.login.submit)
   app.post("/signup", ctx.signup.submit)
+  app.get("/forgot-password", ctx.password.renderForgotPassword)
+  app.get("/reset-password", ctx.password.renderResetPassword)
+  app.get("/change-password", ctx.password.renderChangePassword)
 
   const checkUser = check(userModel)
   app.post("/users/search", ctx.user.search)

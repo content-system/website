@@ -1,5 +1,7 @@
 import { Request, Response } from "express"
-import { Attributes } from "onecore"
+import { handleError } from "express-ext"
+import { Attributes, ErrorMessage, Log } from "onecore"
+import { SignupService, Status, User } from "signup-service"
 import { validate } from "xvalidators"
 import { getResource } from "../resources"
 
@@ -20,14 +22,14 @@ export const userModel: Attributes = {
     resource: "password",
   },
 }
-export interface User {
+export interface UserSignUp {
   username: string
   email: string
   password: string
 }
 
 export class SignUpController {
-  constructor() {
+  constructor(private service: SignupService<string, User>, private status: Status, private log: Log) {
     this.render = this.render.bind(this)
     this.submit = this.submit.bind(this)
   }
@@ -40,19 +42,47 @@ export class SignUpController {
         email: "minhduc140583@gmail.com",
         password: "Password1!",
       },
-      message: "Enter login",
+      message: "Enter sign up",
     })
   }
   submit(req: Request, res: Response) {
     const resource = getResource()
-    const user: User = req.body
-    console.log("user " + JSON.stringify(user))
-    const errors = validate<User>(user, userModel, resource, true)
+    const info: UserSignUp = req.body
+    console.log("user " + JSON.stringify(info))
+    const errors = validate<UserSignUp>(info, userModel, resource, true)
     if (errors.length > 0) {
-      console.log("Login error: " + JSON.stringify(errors))
+      console.log("Sign up error: " + JSON.stringify(errors))
       res.status(422).json(errors)
     } else {
-      res.status(200).json(user).end()
+      const user: User = {
+        username: info.username,
+        contact: info.email,
+        password: info.password,
+      }
+      this.service
+        .signup(user)
+        .then((result) => {
+          if (result === this.status.success) {
+            res.status(201).json(result).end()
+          } else if (result === this.status.username) {
+            const error: ErrorMessage = {
+              field: "username",
+              code: "duplicate",
+              message: resource.error_sign_up_username,
+            }
+            res.status(409).json([error]).end()
+          } else if (result === this.status.contact) {
+            const error: ErrorMessage = {
+              field: "email",
+              code: "duplicate",
+              message: resource.error_sign_up_contact,
+            }
+            res.status(409).json([error]).end()
+          } else {
+            res.status(500).json("Fail").end()
+          }
+        })
+        .catch((err) => handleError(err, res, this.log))
     }
   }
 }

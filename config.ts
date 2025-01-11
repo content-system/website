@@ -81,6 +81,87 @@ export const config = {
     fail_count: "failCount",
     locked_until_time: "lockedUntilTime",
   },
+  signup: {
+    expires: 500,
+    userStatus: {
+      registered: "R",
+      codeSent: "V",
+      activated: "A",
+    },
+    maxPasswordAge: 90,
+    fields: {
+      maxPasswordAge: "max_password_age",
+      contact: "email",
+      id: "user_id",
+    },
+    map2: {
+      firstName: "surname",
+      lastName: "givenName",
+    },
+    track: {
+      createdAt: "created_at",
+      createdBy: "created_by",
+      updatedAt: "updated_at",
+      updatedBy: "updated_by",
+    },
+    url: "http://localhost:8082/verify-account",
+    template: {
+      subject: "User registration confirmation",
+      body: `
+Please click this link to confirm to activate your account:<br><a href="%s">Confirm Now</a><br><br>
+If the above button doesn't work for you, please click on the below link or copy paste it on to your browser<br>
+<a href="%s">%s</a><br><br>
+Your link will expire after "%s" minutes.
+
+Hẫy nhấn đường link ở đây để kích hoạt cài khoản của bạn: <br><a href="%s">Xác nhận</a><br><br>
+Nếu đường link đó không hoạt động, hãy sao chép đường link đó và dán vào trình duyệt web của bạn<br>
+<a href="%s">%s</a><br><br>
+Đường link này sẽ hết hạn sau "%s" phút.`,
+    },
+  },
+  password: {
+    max: 3,
+    expires: 1500,
+    db: {
+      user: "users",
+      password: "passwords",
+    },
+    fields: {
+      id: "user_id",
+      contact: "email",
+      changedTime: "changed_time",
+      failCount: "fail_count",
+    },
+    templates: {
+      reset: {
+        subject: "Passcode to reset password",
+        body: `Your user name is %s. This is the passcode to reset your password: %s. This passcode will expire in %s minutes.<br>
+        Tên đăng nhập của bạn là %s. Hãy dùng mã sau để tạo mật khẩu lại: %s. Mã này sẽ hết hạn trong %s phút.`,
+      },
+      change: {
+        subject: "Passcode to change password",
+        body: `Your user name is %s. This is the passcode to reset your password: %s. This passcode will expire in %s minutes.<br>
+        Tên đăng nhập của bạn là %s. Hãy dùng mã sau để tạo mật khẩu lại: %s. Mã này sẽ hết hạn trong %s phút.`,
+      },
+    },
+  },
+  mail: {
+    provider: "smtp",
+    from: {
+      name: "Supporter",
+      email: "supporter@gmail.com",
+    },
+    key: " ",
+    smtp: {
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "",
+        pass: "",
+      },
+    },
+  },
 }
 
 export const env = {

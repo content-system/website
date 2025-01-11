@@ -1,15 +1,21 @@
 import { Authenticator, initializeStatus, SqlAuthTemplateConfig, useUserRepository } from "authen-service"
 import { compare } from "bcrypt"
+import { Comparator } from "bcrypt-plus"
 import { HealthController, LogController, Logger, Middleware, MiddlewareController, resources } from "express-ext"
 import { generateToken } from "jsonwebtoken-plus"
-import { StringMap } from "onecore"
+import { nanoid } from "nanoid"
+import { MailConfig, MailData, StringMap } from "onecore"
+import { MailSender, PasswordService, PasswordTemplateConfig, usePasswordRepository } from "password-service"
+import { CodeRepository } from "pg-extension"
 import { createChecker, DB } from "query-core"
+import { initStatus, Signup, SignupSender, SignupService, SignupTemplateConfig, useRepository, Validator } from "signup-service"
 import { check } from "types-validation"
 import { createValidator } from "xvalidators"
 import { ArticleController, useArticleController } from "./article"
-import { LoginController } from "./authentication"
+import { SigninController } from "./authentication"
 import { ContactController, useContactController } from "./contact"
 import { JobController, useJobController } from "./job"
+import { PasswordController } from "./password"
 import { SignUpController } from "./signup"
 import { UserController, useUserController } from "./user"
 
@@ -20,13 +26,17 @@ export interface Config {
   cookie?: boolean
   auth: SqlAuthTemplateConfig
   map: StringMap
+  signup: SignupTemplateConfig
+  password: PasswordTemplateConfig
+  mail: MailConfig
 }
 export interface ApplicationContext {
   health: HealthController
   log: LogController
   middleware: MiddlewareController
-  login: LoginController
+  signin: SigninController
   signup: SignUpController
+  password: PasswordController
   user: UserController
   article: ArticleController
   job: JobController
@@ -54,13 +64,66 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
     auth.lockedMinutes,
     2,
   )
-  const login = new LoginController(authenticator)
-  const signup = new SignUpController()
+  const signin = new SigninController(authenticator, logger.error)
+
+  const comparator = new Comparator()
+  const signupMailSender = new SignupSender(cfg.signup.url, sendMail, cfg.mail.from, cfg.signup.template.body, cfg.signup.template.subject)
+  const passcodeRepository = new CodeRepository<string>(db, "passcodes", "id", "expired_at")
+  const signupRepository = useRepository<string, Signup>(
+    db,
+    "users",
+    "passwords",
+    cfg.signup.userStatus,
+    cfg.signup.fields,
+    cfg.signup.maxPasswordAge,
+    cfg.signup.track,
+    cfg.signup.map,
+  )
+  const validator = new Validator()
+  const signupStatus = initStatus(cfg.signup.status)
+  const signupService = new SignupService<string, Signup>(
+    signupStatus,
+    signupRepository,
+    generate,
+    comparator,
+    comparator,
+    passcodeRepository,
+    signupMailSender.send,
+    cfg.signup.expires,
+    validator.validate,
+  )
+  const signup = new SignUpController(signupService, signupStatus, logger.error)
+  const passwordMailSender = new MailSender(
+    sendMail,
+    cfg.mail.from,
+    cfg.password.templates.reset.body,
+    cfg.password.templates.reset.subject,
+  )
+  const codeRepository = new CodeRepository<string>(db, "passwordcodes")
+  const passwordRepository = usePasswordRepository<string>(db, cfg.password.db, cfg.password.max, cfg.password.fields)
+  const passwordService = new PasswordService<string>(
+    comparator,
+    passwordRepository,
+    passwordMailSender.send,
+    cfg.password.expires,
+    codeRepository,
+    cfg.password.max,
+    undefined,
+  )
+  const password = new PasswordController(passwordService, logger.error)
 
   const user = useUserController(logger.error, db)
   const article = useArticleController(db, logger.error)
   const job = useJobController(db, logger.error)
   const contact = useContactController(db, logger.error)
 
-  return { health, log, middleware, login, signup, user, article, job, contact }
+  return { health, log, middleware, signin, signup, password, user, article, job, contact }
+}
+
+function generate(): string {
+  return nanoid(10)
+}
+function sendMail(mailData: MailData): Promise<boolean> {
+  console.log("" + mailData.subject + " " + mailData.html)
+  return Promise.resolve(true)
 }

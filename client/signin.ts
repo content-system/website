@@ -1,18 +1,19 @@
-interface LoginResult {
+interface SignInResult {
   status: number
 }
-interface LoginData {
+interface SignInData {
   token: string
 }
 function login(e: Event) {
   e.preventDefault()
+  const resource = getResource()
   const target = e.target as HTMLButtonElement
   const form = target.form as HTMLFormElement
   const txtUsername = getElement(form, "username") as HTMLInputElement
   const username = txtUsername.value
   if (username === "") {
     const label = getLabel(txtUsername)
-    const msg = format(resource["error_required"], label)
+    const msg = format(resource.error_required, label)
     showErrorMessage(form, msg)
     return
   }
@@ -20,7 +21,7 @@ function login(e: Event) {
   const password = txtPassword.value
   if (password === "") {
     const label = getLabel(txtPassword)
-    const msg = format(resource["error_required"], label)
+    const msg = format(resource.error_required, label)
     showErrorMessage(form, msg)
     return
   }
@@ -39,13 +40,13 @@ function login(e: Event) {
   })
     .then((response) => {
       if (response.ok) {
-        response.json().then((data: LoginData) => {
+        response.json().then((data: SignInData) => {
           localStorage.setItem(resources.token, data.token)
           window.location.href = "/"
         })
       } else {
         if (response.status === 403) {
-          response.json().then((result: LoginResult) => {
+          response.json().then((result: SignInResult) => {
             let key: string | undefined = map["" + result.status]
             const message = key ? resource[key] : resource.fail_authentication
             showErrorMessage(form, message)

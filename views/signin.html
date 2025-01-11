@@ -48,28 +48,41 @@
     </div>
     <div id="root">
       <div id="pageContainer" class="view-container central-full sign-in-view-container">
-        <form id="forgotPasswordForm" name="forgotPasswordForm" novalidate autocomplete="off" method="post">
+        <form id="signinForm" name="signinForm" novalidate autocomplete="off" method="post">
           <div>
             <img class="logo" src="/images/logo.png" alt="logo" />
-            <h2>{{resource.forgot_password}}</h2>
+            <h2>{{resource.signin}}</h2>
             <div class="message alert-error">{{message}}<span onclick="clearMessage(event)"></span></div>
             <label class="required {{errors.username.invalid}}">
               {{resource.username}}
               <input
                 type="text"
-                id="contact"
-                name="contact"
-                value="{{user.contact}}"
+                id="username"
+                name="username"
+                value="{{user.username}}"
                 maxlength="100"
                 required
                 placeholder="{{resource.placeholder_username}}"
               />
             </label>
-            <button type="submit" id="btnSignin" name="btnSignin" onclick="forgotPassword(event)">
-              {{resource.button_send_code_to_reset_password}}
-            </button>
-            <a id="btnResetPassword" href="/reset-password">{{resource.button_reset_password}}</a>
-            <a id="btnSignin" href="/login">{{resource.button_signin}}</a>
+            <label class="required {{errors.password.invalid}}">
+              {{resource.password}}
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value="{{user.password}}"
+                maxlength="100"
+                required
+                placeholder="{{resource.placeholder_password}}"
+              />
+            </label>
+            <label class="col s12 checkbox-container">
+              <input type="checkbox" id="remember" name="remember" />{{resource.signin_remember_me}}
+            </label>
+            <button type="submit" id="btnSignin" name="btnSignin" onclick="signin(event)">{{resource.button_signin}}</button>
+            <a id="btnForgotPassword" href="/forgot-password">{{resource.button_forgot_password}}</a>
+            <a id="btnSignup" href="/signup">{{resource.button_signup}}</a>
             <a id="btnHome" href="/">{{resource.button_home}}</a>
           </div>
         </form>
@@ -100,54 +113,55 @@
     <script src="/static/script.js" data-nscript="afterInteractive"></script>
     <script src="/static/layout.js" data-nscript="afterInteractive"></script>
     <script data-nscript="afterInteractive">
-      function login(e) {
+      function signin(e) {
         e.preventDefault()
-        var target = e.target
-        var form = target.form
-        var txtUsername = getElement(form, "username")
-        var username = txtUsername.value
+        const resource = getResource()
+        const target = e.target
+        const form = target.form
+        const txtUsername = getElement(form, "username")
+        const username = txtUsername.value
         if (username === "") {
-          var label = getLabel(txtUsername)
-          var msg = format(resource["error_required"], label)
+          const label = getLabel(txtUsername)
+          const msg = format(resource.error_required, label)
           showErrorMessage(form, msg)
           return
         }
-        var txtPassword = getElement(form, "password")
-        var password = txtPassword.value
+        const txtPassword = getElement(form, "password")
+        const password = txtPassword.value
         if (password === "") {
-          var label = getLabel(txtPassword)
-          var msg = format(resource["error_required"], label)
+          const label = getLabel(txtPassword)
+          const msg = format(resource.error_required, label)
           showErrorMessage(form, msg)
           return
         }
-        var map = {
+        const map = {
           2: "fail_authentication",
           3: "fail_expired_password",
           4: "fail_locked_account",
           5: "fail_suspended_account",
           6: "fail_disabled_account",
         }
-        var url = getCurrentURL()
-        var formData = new FormData(form)
+        const url = getCurrentURL()
+        const formData = new FormData(form)
         fetch(url, {
           method: "POST",
           body: formData,
         })
-          .then(function (response) {
+          .then((response) => {
             if (response.ok) {
-              response.json().then(function (data) {
+              response.json().then((data) => {
                 localStorage.setItem(resources.token, data.token)
                 window.location.href = "/"
               })
             } else {
               if (response.status === 403) {
-                response.json().then(function (result) {
-                  var key = map["" + result.status]
-                  var message = key ? resource[key] : resource.fail_authentication
+                response.json().then((result) => {
+                  let key = map["" + result.status]
+                  const message = key ? resource[key] : resource.fail_authentication
                   showErrorMessage(form, message)
                 })
               } else if (response.status === 422) {
-                response.json().then(function (errors) {
+                response.json().then((errors) => {
                   if (errors && errors.length > 0) {
                     showErrorMessage(form, "" + errors[0].message)
                   } else {
@@ -160,7 +174,7 @@
               }
             }
           })
-          .catch(function (err) {
+          .catch((err) => {
             hideLoading()
             console.log("Error: " + err)
             alertError(resource.error_submitting_form, undefined, undefined, err)

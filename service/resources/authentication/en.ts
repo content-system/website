@@ -11,6 +11,7 @@ export const en = {
   email: "Email",
   password: "Password",
   passcode: "Verification Code",
+  username_or_email: "Username Or Email",
   contact: "Contact",
 
   signin: "Sign in",
@@ -55,6 +56,7 @@ export const en = {
   placeholder_new_password: "Enter new password",
   placeholder_confirm_password: "Confirm Password",
 
+  forgot_password_message: "Enter your username or email address and we will send a code to your email address to reset password",
   button_send_code_to_reset_password: "Send a code to reset password",
   button_forgot_password: "Forgot password",
   button_reset_password: "Reset password",

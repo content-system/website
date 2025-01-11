@@ -34,7 +34,13 @@ function addErrorMessage(ele: HTMLElement | null | undefined, msg?: string, dire
     parent.appendChild(spanError)
   }
 }
-function showFormError(form?: HTMLFormElement, errors?: ErrorMessage[], focusFirst?: boolean, directParent?: boolean, includeId?: boolean): ErrorMessage[] {
+function showFormError(
+  form?: HTMLFormElement,
+  errors?: ErrorMessage[],
+  focusFirst?: boolean,
+  directParent?: boolean,
+  includeId?: boolean,
+): ErrorMessage[] {
   if (!form || !errors || errors.length === 0) {
     return []
   }
@@ -226,6 +232,16 @@ function isEmail(email: string | null | undefined): boolean {
   }
   return resources.email.test(email)
 }
+function isUsername(username: string | null | undefined): boolean {
+  if (!username || username.length === 0) {
+    return false
+  }
+  const valid = resources.email.test(username)
+  if (valid) {
+    return valid
+  }
+  return resources.email.test(username + "@gmail.com")
+}
 function isPercentage(v: string): boolean {
   return resources.percentage.test(v)
 }
@@ -344,7 +360,7 @@ function checkRequired(ele: HTMLInputElement | HTMLSelectElement, label?: string
         label = getLabel(ele)
       }
       const resource = r ? r : getResource()
-      const msg = format(resource["error_required"], label)
+      const msg = format(resource.error_required, label)
       addErrorMessage(ele, msg)
       return msg
     }
@@ -357,7 +373,7 @@ function checkMaxLength(ele: HTMLInputElement, label?: string, r?: StringMap): s
       label = getLabel(ele)
     }
     const resource = r ? r : getResource()
-    const msg = format(resource["error_maxlength"], label, ele.maxLength)
+    const msg = format(resource.error_maxlength, label, ele.maxLength)
     addErrorMessage(ele, msg)
     return msg
   }
@@ -369,7 +385,7 @@ function checkMinLength(ele: HTMLInputElement, label?: string, r?: StringMap): s
       label = getLabel(ele)
     }
     const resource = r ? r : getResource()
-    const msg = format(resource["error_minlength"], label, ele.maxLength)
+    const msg = format(resource.error_minlength, label, ele.maxLength)
     addErrorMessage(ele, msg)
     return msg
   }
@@ -477,7 +493,7 @@ function dateOnBlur(event: Event, dateOnly?: boolean) {
 function checkDate(ele: HTMLInputElement, label: string, resource: StringMap, dateOnly?: boolean): string | null {
   const v = new Date(ele.value)
   if (isNaN(v.getTime())) {
-    const msg = format(resource["error_date"], label)
+    const msg = format(resource.error_date, label)
     addErrorMessage(ele, msg)
     return msg
   } else {
@@ -486,7 +502,7 @@ function checkDate(ele: HTMLInputElement, label: string, resource: StringMap, da
         const d = new Date()
         if (v < d) {
           if (v < d) {
-            const msg = format(resource["error_from_now"], label)
+            const msg = format(resource.error_from_now, label)
             addErrorMessage(ele, msg)
             return msg
           }
@@ -494,7 +510,7 @@ function checkDate(ele: HTMLInputElement, label: string, resource: StringMap, da
       } else if (ele.min === "tomorrow") {
         const d = addDays(trimTime(new Date()), 1)
         if (v < d) {
-          const msg = format(resource["error_from_tomorrow"], label)
+          const msg = format(resource.error_from_tomorrow, label)
           addErrorMessage(ele, msg)
           return msg
         }
@@ -502,7 +518,7 @@ function checkDate(ele: HTMLInputElement, label: string, resource: StringMap, da
         const d = new Date(ele.min)
         if (!isNaN(d.getTime())) {
           const v2 = dateOnly ? formatDate(d, "YYYY-MM-DD") : formatLongDateTime(d, "YYYY-MM-DD")
-          let msg = format(resource["error_from"], label, v2)
+          let msg = format(resource.error_from, label, v2)
           addErrorMessage(ele, msg)
           return msg
         }
@@ -513,7 +529,7 @@ function checkDate(ele: HTMLInputElement, label: string, resource: StringMap, da
         const d = new Date()
         if (v < d) {
           if (v < d) {
-            const msg = format(resource["error_after_now"], label)
+            const msg = format(resource.error_after_now, label)
             addErrorMessage(ele, msg)
             return msg
           }
@@ -521,7 +537,7 @@ function checkDate(ele: HTMLInputElement, label: string, resource: StringMap, da
       } else if (ele.max === "tomorrow") {
         const d = addDays(trimTime(new Date()), 1)
         if (v < d) {
-          const msg = format(resource["error_after_tomorrow"], label)
+          const msg = format(resource.error_after_tomorrow, label)
           addErrorMessage(ele, msg)
           return msg
         }
@@ -529,7 +545,7 @@ function checkDate(ele: HTMLInputElement, label: string, resource: StringMap, da
         const d = new Date(ele.max)
         if (!isNaN(d.getTime())) {
           const v2 = dateOnly ? formatDate(d, "YYYY-MM-DD") : formatLongDateTime(d, "YYYY-MM-DD")
-          let msg = format(resource["error_after"], label, v2)
+          let msg = format(resource.error_after, label, v2)
           addErrorMessage(ele, msg)
           return msg
         }
@@ -544,7 +560,7 @@ function checkDate(ele: HTMLInputElement, label: string, resource: StringMap, da
           const min = new Date(minElement.value)
           if (v < min) {
             const minLabel = getLabel(minElement)
-            const msg = format(resource["error_from"], label, minLabel)
+            const msg = format(resource.error_from, label, minLabel)
             addErrorMessage(minElement, msg)
             return msg
           }
@@ -613,11 +629,11 @@ function validateMinMax(ele: HTMLInputElement, n: number, label: string, resourc
   if (ele.min.length > 0) {
     const min = parseFloat(ele.min)
     if (n < min) {
-      let msg = format(resource["error_min"], label, min)
+      let msg = format(resource.error_min, label, min)
       if (ele.max.length > 0) {
         const max = parseFloat(ele.max)
         if (max === min) {
-          msg = format(resource["error_equal"], label, max)
+          msg = format(resource.error_equal, label, max)
         }
       }
       addErrorMessage(ele, msg)
@@ -627,7 +643,7 @@ function validateMinMax(ele: HTMLInputElement, n: number, label: string, resourc
   if (ele.max.length > 0) {
     const max = parseFloat(ele.max)
     if (n > max) {
-      const msg = format(resource["error_max"], label, max)
+      const msg = format(resource.error_max, label, max)
       addErrorMessage(ele, msg)
       return false
     }
@@ -643,7 +659,7 @@ function validateMinMax(ele: HTMLInputElement, n: number, label: string, resourc
           const min2 = parseFloat(smin2)
           if (n < min2) {
             const minLabel = getLabel(minElement)
-            const msg = format(resource["error_min"], label, minLabel)
+            const msg = format(resource.error_min, label, minLabel)
             addErrorMessage(ele, msg)
             return false
           }
@@ -672,11 +688,11 @@ function checkNumber(target: HTMLInputElement, locale?: Locale | string | null, 
   const resource = r ? r : getResource()
   if (value.length > 0) {
     if (isNaN(value as any)) {
-      const msg = format(resource["error_number"], label)
+      const msg = format(resource.error_number, label)
       addErrorMessage(target, msg)
       return false
     } else if (target.getAttribute("data-type") === "integer") {
-      const msg = format(resource["error_integer"], label)
+      const msg = format(resource.error_integer, label)
       addErrorMessage(target, msg)
       return false
     }
@@ -862,11 +878,17 @@ function validateElement(ele: HTMLInputElement, locale?: Locale | string | null,
   }
   if (datatype === "email") {
     if (value.length > 0 && !isEmail(value)) {
-      const msg = format(resource["error_email"], label)
+      const msg = format(resource.error_email, label)
       addErrorMessage(ele, msg)
       return msg
     }
-  } else if (datatype === "number" || datatype === "integer" || datatype === "currency" || datatype === "string-currency" || datatype === "percentage") {
+  } else if (
+    datatype === "number" ||
+    datatype === "integer" ||
+    datatype === "currency" ||
+    datatype === "string-currency" ||
+    datatype === "percentage"
+  ) {
     const v = checkNumber(ele, locale, resource)
     const separator = getDecimalSeparator(ele)
     if (typeof v === "string") {
@@ -886,58 +908,58 @@ function validateElement(ele: HTMLInputElement, locale?: Locale | string | null,
     }
   } else if (datatype === "url") {
     if (!isUrl(value)) {
-      const msg = format(resource["error_url"], label)
+      const msg = format(resource.error_url, label)
       addErrorMessage(ele, msg)
       return msg
     }
   } else if (datatype === "phone") {
     const phoneStr = formatter.removePhoneFormat(value)
     if (!tel.isPhone(phoneStr)) {
-      const msg = format(resource["error_phone"], label)
+      const msg = format(resource.error_phone, label)
       addErrorMessage(ele, msg)
       return msg
     }
   } else if (datatype === "fax") {
     const phoneStr = formatter.removeFaxFormat(value)
     if (!tel.isFax(phoneStr)) {
-      const msg = format(resource["error_fax"], label)
+      const msg = format(resource.error_fax, label)
       addErrorMessage(ele, msg)
       return msg
     }
   } else if (datatype === "code") {
     if (!isValidCode(value)) {
-      const msg = format(resource["error_code"], label)
+      const msg = format(resource.error_code, label)
       addErrorMessage(ele, msg)
       return msg
     }
   } else if (datatype === "dash-code") {
     if (!isDashCode(value)) {
-      const msg = format(resource["error_dash_code"], label)
+      const msg = format(resource.error_dash_code, label)
       addErrorMessage(ele, msg)
       return msg
     }
   } else if (datatype === "digit") {
     if (!isDigitOnly(value)) {
-      const msg = format(resource["error_digit"], label)
+      const msg = format(resource.error_digit, label)
       addErrorMessage(ele, msg)
       return msg
     }
   } else if (datatype === "dash-digit") {
     if (!isDashDigit(value)) {
-      const msg = format(resource["error_dash_digit"], label)
+      const msg = format(resource.error_dash_digit, label)
       addErrorMessage(ele, msg)
       return msg
     }
   } else if (datatype === "routing-number") {
     // business-tax-id
     if (!isDashDigit(value)) {
-      const msg = format(resource["error_routing_number"], label)
+      const msg = format(resource.error_routing_number, label)
       addErrorMessage(ele, msg)
       return msg
     }
   } else if (datatype === "check-number") {
     if (!isCheckNumber(value)) {
-      const msg = format(resource["error_check_number"], label)
+      const msg = format(resource.error_check_number, label)
       addErrorMessage(ele, msg)
       return msg
     }
@@ -947,19 +969,19 @@ function validateElement(ele: HTMLInputElement, locale?: Locale | string | null,
       countryCode = countryCode.toUpperCase()
       if (countryCode === "US" || countryCode === "USA") {
         if (!isUSPostalCode(value)) {
-          const msg = format(resource["error_us_post_code"], label)
+          const msg = format(resource.error_us_post_code, label)
           addErrorMessage(ele, msg)
           return msg
         }
       } else if (countryCode === "CA" || countryCode === "CAN") {
         if (!isCAPostalCode(value)) {
-          const msg = format(resource["error_ca_post_code"], label)
+          const msg = format(resource.error_ca_post_code, label)
           addErrorMessage(ele, msg)
           return msg
         }
       } else {
         if (!isDashCode(value)) {
-          const msg = format(resource["error_post_code"], label)
+          const msg = format(resource.error_post_code, label)
           addErrorMessage(ele, msg)
           return msg
         }
@@ -967,13 +989,13 @@ function validateElement(ele: HTMLInputElement, locale?: Locale | string | null,
     }
   } else if (datatype === "ipv4") {
     if (!isIPv4(value)) {
-      const msg = format(resource["error_ipv4"], label)
+      const msg = format(resource.error_ipv4, label)
       addErrorMessage(ele, msg)
       return msg
     }
   } else if (datatype === "ipv6") {
     if (!isIPv6(value)) {
-      const msg = format(resource["error_ipv6"], label)
+      const msg = format(resource.error_ipv6, label)
       addErrorMessage(ele, msg)
       return msg
     }
@@ -1004,7 +1026,13 @@ function isValidForm(form: HTMLFormElement, focusFirst?: boolean, scroll?: boole
   }
   return valid
 }
-function validateForm(form?: HTMLFormElement, locale?: Locale | string | null, focusFirst?: boolean, scroll?: boolean, includeReadOnly?: boolean): boolean {
+function validateForm(
+  form?: HTMLFormElement,
+  locale?: Locale | string | null,
+  focusFirst?: boolean,
+  scroll?: boolean,
+  includeReadOnly?: boolean,
+): boolean {
   if (!form) {
     return true
   }

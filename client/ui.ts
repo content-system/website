@@ -116,7 +116,7 @@ function hideLoading() {
 }
 type Type = "Confirm" | "Alert"
 type IconType = "Error" | "Warning" | "Confirm" | "Success" | "Info" | "Alert"
-function escape(text?: string | null): string {
+function escapeHTML(text?: string | null): string {
   if (!text) {
     return ""
   }
@@ -178,11 +178,11 @@ function showAlert(
     } else {
       sysErrorDetailCaret.style.display = "inline-block"
       sysErrorDetail.style.display = "inline-block"
-      sysErrorDetailText.innerHTML = escape(detail)
+      sysErrorDetailText.innerHTML = escapeHTML(detail)
     }
   }
-  sysMessage.innerHTML = escape(msg)
-  sysMessageHeader.innerHTML = escape(header)
+  sysMessage.innerHTML = escapeHTML(msg)
+  sysMessageHeader.innerHTML = escapeHTML(header)
   sysAlert.classList.remove("success-icon", "success-icon", "info-icon", "confirm-icon", "danger-icon", "warning-icon")
   if (iconType === "Alert") {
     if (!sysAlert.classList.contains("warning-icon")) {
@@ -210,8 +210,8 @@ function showAlert(
     }
   }
   const activeElement = (window as any).document.activeElement
-  sysYes.innerHTML = escape(btnRightText)
-  sysNo.innerHTML = escape(btnLeftText)
+  sysYes.innerHTML = escapeHTML(btnRightText)
+  sysNo.innerHTML = escapeHTML(btnLeftText)
   ;(sysYes as any)["activeElement"] = activeElement
   sysAlert.style.display = "flex"
   ;(window as any).fyesOnClick = yesCallback
@@ -219,7 +219,14 @@ function showAlert(
   sysYes.focus()
 }
 const sysMessageHeader = document.getElementById("sysMessageHeader") as HTMLElement
-function showConfirm(msg: string, yesCallback?: () => void, header?: string, btnLeftText?: string, btnRightText?: string, noCallback?: () => void): void {
+function showConfirm(
+  msg: string,
+  yesCallback?: () => void,
+  header?: string,
+  btnLeftText?: string,
+  btnRightText?: string,
+  noCallback?: () => void,
+): void {
   const h = header ? header : sysMessageHeader.getAttribute("data-confirm")
   showAlert(msg, h, "Confirm", "Confirm", btnLeftText, btnRightText, yesCallback, noCallback)
 }

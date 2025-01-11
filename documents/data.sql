@@ -26,7 +26,7 @@ create table users (
   user_id varchar(40) primary key,
   username varchar(255) not null,
   email varchar(255) not null,
-  display_name varchar(255) not null,
+  display_name varchar(255),
   status char(1) not null,
   gender char(1),
   phone varchar(20),
@@ -35,11 +35,11 @@ create table users (
   image_url varchar(500),
   language varchar(5),
   dateformat varchar(12),
+  max_password_age integer,
   created_by varchar(40),
   created_at timestamptz,
   updated_by varchar(40),
-  updated_at timestamptz,
-  lastlogin timestamptz
+  updated_at timestamptz
 );
 create table passwords (
     user_id varchar(40) primary key,
@@ -48,9 +48,14 @@ create table passwords (
     fail_time timestamptz,
     fail_count integer,
     locked_until_time timestamptz,
+    changed_time timestamptz,
     history character varying[]
 );
-
+create table passcodes (
+  id varchar(40) primary key,
+  code varchar(500) not null,
+  expired_at timestamptz not null
+)
 create table roles (
   role_id varchar(40) primary key,
   role_name varchar(255) not null,
