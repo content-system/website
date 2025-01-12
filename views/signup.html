@@ -101,7 +101,7 @@
                 placeholder="{{resource.placeholder_confirm_password}}"
               />
             </label>
-            <button type="submit" id="btnSignin" name="btnSignin" onclick="signup(event)">{{resource.button_signup}}</button>
+            <button type="submit" id="btnSignup" name="btnSignup" onclick="signup(event)">{{resource.button_signup}}</button>
             <a id="btnSignin" href="/login">{{resource.button_signin}}</a>
             <a id="btnHome" href="/">{{resource.button_home}}</a>
           </div>
@@ -116,6 +116,7 @@
         error_required: "{{resource.error_required}}",
         error_email: "{{resource.error_email}}",
         error_password: "{{resource.error_password}}",
+        error_equal: "{{resource.error_equal}}",
 
         error_400: "{{resource.error_400}}",
         error_submit_failed: "{{resource.error_submit_failed}}",
@@ -130,7 +131,6 @@
     <script src="/static/script.js"></script>
     <script src="/static/layout.js"></script>
     <script>
-      "use strict"
       function signup(e) {
         e.preventDefault()
         const resource = getResource()
@@ -200,14 +200,14 @@
                 })
               } else {
                 console.error("Error: ", response.statusText)
-                alertErrorWithDetails(resource.error_submit_failed, response.statusText)
+                alertError(resource.error_submit_failed, response.statusText)
               }
             }
           })
           .catch((err) => {
             hideLoading()
             console.log("Error: " + err)
-            alertErrorWithDetails(resource.error_submitting_form, err)
+            alertError(resource.error_submitting_form, err)
           })
       }
     </script>

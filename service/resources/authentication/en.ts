@@ -67,6 +67,8 @@ export const en = {
   error_username: "Username is not valid",
   error_contact: "Email is not an valid email",
   success_sign_up: "You have been successfully registered, Please check email to comfirm account.",
+  success_activate_account: "Activate account successfully. You can click sigin in to navigate to sign in screen.",
+  fail_activate_account: "Error to activate account. Maybe it is expired to activate this account.",
   error_sign_up_username: "This username is registered already or the username format is invalid.",
   error_sign_up_contact: "This email is registered already or the email format is invalid.",
   fail_sign_up_password_decode: "Cannot decode password at server side. Please refresh browser and try again.",

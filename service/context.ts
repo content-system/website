@@ -62,7 +62,7 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
     userRepository,
     undefined,
     auth.lockedMinutes,
-    2,
+    5,
   )
   const signin = new SigninController(authenticator, logger.error)
 
@@ -99,16 +99,15 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
     cfg.password.templates.reset.body,
     cfg.password.templates.reset.subject,
   )
-  const codeRepository = new CodeRepository<string>(db, "passwordcodes")
+  // const codeRepository = new CodeRepository<string>(db, "passwordcodes")
   const passwordRepository = usePasswordRepository<string>(db, cfg.password.db, cfg.password.max, cfg.password.fields)
   const passwordService = new PasswordService<string>(
     comparator,
     passwordRepository,
     passwordMailSender.send,
     cfg.password.expires,
-    codeRepository,
+    passcodeRepository,
     cfg.password.max,
-    undefined,
   )
   const password = new PasswordController(passwordService, logger.error)
 

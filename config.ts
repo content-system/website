@@ -1,5 +1,5 @@
 export const config = {
-  port: 8082,
+  port: 8083,
   allow: {
     origin: "*",
     credentials: "true",
@@ -120,7 +120,7 @@ Nếu đường link đó không hoạt động, hãy sao chép đường link �
     },
   },
   password: {
-    max: 3,
+    max: 5,
     expires: 1500,
     db: {
       user: "users",
