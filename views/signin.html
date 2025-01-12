@@ -47,13 +47,13 @@
       </div>
     </div>
     <div id="root">
-      <div id="pageContainer" class="view-container central-full sign-in-view-container">
-        <form id="signinForm" name="signinForm" novalidate autocomplete="off" method="post">
-          <div>
+      <div id="pageContainer" class="central-full">
+        <form id="signinForm" name="signinForm" class="form" novalidate autocomplete="off" method="post">
+          <div class="view-body row">
             <img class="logo" src="/images/logo.png" alt="logo" />
-            <h2>{{resource.signin}}</h2>
+            <h1>{{resource.signin}}</h1>
             <div class="message alert-error">{{message}}<span onclick="clearMessage(event)"></span></div>
-            <label class="required {{errors.username.invalid}}">
+            <label class="col s12 required {{errors.username.invalid}}">
               {{resource.username}}
               <input
                 type="text"
@@ -65,7 +65,7 @@
                 placeholder="{{resource.placeholder_username}}"
               />
             </label>
-            <label class="required {{errors.password.invalid}}">
+            <label class="col s12 required {{errors.password.invalid}}">
               {{resource.password}}
               <input
                 type="password"
@@ -76,6 +76,10 @@
                 required
                 placeholder="{{resource.placeholder_password}}"
               />
+            </label>
+            <label hidden class="col s12 required">
+              {{resource.passcode}}
+              <input type="text" id="passcode" name="passcode" maxlength="6" placeholder="{{resource.placeholder_passcode}}" value="" />
             </label>
             <label class="col s12 checkbox-container">
               <input type="checkbox" id="remember" name="remember" />{{resource.signin_remember_me}}
