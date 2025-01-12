@@ -18,8 +18,8 @@ export function route(app: Application, ctx: ApplicationContext): void {
   app.post("/login", parser.none(), ctx.signin.submit)
 
   app.get("/signup", ctx.signup.render)
-  // app.post("/login", json(), parser.none(), ctx.login.submit)
   app.post("/signup", ctx.signup.submit)
+  app.post("/verify-acccount/:id/:code", ctx.signup.verify)
   app.get("/forgot-password", ctx.password.renderForgotPassword)
   app.get("/reset-password", ctx.password.renderResetPassword)
   app.get("/change-password", ctx.password.renderChangePassword)

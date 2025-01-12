@@ -32,6 +32,7 @@ export class SignUpController {
   constructor(private service: SignupService<string, User>, private status: Status, private log: Log) {
     this.render = this.render.bind(this)
     this.submit = this.submit.bind(this)
+    this.verify = this.verify.bind(this)
   }
   render(req: Request, res: Response) {
     const resource = getResource()
@@ -84,5 +85,17 @@ export class SignUpController {
         })
         .catch((err) => handleError(err, res, this.log))
     }
+  }
+  verify(req: Request, res: Response) {
+    let userId = req.params.id
+    let passcode = req.params.code
+    const resource = getResource()
+    this.service
+      .verify(userId, passcode)
+      .then((success) => {
+        const message = success ? resource.success_activate_account : resource.fail_activate_account
+        res.render("verify-account", { resource, message })
+      })
+      .catch((err) => handleError(err, res, this.log))
   }
 }

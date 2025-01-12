@@ -88,7 +88,7 @@
         </form>
       </div>
     </div>
-    <script data-nscript="afterInteractive">
+    <script>
       const resource = {
         error_required: "{{resource.error_required}}",
         error_email: "{{resource.error_email}}",
@@ -108,11 +108,11 @@
         return resource
       }
     </script>
-    <script src="/static/ui.js" data-nscript="afterInteractive"></script>
-    <script src="/static/validator.js" data-nscript="afterInteractive"></script>
-    <script src="/static/script.js" data-nscript="afterInteractive"></script>
-    <script src="/static/layout.js" data-nscript="afterInteractive"></script>
-    <script data-nscript="afterInteractive">
+    <script src="/static/ui.js"></script>
+    <script src="/static/validator.js"></script>
+    <script src="/static/script.js"></script>
+    <script src="/static/layout.js"></script>
+    <script>
       function signin(e) {
         e.preventDefault()
         const resource = getResource()
