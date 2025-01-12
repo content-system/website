@@ -34,13 +34,7 @@ function addErrorMessage(ele: HTMLElement | null | undefined, msg?: string, dire
     parent.appendChild(spanError)
   }
 }
-function showFormError(
-  form?: HTMLFormElement,
-  errors?: ErrorMessage[],
-  focusFirst?: boolean,
-  directParent?: boolean,
-  includeId?: boolean,
-): ErrorMessage[] {
+function showFormError(form?: HTMLFormElement, errors?: ErrorMessage[], focusFirst?: boolean, directParent?: boolean, includeId?: boolean): ErrorMessage[] {
   if (!form || !errors || errors.length === 0) {
     return []
   }
@@ -882,13 +876,7 @@ function validateElement(ele: HTMLInputElement, locale?: Locale | string | null,
       addErrorMessage(ele, msg)
       return msg
     }
-  } else if (
-    datatype === "number" ||
-    datatype === "integer" ||
-    datatype === "currency" ||
-    datatype === "string-currency" ||
-    datatype === "percentage"
-  ) {
+  } else if (datatype === "number" || datatype === "integer" || datatype === "currency" || datatype === "string-currency" || datatype === "percentage") {
     const v = checkNumber(ele, locale, resource)
     const separator = getDecimalSeparator(ele)
     if (typeof v === "string") {
@@ -1026,13 +1014,7 @@ function isValidForm(form: HTMLFormElement, focusFirst?: boolean, scroll?: boole
   }
   return valid
 }
-function validateForm(
-  form?: HTMLFormElement,
-  locale?: Locale | string | null,
-  focusFirst?: boolean,
-  scroll?: boolean,
-  includeReadOnly?: boolean,
-): boolean {
+function validateForm(form?: HTMLFormElement, locale?: Locale | string | null, focusFirst?: boolean, scroll?: boolean, includeReadOnly?: boolean): boolean {
   if (!form) {
     return true
   }

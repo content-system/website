@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { formatText, handleError } from "express-ext"
 import { Log } from "onecore"
 import { PasswordChange, PasswordReset, PasswordService } from "password-service"
+import { isEmpty } from "xvalidators"
 import { getResource } from "../resources"
 
 export class PasswordController {

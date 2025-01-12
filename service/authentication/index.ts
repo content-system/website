@@ -35,7 +35,7 @@ export class SigninController {
   }
   render(req: Request, res: Response) {
     const resource = getResource()
-    res.render("login", {
+    res.render("signin", {
       resource,
       user: {
         username: "kaka",

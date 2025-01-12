@@ -219,18 +219,16 @@ function showAlert(
   sysYes.focus()
 }
 const sysMessageHeader = document.getElementById("sysMessageHeader") as HTMLElement
-function showConfirm(
-  msg: string,
-  yesCallback?: () => void,
-  header?: string,
-  btnLeftText?: string,
-  btnRightText?: string,
-  noCallback?: () => void,
-): void {
+function showConfirm(msg: string, yesCallback?: () => void, header?: string, btnLeftText?: string, btnRightText?: string, noCallback?: () => void): void {
   const h = header ? header : sysMessageHeader.getAttribute("data-confirm")
   showAlert(msg, h, "Confirm", "Confirm", btnLeftText, btnRightText, yesCallback, noCallback)
 }
 function alertError(msg: string, callback?: () => void, header?: string, detail?: string): void {
+  const h = header ? header : sysMessageHeader.getAttribute("data-error")
+  const buttonText = header ? header : sysMessageHeader.getAttribute("data-ok")
+  showAlert(msg, h, "Alert", "Error", "", buttonText, callback, undefined, detail)
+}
+function alertErrorWithDetails(msg: string, detail?: string, callback?: () => void, header?: string): void {
   const h = header ? header : sysMessageHeader.getAttribute("data-error")
   const buttonText = header ? header : sysMessageHeader.getAttribute("data-ok")
   showAlert(msg, h, "Alert", "Error", "", buttonText, callback, undefined, detail)

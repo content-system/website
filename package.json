@@ -34,7 +34,7 @@
     "signup-service": "^0.0.8",
     "types-validation": "^0.0.2",
     "ui-formatter": "^0.0.1",
-    "xvalidators": "^0.3.1"
+    "xvalidators": "^0.3.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

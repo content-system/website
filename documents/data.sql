@@ -55,7 +55,7 @@ create table passcodes (
   id varchar(40) primary key,
   code varchar(500) not null,
   expired_at timestamptz not null
-)
+);
 create table roles (
   role_id varchar(40) primary key,
   role_name varchar(255) not null,
