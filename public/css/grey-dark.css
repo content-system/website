@@ -247,11 +247,13 @@
   color: #657181;
 }
 
+.grey.dark h2,
 .grey.dark h3 {
   color: #7b8b9f;
 }
 
 @media screen and (max-width: 600px) {
+  .grey.dark h2,
   .grey.dark h3 {
     background-color: #414040;
   }
@@ -325,6 +327,7 @@
 }
 */
 .grey.dark .btn-more,
+.grey.dark h2,
 .grey.dark h3,
 .grey.dark .row .form-group.focused label,
 .grey.dark .row > label.focused,
@@ -415,7 +418,9 @@
   border-color: #657181;
   box-shadow: 0 1px 0 0 #657181;
 }
-
+.grey.dark textarea {
+  outline-color: #4db6ac;
+}
 .grey.dark .form-group .form-control.valid,
 .grey.dark input.valid,
 .grey.dark select.valid {
@@ -429,6 +434,10 @@
 .grey.dark label.invalid > select:focus {
   border-color: #d74738;
   box-shadow: 0 1px 0 0 #d74738;
+}
+.grey.dark label.invalid > textarea {
+  border-color: #d74738;
+  outline-color: #d74738;
 }
 
 .grey.dark .view-body > section > article > p,
@@ -449,6 +458,7 @@
 
 .grey.dark .form-group .form-control,
 .grey.dark .form-textarea,
+.grey.dark textarea,
 .grey.dark .inline-input > input,
 .grey.dark label > input,
 .grey.dark .form .row > label > input,

@@ -269,11 +269,13 @@
   color: #999999;
 }
 
+.dark h2,
 .dark h3 {
   color: #d0cfcf;
 }
 
 @media screen and (max-width: 600px) {
+  .dark h2,
   .dark h3 {
     background-color: #242424;
   }
@@ -346,6 +348,7 @@
 }
 */
 .dark .btn-more,
+.dark h2,
 .dark h3,
 .dark .row .form-group.focused label,
 .dark .row > label.focused,
@@ -437,7 +440,9 @@
   border-color: #4db6ac;
   box-shadow: 0 1px 0 0 #4db6ac;
 }
-
+.dark textarea {
+  outline-color: #4db6ac;
+}
 .dark .form-group .form-control.valid,
 .dark input.valid,
 .dark select.valid {
@@ -451,6 +456,10 @@
 .dark label.invalid > select:focus {
   border-color: #d74738;
   box-shadow: 0 1px 0 0 #d74738;
+}
+.dark label.invalid > textarea {
+  border-color: #d74738;
+  outline-color: #d74738;
 }
 
 .dark .view-body > section > article > p,
@@ -471,6 +480,7 @@
 
 .dark .form-group .form-control,
 .dark .form-textarea,
+.dark textarea,
 .dark .inline-input > input,
 .dark label > input,
 .dark .form .row > label > input,
