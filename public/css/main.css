@@ -51,13 +51,10 @@ select {
 }
 div,
 section,
-p {
-  font-size: 14px;
-  font-weight: 400;
-}
+p,
 label {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
 }
 input,
 select {
