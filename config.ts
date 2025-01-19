@@ -37,7 +37,7 @@ export const config = {
       disabled: 6,
     },
     lockedMinutes: 2,
-    maxPasswordFailed: 2,
+    maxPasswordFailed: 5,
     payload: {
       id: "id",
       username: "username",
@@ -49,7 +49,9 @@ export const config = {
     },
     userStatus: {
       activated: "A",
-      deactivated: "D",
+      deactivated: "I",
+      disable: "D",
+      suspended: "S",
     },
     db: {
       user: "users",
@@ -63,10 +65,12 @@ export const config = {
       lockedUntilTime: "locked_until_time",
     },
     query: `
-      select u.user_id, u.username, u.display_name, email, u.status, p.* from users u
+      select u.user_id, u.username, u.display_name, email, u.status, u.max_password_age, 
+        p.password, p.success_time, p.fail_time, p.fail_count, p.locked_util_time, p.changed_time
+      from users u
       inner join passwords p
         on u.user_id = p.user_id
-      where username = $1 and u.status = 'A'`,
+      where username = $1`,
     expires: 500,
     template: {
       subject: "Verification Code",
@@ -76,10 +80,12 @@ export const config = {
   map: {
     user_id: "id",
     display_name: "displayName",
+    max_password_age: "maxPasswordAge",
     success_time: "successTime",
     fail_time: "failTime",
     fail_count: "failCount",
     locked_until_time: "lockedUntilTime",
+    changed_time: "passwordModifiedTime",
   },
   signup: {
     expires: 500,

@@ -62,7 +62,7 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
     userRepository,
     undefined,
     auth.lockedMinutes,
-    5,
+    auth.maxPasswordFailed,
   )
   const signin = new SigninController(authenticator, logger.error)
 
