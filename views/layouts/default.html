@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#008577" />
     <meta name="description" content="Web site created using create-react-app" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="stylesheet" href="/css/reset.css" />
@@ -18,6 +19,7 @@
     <link rel="stylesheet" href="/css/page.css" />
     <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="/css/form.css" />
+    <link rel="stylesheet" href="/css/article.css" />
     <link rel="stylesheet" href="/css/list-view.css" />
     <link rel="stylesheet" href="/css/table.css" />
     <link rel="stylesheet" href="/css/list-detail.css" />
@@ -61,8 +63,22 @@
           <p id="sysMessage"></p>
         </div>
         <footer>
-          <button type="button" id="sysNo" name="btnCancel" class="btn-cancel" onclick="noOnClick()" data-text="{{resource.button_no}}"></button>
-          <button type="submit" id="sysYes" name="btnAccept" class="btn-accept" onclick="yesOnClick()" data-text="{{resource.button_yes}}"></button>
+          <button
+            type="button"
+            id="sysNo"
+            name="btnCancel"
+            class="btn-cancel"
+            onclick="noOnClick()"
+            data-text="{{resource.button_no}}"
+          ></button>
+          <button
+            type="submit"
+            id="sysYes"
+            name="btnAccept"
+            class="btn-accept"
+            onclick="yesOnClick()"
+            data-text="{{resource.button_yes}}"
+          ></button>
         </footer>
       </div>
     </div>
@@ -71,7 +87,11 @@
         <div class="top-banner">
           <div class="logo-banner-wrapper">
             <img src="https://jacobspradlin.files.wordpress.com/2014/10/banner-people-connected.png" alt="Banner of The Company" />
-            <img src="https://jacobspradlin.files.wordpress.com/2014/10/banner-people-connected.png" class="banner-logo-title" alt="Logo of The Company" />
+            <img
+              src="https://jacobspradlin.files.wordpress.com/2014/10/banner-people-connected.png"
+              class="banner-logo-title"
+              alt="Logo of The Company"
+            />
           </div>
         </div>
         <div class="menu sidebar">{% include "partials/navigation.html" %}</div>

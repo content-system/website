@@ -1,67 +1,81 @@
-<form id="jobForm" name="jobForm" class="form" model-name="job" date-format="M/d/yyyy">
+<article class="article">
   <header>
     <button type="button" id="btnBack" name="btnBack" class="btn-back"></button>
-    <h2>{{resource.job}}</h2>
-    <button class="btn-group btn-right"><i class="material-icons">group</i></button>
+    <h2>{{job.title}}</h2>
   </header>
-  <div>
-    <section class="row">
-      <label class="col s6 m6 required">
-        {{resource.id}}
-        <input
-          type="text"
-          id="id"
-          name="id"
-          maxlength="60"
-          required
-          readonly
-          onblur="requiredOnBlur(event)"
-          placeholder="{{resource.id}}"
-          value="{{job.id}}"
-        />
-      </label>
-      <label class="col s6 m6 required">
-        {{resource.title}}
-        <input
-          type="text"
-          id="title"
-          name="title"
-          value="{{job.title}}"
-          maxlength="255"
-          required
-          onblur="requiredOnBlur(event)"
-          placeholder="{{resource.job_name}}"
-        />
-      </label>
-      <label class="col s12 m6">
-        {{resource.published_at}}
-        <input type="datetime-local" id="publishedAt" name="publishedAt" value="{{datetimeToString(job.publishedAt)}}" step=".010" />
-      </label>
-      <label class="col s12 m6">
-        {{resource.description}}
-        <input
-          type="text"
-          id="description"
-          name="description"
-          maxlength="800"
-          placeholder="{{resource.description}}"
-          value="{{job.description}}"
-        />
-      </label>
-      <div class="col s12 m6 radio-section">
-        {{resource.status}}
-        <div class="radio-group">
-          <label
-            ><input type="radio" id="active" name="status" value="A" {% if job.status == "A" %} checked {% endif
-            %}/>{{resource.active}}</label
-          >
-          <label
-            ><input type="radio" id="inactive" name="status" value="I" {% if job.status == "I" %} checked {% endif
-            %}/>{{resource.inactive}}</label
-          >
-        </div>
-      </div>
-    </section>
+  <div class="article-body">
+    <h3 class="article-description">{{job.location}} {{job.quantity}}</h3>
+    <h4 class="article-meta">{{datetimeToString(job.publishedAt)}}</h4>
+    <div class="job-description">
+      <h4>Job Brief</h4>
+      <p>
+        We are seeking a highly skilled and experienced Java Technical Lead to join our dynamic team. The ideal candidate will be
+        responsible for leading and overseeing the development of Java-based applications, ensuring the highest standards of quality and
+        performance. As a Java Technical Lead, you will play a pivotal role in guiding our projects from conception to completion, working
+        closely with cross-functional teams to deliver cutting-edge solutions that meet our clients’ needs.
+      </p>
+      <h4>Responsibilities</h4>
+      <ul>
+        <li>
+          Lead the design, development, and deployment of Java-based applications, ensuring adherence to best practices and coding
+          standards.
+        </li>
+        <li>
+          Provide technical guidance and mentorship to team members, fostering a collaborative and innovative development environment.
+        </li>
+        <li>Collaborate with architects, product managers, and other stakeholders to define technical requirements and project scope.</li>
+        <li>Conduct code reviews and ensure the quality of code deliverables, identifying and addressing issues promptly.</li>
+        <li>
+          Stay up-to-date with the latest industry trends, technologies, and best practices, and incorporate them into the development
+          process.
+        </li>
+        <li>Design and implement scalable, secure, and maintainable system architectures for Java-based applications.</li>
+        <li>Ensure the integration of software components and third-party applications into the overall system architecture.</li>
+        <li>Optimize application performance, scalability, and reliability through effective architectural design and implementation.</li>
+        <li>Collaborate with DevOps teams to establish and maintain continuous integration and delivery pipelines.</li>
+      </ul>
+      <h4>Job Qualifications</h4>
+      <ul>
+        <li>Bachelor’s degree in Computer Science, Engineering, or a related field; a Master’s degree is a plus.</li>
+        <li>Proven experience as a Java Technical Lead, Senior Java Developer, or similar role within the technology sector.</li>
+        <li>Extensive experience in designing, developing, and deploying Java-based applications.</li>
+        <li>Experience with cloud platforms (e.g., AWS, Azure, Google Cloud) and microservices architecture.</li>
+        <li>Demonstrated experience in leading and managing cross-functional teams.</li>
+        <li>Experience in Java/Python and related technologies (Spring, JPA, Java EE, etc.).</li>
+        <li>Have experience in front-end technologies (e.g., HTML, CSS, JavaScript, Angular, React) is a plus.</li>
+        <li>
+          Strong knowledge of software development tools and practices, including version control (e.g., Git), CI/CD pipelines, and
+          automated testing.
+        </li>
+        <li>Experience with relational and NoSQL databases</li>
+        <li>Experience with GRPC and REST.</li>
+        <li>Excellent communication and interpersonal skills, with the ability to effectively engage with stakeholders at all levels.</li>
+        <li>Demonstrated leadership capabilities, with the ability to inspire and motivate cross-functional teams.</li>
+        <li>Passion for understanding and solving customer needs and delivering exceptional user experiences.</li>
+      </ul>
+      <h4>Nice to have</h4>
+      <ul>
+        <li>Healthcare domain knowledge.</li>
+        <li>Strong understanding of Agile methodologies, including Scrum and Kanban.</li>
+        <li>Strong analytical and problem-solving skills, with a data-driven approach to decision making.</li>
+        <li>Ability to manage multiple priorities and projects simultaneously in a fast-paced environment.</li>
+      </ul>
+      <h4>Benefits</h4>
+      <ul>
+        <li>“FPT care” health insurance provided by Petrolimex (PJICO) and is exclusive for FPT employees.</li>
+        <li>Annual Summer Vacation: follows company’s policy and starts from May every year</li>
+        <li>Salary review: 1 time per year</li>
+        <li>International, dynamic, friendly working environment</li>
+        <li>Annual leave, working conditions follow Vietnam labor laws.</li>
+        <li>Other allowances: lunch allowance, working on-site allowance, etc.</li>
+      </ul>
+      <h4>Contact</h4>
+      <p>Interested candidates should click Apply button to submit a completed Curriculum Vitae/ Resume and Cover</p>
+      <p>Letter to: Recruitment Department – FPT Software Workforce Developmen</p>
+      <ul>
+        <li><strong>Contact Person:</strong> Ms. Dang Thi Trinh Tien</li>
+        <li><strong>Email:</strong>recruitment@fpt.com</li>
+      </ul>
+    </div>
   </div>
-  <footer><button type="submit" id="btnSave" name="btnSave" onclick="submitForm(event)">{{resource.save}}</button></footer>
-</form>
+</article>

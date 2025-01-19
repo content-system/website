@@ -47,11 +47,6 @@ app.get("/", (req: Request, res: Response) => {
     message: "Welcome in Express",
   })
 })
-app.get("/works", (req: Request, res: Response) => {
-  res.render(getView(req, "works"), {
-    message: "Welcome in works Express",
-  })
-})
 app.get("/services", (req: Request, res: Response) => {
   res.render(getView(req, "services"), {
     message: "Welcome in services Express",
