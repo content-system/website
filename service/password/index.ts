@@ -15,7 +15,7 @@ export class PasswordController {
     this.changePassword = this.changePassword.bind(this)
   }
   renderForgotPassword(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     res.render("forgot-password", {
       resource,
       user: {
@@ -25,7 +25,7 @@ export class PasswordController {
     })
   }
   forgotPassword(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     const contact = req.body.contact as string
     if (isEmpty(contact)) {
       return res.status(401).end(formatText(resource.required, resource.username_or_email))
@@ -39,7 +39,7 @@ export class PasswordController {
       .catch((err) => handleError(err, res, this.log))
   }
   renderResetPassword(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     res.render("reset-password", {
       resource,
       user: {
@@ -50,7 +50,7 @@ export class PasswordController {
     })
   }
   resetPassword(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     const pass: PasswordReset = req.body
     if (isEmpty(pass.username)) {
       return res.status(401).end(formatText(resource.required, resource.username))
@@ -70,7 +70,7 @@ export class PasswordController {
       .catch((err) => handleError(err, res, this.log))
   }
   renderChangePassword(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     res.render("change-password", {
       resource,
       user: {
@@ -81,7 +81,7 @@ export class PasswordController {
     })
   }
   changePassword(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     const pass: PasswordChange = req.body
     if (isEmpty(pass.username)) {
       return res.status(401).end(formatText(resource.required, resource.username))

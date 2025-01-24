@@ -93,21 +93,31 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
     validator.validate,
   )
   const signup = new SignUpController(signupService, signupStatus, logger.error)
-  const passwordMailSender = new MailSender(
+  const resetPasswordMailSender = new MailSender(
     sendMail,
     cfg.mail.from,
     cfg.password.templates.reset.body,
     cfg.password.templates.reset.subject,
+  )
+  const changePasswordMailSender = new MailSender(
+    sendMail,
+    cfg.mail.from,
+    cfg.password.templates.change.body,
+    cfg.password.templates.change.subject,
   )
   // const codeRepository = new CodeRepository<string>(db, "passwordcodes")
   const passwordRepository = usePasswordRepository<string>(db, cfg.password.db, cfg.password.max, cfg.password.fields)
   const passwordService = new PasswordService<string>(
     comparator,
     passwordRepository,
-    passwordMailSender.send,
+    resetPasswordMailSender.send,
     cfg.password.expires,
     passcodeRepository,
     cfg.password.max,
+    undefined,
+    hasTwoFactors,
+    undefined,
+    changePasswordMailSender.send,
   )
   const password = new PasswordController(passwordService, logger.error)
 
@@ -124,5 +134,8 @@ function generate(): string {
 }
 function sendMail(mailData: MailData): Promise<boolean> {
   console.log("" + mailData.subject + " " + mailData.html)
+  return Promise.resolve(true)
+}
+function hasTwoFactors(): Promise<boolean> {
   return Promise.resolve(true)
 }

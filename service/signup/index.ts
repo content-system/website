@@ -35,7 +35,7 @@ export class SignUpController {
     this.verify = this.verify.bind(this)
   }
   render(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     res.render("signup", {
       resource,
       user: {
@@ -47,7 +47,7 @@ export class SignUpController {
     })
   }
   submit(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     const info: UserSignUp = req.body
     console.log("user " + JSON.stringify(info))
     const errors = validate<UserSignUp>(info, userModel, resource, true)
@@ -89,7 +89,7 @@ export class SignUpController {
   verify(req: Request, res: Response) {
     let userId = req.params.id
     let passcode = req.params.code
-    const resource = getResource()
+    const resource = getResource(req)
     this.service
       .verify(userId, passcode)
       .then((success) => {

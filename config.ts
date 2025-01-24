@@ -66,7 +66,7 @@ export const config = {
     },
     query: `
       select u.user_id, u.username, u.display_name, email, u.status, u.max_password_age, 
-        p.password, p.success_time, p.fail_time, p.fail_count, p.locked_util_time, p.changed_time
+        p.password, p.success_time, p.fail_time, p.fail_count, p.locked_until_time, p.changed_time
       from users u
       inner join passwords p
         on u.user_id = p.user_id
@@ -110,7 +110,7 @@ export const config = {
       updatedAt: "updated_at",
       updatedBy: "updated_by",
     },
-    url: "http://localhost:8082/verify-account",
+    url: "http://localhost:8084/verify-account",
     template: {
       subject: "User registration confirmation",
       body: `

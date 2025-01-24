@@ -43,7 +43,7 @@ export class JobController {
     this.search = this.search.bind(this)
   }
   view(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     const id = req.params["id"]
     this.jobService.load(id).then((job) => {
       res.render(getView(req, "job"), {
@@ -53,7 +53,7 @@ export class JobController {
     })
   }
   submit(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     const job = req.body
     console.log("job " + JSON.stringify(job))
     const errors = validate<Job>(job, jobModel, resource)
@@ -71,7 +71,7 @@ export class JobController {
   }
   search(req: Request, res: Response) {
     const dateFormat = getDateFormat()
-    const resource = getResource()
+    const resource = getResource(req)
     let filter: JobFilter = {
       limit: resources.defaultLimit,
       // title: "Java",

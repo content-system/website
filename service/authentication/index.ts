@@ -34,7 +34,7 @@ export class SigninController {
     this.submit = this.submit.bind(this)
   }
   render(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     res.render("signin", {
       resource,
       user: {
@@ -45,7 +45,7 @@ export class SigninController {
     })
   }
   submit(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     const user: User = req.body
     console.log("user " + JSON.stringify(user))
     const errors = validate<User>(user, userModel, resource, true)

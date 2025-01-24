@@ -25,7 +25,7 @@ export function route(app: Application, ctx: ApplicationContext): void {
   app.get("/reset-password", ctx.password.renderResetPassword)
   app.post("/reset-password", json(), ctx.password.resetPassword)
   app.get("/change-password", ctx.password.renderChangePassword)
-  app.post("/change-password", ctx.password.renderChangePassword)
+  app.post("/change-password", json(), ctx.password.changePassword)
 
   const checkUser = check(userModel)
   app.post("/users/search", ctx.user.search)

@@ -25,6 +25,7 @@ export const en = {
 
   msg_account_reactivated: "Your account has been reactivated.",
   msg_password_expired_soon: "Your password will be expired in {0} day(s). Please change your password soon.",
+  msg_passcode_incorrect: "The verification code is incorrect. Please try again.",
 
   fail_authentication: "Your username or password is invalid. Please try again.",
   fail_unexisted_password: "The password does not exist in the system. Please contact the administrator.",

@@ -28,14 +28,14 @@ export class ContactController {
     this.submit = this.submit.bind(this)
   }
   render(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     res.render(getView(req, "contact"), {
       resource,
       contact: {},
     })
   }
   submit(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     console.log("Enter post contact " + JSON.stringify(req.body))
     const contact = req.body
     const errors = validate<Contact>(contact, contactModel, resource)

@@ -52,29 +52,6 @@ function parseDate(v, format) {
   const day = parseInt(valueItems[iday], 10)
   return new Date(year, month, day)
 }
-const o = "object"
-function trimNull(obj) {
-  if (!obj || typeof obj !== o) {
-    return obj
-  }
-  const keys = Object.keys(obj)
-  for (const key of keys) {
-    const v = obj[key]
-    if (v === null) {
-      delete obj[key]
-    } else if (Array.isArray(v) && v.length > 0) {
-      const v1 = v[0]
-      if (typeof v1 === o && !(v1 instanceof Date)) {
-        for (const item of v) {
-          trimNull(item)
-        }
-      }
-    } else if (typeof v === o && !(v instanceof Date)) {
-      trimNull(obj[key])
-    }
-  }
-  return obj
-}
 let eleHtml
 let isGetHtml = false
 function getLang() {
@@ -327,6 +304,36 @@ function findParent(e, className, nodeName) {
       return p
     }
   }
+}
+function findParentNode(e, nodeName) {
+  if (!e) {
+    return null
+  }
+  if (e.nodeName == nodeName || e.getAttribute("data-field")) {
+    return e
+  }
+  let p = e
+  while (true) {
+    p = p.parentElement
+    if (!p) {
+      return null
+    }
+    if (p.nodeName == nodeName || p.getAttribute("data-field")) {
+      return p
+    }
+  }
+}
+function toggleClass(e, className) {
+  if (e) {
+    if (e.classList.contains(className)) {
+      e.classList.remove(className)
+      return false
+    } else {
+      e.classList.add(className)
+      return true
+    }
+  }
+  return false
 }
 function addClass(ele, className) {
   if (ele) {
@@ -589,214 +596,25 @@ function decodeFromForm(form, currencySymbol) {
   }
   return obj
 }
-function removeFormatUrl(url) {
-  const startParams = url.indexOf("?")
-  return startParams !== -1 ? url.substring(0, startParams) : url
+function hideElement(ele) {
+  if (ele) {
+    ele.hidden = true
+    return true
+  }
+  return false
 }
-function getPrefix(url) {
-  return url.indexOf("?") >= 0 ? "&" : "?"
+function unhideElement(ele) {
+  if (ele) {
+    ele.hidden = false
+    return true
+  }
+  return false
 }
-function buildSearchUrl(ft, page, limit, fields) {
-  if (!page || page.length === 0) {
-    page = "page"
+function isHidden(ele) {
+  if (ele) {
+    return ele.hidden || ele.style.display === "none"
   }
-  if (!limit || limit.length === 0) {
-    limit = "limit"
-  }
-  if (!fields || fields.length === 0) {
-    fields = "fields"
-  }
-  const pageIndex = ft.page
-  if (pageIndex && !isNaN(pageIndex) && pageIndex <= 1) {
-    delete ft.page
-  }
-  const keys = Object.keys(ft)
-  let url = "?partial=true"
-  for (const key of keys) {
-    const objValue = ft[key]
-    if (objValue) {
-      if (key !== fields) {
-        if (typeof objValue === "string" || typeof objValue === "number") {
-          if (key === page) {
-            if (objValue != 1) {
-              url += getPrefix(url) + `${key}=${objValue}`
-            }
-          } else if (key === limit) {
-            if (objValue != resources.defaultLimit) {
-              url += getPrefix(url) + `${key}=${objValue}`
-            }
-          } else {
-            url += getPrefix(url) + `${key}=${objValue}`
-          }
-        } else if (typeof objValue === "object") {
-          if (objValue instanceof Date) {
-            url += getPrefix(url) + `${key}=${objValue.toISOString()}`
-          } else {
-            if (Array.isArray(objValue)) {
-              if (objValue.length > 0) {
-                const strs = []
-                for (const subValue of objValue) {
-                  if (typeof subValue === "string") {
-                    strs.push(subValue)
-                  } else if (typeof subValue === "number") {
-                    strs.push(subValue.toString())
-                  }
-                }
-                url += getPrefix(url) + `${key}=${strs.join(",")}`
-              }
-            } else {
-              const keysLvl2 = Object.keys(objValue)
-              for (const key2 of keysLvl2) {
-                const objValueLvl2 = objValue[key2]
-                if (objValueLvl2 instanceof Date) {
-                  url += getPrefix(url) + `${key}.${key2}=${objValueLvl2.toISOString()}`
-                } else {
-                  url += getPrefix(url) + `${key}.${key2}=${objValueLvl2}`
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  return url
-}
-function removeField(search, fieldName) {
-  let i = search.indexOf(fieldName + "=")
-  if (i < 0) {
-    return search
-  }
-  if (i > 0) {
-    if (search.substring(i - 1, 1) != "&") {
-      i = search.indexOf("&" + fieldName + "=")
-      if (i < 0) {
-        return search
-      }
-      i = i + 1
-    }
-  }
-  const j = search.indexOf("&", i + fieldName.length)
-  return j >= 0 ? search.substring(0, i) + search.substring(j + 1) : search.substring(0, i - 1)
-}
-function getField(search, fieldName) {
-  let i = search.indexOf(fieldName + "=")
-  if (i < 0) {
-    return ""
-  }
-  if (i > 0) {
-    if (search.substring(i - 1, 1) != "&") {
-      i = search.indexOf("&" + fieldName + "=")
-      if (i < 0) {
-        return search
-      }
-      i = i + 1
-    }
-  }
-  const j = search.indexOf("&", i + fieldName.length)
-  return j >= 0 ? search.substring(i, j) : search.substring(i)
-}
-function changePage(e) {
-  e.preventDefault()
-  const target = e.target
-  let search = target.search
-  if (search.length > 0) {
-    search = search.substring(1)
-  }
-  search = removeField(search, "partial")
-  const p = getField(search, "page")
-  if (p === "page=1") {
-    search = removeField(search, "page")
-  }
-  let url = window.location.origin + window.location.pathname
-  url = url + (search.length === 0 ? "?partial=true" : "?" + search + "&partial=true")
-  let newUrl = window.location.origin + window.location.pathname
-  if (search.length > 0) {
-    newUrl = newUrl + "?" + search
-  }
-  const resource = getResource()
-  fetch(url, {
-    method: "GET",
-    headers: getHeaders(),
-  })
-    .then((response) => {
-      if (response.ok) {
-        response.text().then((data) => {
-          const pageBody = document.getElementById("pageBody")
-          if (pageBody) {
-            pageBody.innerHTML = data
-            const forms = pageBody.querySelectorAll("form")
-            for (let i = 0; i < forms.length; i++) {
-              registerEvents(forms[i])
-            }
-            setTimeout(function () {
-              const msg = getHiddenMessage(forms, resources.hiddenMessage)
-              if (msg && msg.length > 0) {
-                toast(msg)
-              }
-            }, 0)
-          }
-          window.history.pushState(undefined, "Title", newUrl)
-        })
-      } else {
-        console.error("Error: ", response.statusText)
-        alertError(resource.error_submit_failed, response.statusText)
-      }
-    })
-    .catch((err) => {
-      console.log("Error: " + err)
-      alertError(resource.error_submitting_form, err)
-    })
-}
-function search(e) {
-  e.preventDefault()
-  const target = e.target
-  const form = target.form
-  const initFilter = decodeFromForm(form)
-  const filter = trimNull(initFilter)
-  filter.page = 1
-  const search = buildSearchUrl(filter)
-  const url = getCurrentURL() + search
-  let newUrl = getCurrentURL()
-  if (search.length > 0) {
-    const s = removeField(search.substring(1), "partial")
-    if (s.length > 0) {
-      newUrl = newUrl + "?" + s
-    }
-  }
-  const resource = getResource()
-  fetch(url, {
-    method: "GET",
-    headers: getHeaders(),
-  })
-    .then((response) => {
-      if (response.ok) {
-        response.text().then((data) => {
-          const pageBody = document.getElementById("pageBody")
-          if (pageBody) {
-            pageBody.innerHTML = data
-            const forms = pageBody.querySelectorAll("form")
-            for (let i = 0; i < forms.length; i++) {
-              registerEvents(forms[i])
-            }
-            setTimeout(function () {
-              const msg = getHiddenMessage(forms, resources.hiddenMessage)
-              if (msg && msg.length > 0) {
-                toast(msg)
-              }
-            }, 0)
-          }
-          window.history.pushState(undefined, "Title", newUrl)
-        })
-      } else {
-        console.error("Error: ", response.statusText)
-        alertError(resource.error_submit_failed, response.statusText)
-      }
-    })
-    .catch((err) => {
-      console.log("Error: " + err)
-      alertError(resource.error_submitting_form, err)
-    })
+  return true
 }
 function getHiddenMessage(nodes, name, i) {
   const index = i !== undefined && i >= 0 ? i : 0
@@ -810,10 +628,20 @@ function getHiddenMessage(nodes, name, i) {
   }
   return null
 }
-function showErrorMessage(ele, msg) {
+function removeMessage(ele) {
   if (ele) {
     removeClasses(ele, ["alert-error", "alert-warning", "alert-info"])
-    ele.classList.add("alert-error")
+    ele.innerHTML = ""
+    return true
+  }
+  return false
+}
+function showErrorMessage(ele, msg) {
+  if (ele) {
+    removeClasses(ele, ["alert-warning", "alert-info"])
+    if (!ele.classList.contains("alert-error")) {
+      ele.classList.add("alert-error")
+    }
     ele.innerHTML = msg + '<span onclick="clearMessage(event)"></span>'
   }
   return false
@@ -824,8 +652,10 @@ function showErrorMessageOfForm(form, msg) {
 }
 function showWarningMessage(ele, msg) {
   if (ele) {
-    removeClasses(ele, ["alert-error", "alert-warning", "alert-info"])
-    ele.classList.add("alert-warning")
+    removeClasses(ele, ["alert-error", "alert-info"])
+    if (!ele.classList.contains("alert-warning")) {
+      ele.classList.add("alert-warning")
+    }
     ele.innerHTML = msg + '<span onclick="clearMessage(event)"></span>'
   }
   return false
@@ -836,8 +666,10 @@ function showWarningMessageOfForm(form, msg) {
 }
 function showInfoMessage(ele, msg) {
   if (ele) {
-    removeClasses(ele, ["alert-error", "alert-warning", "alert-info"])
-    ele.classList.add("alert-info")
+    removeClasses(ele, ["alert-error", "alert-warning"])
+    if (!ele.classList.contains("alert-info")) {
+      ele.classList.add("alert-info")
+    }
     ele.innerHTML = msg + '<span onclick="clearMessage(event)"></span>'
   }
   return false
@@ -879,6 +711,52 @@ function setInputValue(form, name, value) {
 function getToken() {
   const token = localStorage.getItem(resources.token)
   return token
+}
+function getHeaders() {
+  const token = getToken()
+  const lang = getLang()
+  if (lang) {
+    if (token && token.length > 0) {
+      return { "Content-Language": lang, Authorization: `Bearer ${token}` }
+    } else {
+      return { "Content-Language": lang }
+    }
+  } else {
+    if (token && token.length > 0) {
+      return { Authorization: `Bearer ${token}` }
+    } else {
+      return {}
+    }
+  }
+}
+function getHttpHeaders() {
+  const token = getToken()
+  const lang = getLang()
+  if (lang) {
+    if (token && token.length > 0) {
+      return {
+        "Content-Type": "application/json;charset=utf-8",
+        "Content-Language": lang,
+        Authorization: `Bearer ${token}`,
+      }
+    } else {
+      return {
+        "Content-Type": "application/json;charset=utf-8",
+        "Content-Language": lang,
+      }
+    }
+  } else {
+    if (token && token.length > 0) {
+      return {
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: `Bearer ${token}`,
+      }
+    } else {
+      return {
+        "Content-Type": "application/json;charset=utf-8",
+      }
+    }
+  }
 }
 function submitFormData(e) {
   e.preventDefault()
@@ -931,52 +809,6 @@ function submitFormData(e) {
         alertError(resource.error_submitting_form, err)
       })
   })
-}
-function getHeaders() {
-  const token = getToken()
-  const lang = getLang()
-  if (lang) {
-    if (token && token.length > 0) {
-      return { "Content-Language": lang, Authorization: `Bearer ${token}` }
-    } else {
-      return { "Content-Language": lang }
-    }
-  } else {
-    if (token && token.length > 0) {
-      return { Authorization: `Bearer ${token}` }
-    } else {
-      return {}
-    }
-  }
-}
-function getHttpHeaders() {
-  const token = getToken()
-  const lang = getLang()
-  if (lang) {
-    if (token && token.length > 0) {
-      return {
-        "Content-Type": "application/json;charset=utf-8",
-        "Content-Language": lang,
-        Authorization: `Bearer ${token}`,
-      }
-    } else {
-      return {
-        "Content-Type": "application/json;charset=utf-8",
-        "Content-Language": lang,
-      }
-    }
-  } else {
-    if (token && token.length > 0) {
-      return {
-        "Content-Type": "application/json;charset=utf-8",
-        Authorization: `Bearer ${token}`,
-      }
-    } else {
-      return {
-        "Content-Type": "application/json;charset=utf-8",
-      }
-    }
-  }
 }
 function submitForm(e) {
   e.preventDefault()

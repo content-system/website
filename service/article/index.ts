@@ -43,7 +43,7 @@ export class ArticleController {
     this.search = this.search.bind(this)
   }
   view(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     const id = req.params["id"]
     this.service.load(id).then((article) => {
       res.render(getView(req, "article"), {
@@ -53,7 +53,7 @@ export class ArticleController {
     })
   }
   submit(req: Request, res: Response) {
-    const resource = getResource()
+    const resource = getResource(req)
     const article = req.body
     console.log("article " + JSON.stringify(article))
     const errors = validate<Article>(article, articleModel, resource)
@@ -71,7 +71,7 @@ export class ArticleController {
   }
   search(req: Request, res: Response) {
     const dateFormat = getDateFormat()
-    const resource = getResource()
+    const resource = getResource(req)
     let filter: ArticleFilter = {
       limit: resources.defaultLimit,
       q: "",
