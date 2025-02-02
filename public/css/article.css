@@ -30,6 +30,7 @@
   font-size: 16px;
   font-weight: 600;
   color: inherit;
+  background-color: inherit;
   height: unset;
 }
 .article-content > h6 {
@@ -78,6 +79,8 @@
 .job-description p {
   padding-left: 0;
   padding-right: 0;
+  color: inherit;
+  background-color: inherit;
 }
 .job-description ul {
   padding-left: 16px;
