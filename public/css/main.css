@@ -52,7 +52,7 @@ select {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: "Roboto";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -298,6 +298,11 @@ header > h2 {
     justify-content: center;
   }
 }
+.central-full .view-body > h1,
+.central-full .view-body > h2 {
+  justify-content: center;
+}
+
 h3 {
   font-size: 18px;
   font-weight: 500;
