@@ -97,6 +97,23 @@
   max-height: calc(100vh - 64px - 52px);
 }
 
+.list-detail-container > .list-content > header,
+.list-detail-container > .detail-content > form > header,
+.page-body > article > header,
+.page-body > div > header,
+.page-body > .form > header,
+.view-header {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  z-index: 3;
+  height: 52px;
+  background-color: inherit;
+  background-image: inherit;
+}
+
 .modal-portal-content > div > div,
 .detail-content > form > div,
 .page-body > .form > div,
