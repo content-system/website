@@ -61,6 +61,7 @@ h3 {
   }
 }
 
+body,
 article,
 .data-list dd,
 .form > div > section > p,
@@ -98,6 +99,17 @@ label.radio-group,
 .radio-group > label,
 .group label div {
   color: #4d4d4d;
+}
+
+.table > tbody > tr > td > a,
+.table > tbody > tr > td,
+.row .form-group label,
+.card > footer > button.btn-cancel,
+.central-full > form > div > button.btn-cancel,
+header > h5,
+.view-subtitle,
+.subtitle {
+  color: #999999;
 }
 
 .view-body > section > article > p,
@@ -390,20 +402,6 @@ label.required:before,
 }
 .alert footer {
   border-color: #dbdbdb;
-}
-
-body,
-.table > tbody > tr > td > a,
-.table > tbody > tr > td,
-.row .form-group label,
-.pagination > li > a,
-.pagination > li > span,
-.card > footer > button.btn-cancel,
-.central-full > form > div > button.btn-cancel,
-header > h5,
-.view-subtitle,
-.subtitle {
-  color: #999999;
 }
 
 .pagination > li > a,

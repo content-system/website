@@ -10,6 +10,9 @@
   padding: 0;
   margin-block-end: 8px;
 }
+.article-meta {
+  min-height: unset;
+}
 .article-content {
   margin-block-start: 16px;
 }

@@ -81,6 +81,7 @@ export class JobController {
       format(filter, ["publishedAt"])
     }
     const page = queryNumber(req, resources.page, 1)
+    filter.page = page
     const limit = queryNumber(req, resources.limit, resources.defaultLimit)
     this.jobService.search(cloneFilter(filter, page, limit), limit, page).then((result) => {
       const list = escapeArray(result.list)

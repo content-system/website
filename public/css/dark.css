@@ -76,6 +76,7 @@
   }
 }
 
+.dark body,
 .dark article,
 .dark .data-list dd,
 .dark .form > div > section > p,
@@ -111,6 +112,17 @@
 .dark .radio-group > label,
 .dark .group label div {
   color: #b2b2b2;
+}
+
+.dark .table > tbody > tr > td > a,
+.dark .table > tbody > tr > td,
+.dark .row .form-group label,
+.dark .card > footer > button.btn-cancel,
+.dark .central-full > form > div > button.btn-cancel,
+.dark header > h5,
+.dark .view-subtitle,
+.dark .subtitle {
+  color: #999999;
 }
 
 .dark .view-body > section > article > p,
@@ -410,20 +422,6 @@
 }
 .dark .alert footer {
   border-color: #242424;
-}
-
-.dark body,
-.dark .table > tbody > tr > td > a,
-.dark .table > tbody > tr > td,
-.dark .row .form-group label,
-.dark .pagination > li > a,
-.dark .pagination > li > span,
-.dark .card > footer > button.btn-cancel,
-.dark .central-full > form > div > button.btn-cancel,
-.dark header > h5,
-.dark .view-subtitle,
-.dark .subtitle {
-  color: #999999;
 }
 
 .dark .pagination > li > a,
