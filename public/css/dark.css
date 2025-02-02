@@ -146,6 +146,7 @@
 }
 */
 .dark .btn-more,
+.dark h1,
 .dark h2,
 .dark .img-card h3,
 .dark .row .form-group.focused label,
@@ -154,8 +155,6 @@
 .dark .view-container > form > div > label.focused,
 .dark .view-container > div > label.focused,
 .dark .view-body > label.focused,
-.dark .form > div > h1,
-.dark .form > div > h2,
 .dark .view-container > form > div > h2,
 .dark .card > footer > button,
 .dark .btn-select,
@@ -188,8 +187,6 @@
 
 .dark .diff .row .col p > span,
 .dark .data-list dt,
-.dark article > p > label,
-.dark section > p > label,
 .dark .remark,
 .dark .article-notice,
 .dark .btn-detail,
@@ -424,12 +421,6 @@
   border-color: #242424;
 }
 
-.dark .pagination > li > a,
-.dark .pagination > li > span {
-  border-color: #666666;
-  background-color: inherit;
-}
-
 .dark ul.list > li.highlight {
   background-color: #242424;
 }
@@ -517,6 +508,11 @@
   color: #f0f0f0;
 }
 
+.dark .pagination > li > a,
+.dark .pagination > li > span {
+  border-color: #666666;
+  background-color: inherit;
+}
 /* bootstrap */
 /*.panel-heading,*/
 .dark .result .active,

@@ -141,6 +141,7 @@
 }
 */
 .grey.dark .btn-more,
+.grey.dark h1,
 .grey.dark h2,
 .grey.dark .img-card h3,
 .grey.dark .row .form-group.focused label,
@@ -149,8 +150,6 @@
 .grey.dark .view-container > form > div > label.focused,
 .grey.dark .view-container > div > label.focused,
 .grey.dark .view-body > label.focused,
-.grey.dark .form > div > h1,
-.grey.dark .form > div > h2,
 .grey.dark .card > footer > button,
 .grey.dark .btn-select,
 .grey.dark .btn-add,
@@ -182,8 +181,6 @@
 
 .grey.dark .diff .row .col p > span,
 .grey.dark .data-list dt,
-.grey.dark article > p > label,
-.grey.dark section > p > label,
 .grey.dark .remark,
 .grey.dark .article-notice,
 .grey.dark .btn-detail,
@@ -421,12 +418,6 @@
   border-color: #242424;
 }
 
-.grey.dark .pagination > li > a,
-.grey.dark .pagination > li > span {
-  border-color: #666666;
-  background-color: inherit;
-}
-
 .grey.dark ul.list > li.highlight {
   background-color: #f2f2f2;
 }
@@ -478,6 +469,11 @@
   box-shadow: 0 1px 0 0 #657181;
 }
 
+.grey.dark .pagination > li > a,
+.grey.dark .pagination > li > span {
+  border-color: #666666;
+  background-color: inherit;
+}
 /* bootstrap */
 /*.panel-heading,*/
 .grey.dark .result .active,
