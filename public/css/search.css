@@ -13,7 +13,11 @@
   padding-top: 0;
   padding-bottom: 0;
 }
-
+@media screen and (max-width: 600px) {
+  .row > label.search-input {
+    margin-top: 10px;
+  }
+}
 .row > label.search-input > *,
 .search-input > * {
   display: flex;
