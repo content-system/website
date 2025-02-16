@@ -14,6 +14,7 @@ import {
   handleError,
   hasSearch,
   queryNumber,
+  queryPage,
   resources,
 } from "express-ext"
 import { Log, Manager, Search } from "onecore"
@@ -80,8 +81,7 @@ export class ArticleController {
       filter = fromRequest<ArticleFilter>(req)
       format(filter, ["publishedAt"])
     }
-    const page = queryNumber(req, resources.page, 1)
-    filter.page = page
+    const page = queryPage(req, filter)
     const limit = queryNumber(req, resources.limit, resources.defaultLimit)
     this.service.search(cloneFilter(filter, page, limit), limit, page).then((result) => {
       const list = escapeArray(result.list)
