@@ -1,4 +1,4 @@
-import { Attributes, Filter, Repository, Service, TimeRange } from "onecore"
+import { Attributes, Filter, SearchResult, Service, TimeRange } from "onecore"
 
 export interface Article {
   id: string
@@ -20,8 +20,21 @@ export interface ArticleFilter extends Filter {
   publishedAt?: TimeRange
 }
 
-export interface ArticleRepository extends Repository<Article, string> {}
-export interface ArticleService extends Service<Article, string, ArticleFilter> {}
+export interface ArticleRepository {
+  load(id: string, ctx?: any): Promise<Article | null>
+  create(article: Article, ctx?: any): Promise<number>
+  update(article: Article, ctx?: any): Promise<number>
+  patch(article: Partial<Article>, ctx?: any): Promise<number>
+  delete(id: string, ctx?: any): Promise<number>
+}
+export interface ArticleService extends Service<Article, string, ArticleFilter> {
+  load(id: string, ctx?: any): Promise<Article | null>
+  create(article: Article, ctx?: any): Promise<number>
+  update(article: Article, ctx?: any): Promise<number>
+  patch(article: Partial<Article>, ctx?: any): Promise<number>
+  delete(id: string, ctx?: any): Promise<number>
+  search(s: ArticleFilter, limit: number, offset?: number | string, fields?: string[]): Promise<SearchResult<Article>>
+}
 
 export const articleModel: Attributes = {
   id: {

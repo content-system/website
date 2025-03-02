@@ -31,7 +31,13 @@ export interface JobFilter extends Filter {
   status?: string
 }
 
-export interface JobRepository extends Repository<Job, string> {}
+export interface JobRepository extends Repository<Job, string> {
+  load(id: string, ctx?: any): Promise<Job | null>
+  create(job: Job, ctx?: any): Promise<number>
+  update(job: Job, ctx?: any): Promise<number>
+  patch(job: Partial<Job>, ctx?: any): Promise<number>
+  delete(id: string, ctx?: any): Promise<number>
+}
 export interface JobService extends Service<Job, string, JobFilter> {}
 
 export const jobModel: Attributes = {
