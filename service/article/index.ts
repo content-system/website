@@ -16,6 +16,7 @@ import {
   queryNumber,
   queryPage,
   resources,
+  toString,
 } from "express-ext"
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
@@ -46,12 +47,22 @@ export class ArticleController {
   view(req: Request, res: Response) {
     const resource = getResource(req)
     const id = req.params["id"]
-    this.service.load(id).then((article) => {
-      res.render(getView(req, "article"), {
-        resource,
-        article,
+    this.service
+      .load(id)
+      .then((article) => {
+        if (!article) {
+          res.render(getView(req, "error-404"), { resource })
+        } else {
+          res.render(getView(req, "article"), {
+            resource,
+            article,
+          })
+        }
       })
-    })
+      .catch((err) => {
+        this.log(toString(err))
+        res.render(getView(req, "error-500"), { resource })
+      })
   }
   submit(req: Request, res: Response) {
     const resource = getResource(req)
@@ -83,23 +94,29 @@ export class ArticleController {
     }
     const page = queryPage(req, filter)
     const limit = queryNumber(req, resources.limit, resources.defaultLimit)
-    this.service.search(cloneFilter(filter, page, limit), limit, page).then((result) => {
-      const list = escapeArray(result.list)
-      for (const item of result.list) {
-        item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
-      }
-      const search = getSearch(req.url)
-      res.render(getView(req, "news"), {
-        resource,
-        limits: resources.limits,
-        filter,
-        list,
-        pages: buildPages(limit, result.total),
-        pageSearch: buildPageSearch(search),
-        sort: buildSortSearch(search, fields, filter.sort),
-        message: buildMessage(resource, list, limit, page, result.total),
+    this.service
+      .search(cloneFilter(filter, page, limit), limit, page)
+      .then((result) => {
+        const list = escapeArray(result.list)
+        for (const item of result.list) {
+          item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
+        }
+        const search = getSearch(req.url)
+        res.render(getView(req, "news"), {
+          resource,
+          limits: resources.limits,
+          filter,
+          list,
+          pages: buildPages(limit, result.total),
+          pageSearch: buildPageSearch(search),
+          sort: buildSortSearch(search, fields, filter.sort),
+          message: buildMessage(resource, list, limit, page, result.total),
+        })
       })
-    })
+      .catch((err) => {
+        this.log(toString(err))
+        res.render(getView(req, "error-500"), { resource })
+      })
   }
 }
 export function useArticleService(db: DB): ArticleService {

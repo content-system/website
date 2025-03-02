@@ -73,6 +73,7 @@ export const vi = {
   button_ok: "",
   button_yes: "Yes",
   button_no: "No",
+  button_home: "Home",
 
   msg_confirm_save: "Are you sure you want to save?",
   msg_save_success: "Data have been saved successfully.",
@@ -165,6 +166,11 @@ export const vi = {
   error_401: "You have not logged in or the session was expired. Please log in." /* error_unauthorized */,
   error_404: "Item was not found." /* error_not_found  */,
   error_403: "You do not have permission for this page or for this action." /* error_forbidden */,
+
+  error_404_title: "404 Not found",
+  error_404_message: "Sorry, the page you are looking for could not be found.",
+  error_500_title: "500 Internal Server Error",
+  error_500_message: "Sorry, the server is wrong. Please try again later.",
 
   error_version: "Data has been changed by someone. Please refresh screen and continue.",
   error_data_corrupt: "Data has been corrupt. You cannot proceed this business.",

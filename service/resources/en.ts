@@ -167,6 +167,11 @@ export const en = {
   error_404: "Item was not found." /* error_not_found  */,
   error_403: "You do not have permission for this page or for this action." /* error_forbidden */,
 
+  error_404_title: "404 Not found",
+  error_404_message: "Sorry, the page you are looking for could not be found.",
+  error_500_title: "500 Internal Server Error",
+  error_500_message: "Sorry, the server is wrong. Please try again later.",
+
   error_version: "Data has been changed by someone. Please refresh screen and continue.",
   error_data_corrupt: "Data has been corrupt. You cannot proceed this business.",
   error_required_id: "You must input id.",
