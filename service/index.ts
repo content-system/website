@@ -1,8 +1,6 @@
 import { Application, json } from "express"
-import { check } from "express-ext"
 import multer from "multer"
 import { ApplicationContext } from "./context"
-import { userModel } from "./user"
 
 export * from "./context"
 
@@ -27,15 +25,6 @@ export function route(app: Application, ctx: ApplicationContext): void {
   app.get("/change-password", ctx.password.renderChangePassword)
   app.post("/change-password", json(), ctx.password.changePassword)
 
-  const checkUser = check(userModel)
-  app.post("/users/search", ctx.user.search)
-  app.get("/users/search", ctx.user.search)
-  app.get("/users/:id", ctx.user.load)
-  app.post("/users", checkUser, ctx.user.create)
-  app.put("/users/:id", checkUser, ctx.user.update)
-  app.patch("/users/:id", checkUser, ctx.user.patch)
-  app.delete("/users/:id", ctx.user.delete)
-
   app.get("/news", ctx.article.search)
   app.get("/news/:id", ctx.article.view)
 
@@ -44,4 +33,6 @@ export function route(app: Application, ctx: ApplicationContext): void {
 
   app.get("/contact", ctx.contact.render)
   app.post("/contact", parser.none(), ctx.contact.submit)
+
+  app.get("/:id", ctx.content.view)
 }

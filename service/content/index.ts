@@ -9,7 +9,7 @@ export * from "./content"
 export class SqlContentRepository implements ContentRepository {
   constructor(protected db: DB) {}
   load(id: string, lang: string): Promise<Content | null> {
-    return this.db.query<Content>("select * from contents where id = ? AND lang = ?", [id, lang]).then((rows) => {
+    return this.db.query<Content>("select * from contents where id = $1 and lang = $2", [id, lang]).then((rows) => {
       if (rows.length === 0) {
         return null
       }
@@ -20,11 +20,15 @@ export class SqlContentRepository implements ContentRepository {
 export class ContentUseCase implements ContentService {
   constructor(protected repository: ContentRepository) {}
   load(id: string, lang: string): Promise<Content | null> {
-    return this.repository.load(id, lang)
+    return this.repository.load(id, lang).then((content) => {
+      if (!content) {
+        return this.repository.load(id, "en")
+      }
+      return content
+    })
   }
 }
 
-const fields = ["title", "publishedAt", "description"]
 export class ContentController {
   constructor(private service: ContentService, private log: Log) {
     this.view = this.view.bind(this)
@@ -33,7 +37,7 @@ export class ContentController {
     const resource = getResource(req)
     const id = req.params["id"]
     this.service
-      .load(id, "en")
+      .load(id, "vi")
       .then((content) => {
         if (!content) {
           res.render(getView(req, "error-404"), { resource })

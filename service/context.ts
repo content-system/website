@@ -14,10 +14,10 @@ import { createValidator } from "xvalidators"
 import { ArticleController, useArticleController } from "./article"
 import { SigninController } from "./authentication"
 import { ContactController, useContactController } from "./contact"
+import { ContentController, useContentController } from "./content"
 import { JobController, useJobController } from "./job"
 import { PasswordController } from "./password"
 import { SignUpController } from "./signup"
-import { UserController, useUserController } from "./user"
 
 resources.createValidator = createValidator
 resources.check = check
@@ -37,7 +37,7 @@ export interface ApplicationContext {
   signin: SigninController
   signup: SignUpController
   password: PasswordController
-  user: UserController
+  content: ContentController
   article: ArticleController
   job: JobController
   contact: ContactController
@@ -121,12 +121,12 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
   )
   const password = new PasswordController(passwordService, logger.error)
 
-  const user = useUserController(logger.error, db)
+  const content = useContentController(db, logger.error)
   const article = useArticleController(db, logger.error)
   const job = useJobController(db, logger.error)
   const contact = useContactController(db, logger.error)
 
-  return { health, log, middleware, signin, signup, password, user, article, job, contact }
+  return { health, log, middleware, signin, signup, password, content, article, job, contact }
 }
 
 function generate(): string {
