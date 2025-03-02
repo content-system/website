@@ -14,7 +14,7 @@ create table contents (
   primary key (id, lang)
 );
 
-insert into contents(id,lang,title,body,published_at,tags,status,version) values
+insert into contents (id,lang,title,body,published_at,tags,status,version) values
 	 ('milestones','en','Milestones','<div>
   <header><h1>Milestones</h1></header>
   <div>
@@ -404,4 +404,205 @@ insert into contents(id,lang,title,body,published_at,tags,status,version) values
     </section>
   </div>
 </div>
-',null,'{}',null,1);
+',null,'{}',null,1),
+	 ('leadership','vi','Leadership','<div>
+  <header><h1>Khả năng lãnh đạo</h1></header>
+  <div>
+    <h2>Ban lãnh đạo</h2>
+    <ul class="row list">
+      <li class="col s6 m4 l3 img-card">
+        <img
+          src="https://fptsoftware.com/-/media/project/fpt-software/fso/uplift/board-of-management/board-of-management/chu-thi-thanh-ha.webp"
+        />
+        <h3 class="center">Chu Thi Thanh Ha</h3>
+        <p class="center">Chủ tịch, FPT Software</p>
+      </li>
+      <li class="col s6 m4 l3 img-card">
+        <img
+          src="https://fptsoftware.com/-/media/project/fpt-software/fso/uplift/board-of-management/board-of-management/pham-minh-tuan.webp"
+        />
+        <h3 class="center">Pham Minh Tuan</h3>
+        <p class="center">Tổng giám đốc điều hành, FPT Software</p>
+      </li>
+      <li class="col s6 m4 l3 img-card">
+        <img
+          src="https://fptsoftware.com/-/media/project/fpt-software/fso/uplift/board-of-management/board-of-management/nguyen-khai-hoan.webp"
+        />
+        <h3 class="center">Nguyen Khai Hoan</h3>
+        <p class="center">Giám đốc vận hành</p>
+      </li>
+      <li class="col s6 m4 l3 push-m4 img-card">
+        <img
+          src="https://fptsoftware.com/-/media/project/fpt-software/fso/uplift/board-of-management/board-of-management/dao-duy-cuong.webp"
+        />
+        <h3 class="center">Dao Duy Cuong</h3>
+        <p class="center">Giám đốc công nghệ</p>
+      </li>
+    </ul>
+    <h2>Ban lãnh đạo các khu vực</h2>
+    <ul class="row list">
+      <li class="col s6 m4 l3 img-card">
+        <img
+          src="https://fptsoftware.com/-/media/project/fpt-software/fso/uplift/board-of-management/board-of-management/do-van-khac.webp"
+        />
+        <h3 class="center">Do Van Khac</h3>
+        <p class="center">Giám đốc điều hành, FPT Nhật Bản</p>
+      </li>
+      <li class="col s6 m4 l3 img-card">
+        <img
+          src="https://fptsoftware.com/-/media/project/fpt-software/fso/uplift/board-of-management/board-of-management/dang-tran-phuong.webp"
+        />
+        <h3 class="center">Dang Tran Phuong</h3>
+        <p class="center">Giám đốc điều hành, FPT Mỹ</p>
+      </li>
+      <li class="col s6 m4 l3 img-card">
+        <img
+          src="https://fptsoftware.com/-/media/project/fpt-software/fso/uplift/board-of-management/board-of-management/mark-scrivens.webp"
+        />
+        <h3 class="center">Mark Scrivens</h3>
+        <p class="center">Giám đốc điều hành, FPT Vương quốc Anh</p>
+      </li>
+      <li class="col s6 m4 l3 push-m4 img-card">
+        <img
+          src="https://fptsoftware.com/-/media/project/fpt-software/fso/uplift/board-of-management/board-of-management/christophe-schwanegel.webp"
+        />
+        <h3 class="center">Christophe Schwanengel</h3>
+        <p class="center">Giám đốc điều hành, FPT Giám đốc điều hành</p>
+      </li>
+    </ul>
+  </div>
+</div>
+',null,'{}',null,1),
+	 ('services','vi','Services','<div>
+  <header><h1>Dịch vụ</h1></header>
+  <div>
+    <h4 class="h4">
+      FPT chuyên tạo ra các giải pháp phần mềm cho nhiều ngành công nghiệp khác nhau - trải dài ở nhiều cấp độ và yêu cầu khác nhau.
+    </h4>
+    <ul class="row list">
+      <li class="col s6 l3 img-card">
+        <img
+          src="https://fptsoftware.com/-/media/project/fpt-software/fso/services/product-engineering-services/automative-services/auto-services-lp_banner-mobile.webp"
+        />
+        <h3>Phát triển phần mềm</h3>
+        <p>
+          Phát triển phần mềm trên nhiều nền tảng khác nhau, từ mạng (GO, Java, .NET, Java Script, PHP & Python) đến ứng dụng di động
+          (Android/iOS gốc và đa nền tảng)​
+        </p>
+      </li>
+      <li class="col s6 l3 img-card">
+        <img
+          src="https://fptsoftware.com/-/media/project/fpt-software/fso/services/product-engineering-services/vehicle-engineering-cad-cae-services/vehicle-engineering-lp_banner-1_mobile.png"
+        />
+        <h3>Kiểm thử phần mềm</h3>
+        <p>
+          Với đội ngũ được xây dựng với chuyên môn hóa cao, chúng tôi cung cấp hơn 15 năm kiến ​​thức và chuyên môn về thử nghiệm. Chúng tôi
+          có thể hỗ trợ các dự án hiện tại của bạn hoặc làm việc như đội chuyên kiểm thử phần mềm rieeng biệt.
+        </p>
+      </li>
+      <li class="col s6 l3 img-card">
+        <img src="https://fptsoftware.com/-/media/project/fpt-software/fso/industries/logistics/750x1000-min.png" />
+        <h3>Dịch vụ dữ liệu</h3>
+        <p>
+          Tính toàn vẹn của dữ liệu rất quan trọng. Chúng tôi cung cấp hỗ trợ toàn diện cho tính toàn vẹn và phân tích dữ liệu, đảm bảo dữ
+          liệu sạch, chính xác và sẵn sàng để truyền tải liền mạch một cách toàn diện.
+        </p>
+      </li>
+      <li class="col s6 l3 img-card">
+        <img src="https://fptsoftware.com/-/media/project/fpt-software/fso/industries/automotive/automotive-lp_banner-3_mobile.png" />
+        <h3>Trí tuệ nhân tạo và máy học</h3>
+        <p>
+          Chúng tôi giúp khách hàng tận dụng các công nghệ mới nổi như trí tuệ nhân tạo (AI) và máy học (ML) để nâng cao chất lượng sản phẩm
+          phần mềm của họ, từ quy trình chuẩn bị dữ liệu đến phát triển các thuật toán máy học tốt nhất. Chúng tôi đảm bảo chất lượng kỹ
+          thuật cao nhất và giao tiếp minh bạch trong suốt hành trình máy học của bạn.
+        </p>
+      </li>
+    </ul>
+  </div>
+</div>',null,'{}',null,1),
+	 ('milestones','vi','Milestones','<div>
+  <header><h1>Các cột mốc quan trọng</h1></header>
+  <div>
+    <dl class="data-list row">
+      <dt class="col s2 l1 right-align">1999</dt>
+      <dd class="col s10 l11">FPT Software được thành lập năm 1999 bởi 13 thành viên của Tập đoàn FPT, đứng đầu là Nguyễn Thành Nam</dd>
+      <dt class="col s2 l1 right-align">2005</dt>
+      <dd class="col s10 l11">Mở chi nhánh ở nước ngoài đầu tiên tại Nhật Bản.</dd>
+      <dt class="col s2 l1 right-align">2007</dt>
+      <dd class="col s10 l11">Mở văn phòng tại Singapore và đạt lợi nhuận hơn 10 triệu đô la Mỹ</dd>
+      <dt class="col s2 l1 right-align">2008</dt>
+      <dd class="col s10 l11">Mở rộng hoạt động sang toàn cầu sang các nước Hoa Kỳ, Pháp, Úc và Malaysia</dd>
+      <dt class="col s2 l1 right-align">2012</dt>
+      <dd class="col s10 l11">Mở văn phòng đầu tiên tại Đức.</dd>
+      <dt class="col s2 l1 right-align">2013</dt>
+      <dd class="col s10 l11">FPT Software vượt mốc doanh thu 100 triệu đô la Mỹ vào cuối năm 2013</dd>
+      <dt class="col s2 l1 right-align">2014</dt>
+      <dd class="col s10 l11">
+        Mua lại RWE IT Slovakia - trở thành công ty CNTT Việt Nam đầu tiên thực hiện giao dịch mua bán sáp nhập ở nước ngoài
+      </dd>
+      <dt class="col s2 l1 right-align">2016</dt>
+      <dd class="col s10 l11">Vượt mốc doanh thu 200 triệu đô la Mỹ và 10.000 nhân viên. Thành lập FPT Hàn Quốc.</dd>
+      <dt class="col s2 l1 right-align">2018</dt>
+      <dd class="col s10 l11">
+        FPT đã mua phần lớn cổ phần của Intellinet, mở rộng dấu ấn tại thị trường Mỹ và nâng cao vị thế dẫn đầu về chuyển đổi số
+      </dd>
+      <dt class="col s2 l1 right-align">2022</dt>
+      <dd class="col s10 l11">Đạt doanh thu trên 800 triệu đô la Mỹ (năm thứ ba liên tiếp với tốc độ tăng trưởng trên 25%)</dd>
+      <dt class="col s2 l1 right-align">2023</dt>
+      <dd class="col s10 l11">Đạt được doanh thu hơn 1 tỷ đô la Mỹ</dd>
+    </dl>
+  </div>
+</div>
+',null,'{}',null,1),
+	 ('companies','vi','Companies','<div>
+  <header>
+    <h1>Các công ty thành viên</h1>
+  </header>
+  <div>
+    <h2>Theo ngành công nghiệp</h2>
+    <ul class="row list">
+      <li class="col s12 l6 img-card">
+        <img src="https://fptsoftware.com/-/media/project/fpt-software/fso/industries/banner/media-desktop.webp"></img>
+        <h3>FPT Truyền thông & Giải trí</h3>
+        <h4>Dẫn đầu trong cuộc đua về nội dung hướng đến khách hàng</h4>
+        <p>Trong hơn 20 năm qua, FPT Software đã giúp nhiều công ty truyền thông, phương tiện truyền thông và giải trí đẩy nhanh lộ trình phát triển, nhanh chóng cung cấp các giải pháp cho thị trường.</p>
+        <p>Cung cấp các dịch vụ tư vấn và công nghệ, kết hợp với mô hình nhân sự linh hoạt, chúng tôi hỗ trợ toàn bộ vòng đời truyền thông và nhanh chóng mở rộng quy mô mọi lúc, mọi nơi.</p>
+      </li>
+      <li class="col s12 l6 img-card">
+        <img src="https://fptsoftware.com/-/media/project/fpt-software/fso/industries/industries-healthcare/healthcare-lp_banner.png"></img>
+        <h3>FPT chăm sóc sức khỏe</h3>
+        <h4>Chuyển đổi hành trình chăm sóc thông qua sức mạnh của công nghệ và chuyên môn của con người</h4>
+        <p>Ngành chăm sóc sức khỏe đang chứng kiến ​​sự chuyển đổi mạnh mẽ do kỳ vọng của khách hàng thay đổi và các quy định ngày càng chặt chẽ hơn.</p>
+        <p>Là đối tác công nghệ lâu năm của các nhà cung cấp dịch vụ chăm sóc sức khỏe hàng đầu, FPT Software luôn đi đầu trong nhu cầu của ngành và công nghệ, kết hợp hiểu biết sâu sắc, đổi mới và chuyên môn để cung cấp các giải pháp phù hợp giúp hợp lý hóa hoạt động và cải thiện trải nghiệm chăm sóc bệnh nhân. Chuyên môn và kinh nghiệm của chúng tôi tập trung vào việc cung cấp Phần mềm cho Thiết bị y tế, Hệ thống thông tin bệnh viện, Nền tảng y tế số, Bảo hiểm y tế, Chuyển đổi số cho Dược phẩm, Chăm sóc ảo và Y tế từ xa.</p>
+      </li>
+      <li class="col s12 l6 img-card">
+        <img src="https://fptsoftware.com/-/media/project/fpt-software/fso/industries/automotive/automotive-lp_banner-3.png"></img>
+        <h3>FPT xe hơi</h3>
+        <h4>Chuyển sang làn đường nhanh của tính di động thông minh được xác định bằng phần mềm</h4>
+        <p>Với hai thập kỷ kinh nghiệm trong ngành ô tô, công ty con về công nghệ ô tô của FPT Software, FPT Automotive được thành lập vào năm 2023 với sứ mệnh thúc đẩy sự phát triển của các phương tiện được điều khiển bằng phần mềm và định hình kỷ nguyên di động mới.</p>
+        <p>Đội ngũ chuyên gia ô tô của chúng tôi được trang bị và có kinh nghiệm để đồng hành cùng các nhà sản xuất và nhà cung cấp ô tô trong việc thúc đẩy hệ sinh thái di động, giúp các nhà sản xuất ô tô, OEM, nhà cung cấp Tier-1 và các công ty bán dẫn hàng đầu thế giới đổi mới, tối ưu hóa và duy trì lợi thế cạnh tranh trong ngành ô tô. Sự hỗ trợ này rất quan trọng để vượt qua những thách thức như sự biến động của ngành, chuỗi cung ứng bị gián đoạn và nhu cầu thị trường thay đổi nhanh chóng.</p>
+      </li>
+      <li class="col s12 l6 img-card">
+        <img src="https://fptsoftware.com/-/media/project/fpt-software/fso/industries/logistics/2880x1000-min.png"></img>
+        <h3>FPT hậu cần</h3>
+        <h4>Thực hiện những bước đi mạnh mẽ và táo bạo hướng tới khả năng phục hồi và lợi nhuận</h4>
+        <p>Ngành hậu cần đang ở thời điểm chuyển đổi quan trọng trong khi phải đối mặt với kỳ vọng ngày càng thay đổi của khách hàng và sự gián đoạn bất ổn. Bây giờ là lúc các công ty vận tải và hậu cần mở ra những con đường mới để mang lại sự tăng trưởng mạnh mẽ, tích hợp các công nghệ tiên tiến để cách mạng hóa quản lý chuỗi cung ứng và nâng cao hiệu quả cũng như sự hài lòng của khách hàng.</p>
+        <p>Với thành tích thành công trong đổi mới kỹ thuật số và ứng dụng trí tuệ nhân tạo, FPT kết hợp hiểu biết sâu rộng về ngành và sự nhạy bén về công nghệ để giúp các đối tác hậu cần trở nên kiên cường hơn, tối ưu hóa hoạt động, thúc đẩy biên lợi nhuận tốt hơn và nâng cao trải nghiệm của khách hàng.</p>
+      </li>
+      <li class="col s12 l6 img-card">
+        <img src="https://fptsoftware.com/-/media/project/fpt-software/fso/industries/bfsi/banner-2.png"></img>
+        <h3>Ngân hàng, Dịch vụ tài chính và Bảo hiểm FPT</h3>
+        <h4>Thách thức tốc độ thay đổi và nhận ra tiềm năng đầy đủ của ngành với số hóa</h4>
+        <p>Trong thời đại kỹ thuật số thay đổi nhanh chóng, các tổ chức ngân hàng và tài chính, vốn nổi tiếng bảo thủ, đang phải đối mặt với sự lựa chọn áp dụng phương pháp tiếp cận hoàn toàn kỹ thuật số và nắm bắt các cải tiến công nghệ liên tục để duy trì khả năng cạnh tranh, vượt qua sự thay đổi và tận dụng các cơ hội mới nổi.</p>
+        <p>FPT Software đã đồng hành cùng các tổ chức tài chính hàng đầu thế giới trong hành trình chuyển đổi số với các dịch vụ và giải pháp toàn diện ứng dụng AI nhằm hiện đại hóa, hợp lý hóa quy trình, tăng cường bảo mật và mang đến trải nghiệm liền mạch cho khách hàng.</p>
+      </li>
+      <li class="col s12 l6 img-card">
+        <img src="https://fptsoftware.com/-/media/project/fpt-software/fso/industries/manufacturing/ldp_manufacturing_banner1-min.png"></img>
+        <h3>FPT sản xuất</h3>
+        <h4>Thu hẹp khoảng cách giữa Chiến lược sản xuất và Thực hiện bằng số hóa, phân tích và hiểu biết sâu sắc về ngành</h4>
+        <p>Trong bối cảnh kinh doanh bất ổn, không chắc chắn, phức tạp và mơ hồ (VUCA) hiện nay, sự linh hoạt và khả năng phục hồi không còn đủ nữa - các công ty phải chuyển sang trạng thái chống mong manh, trong đó giá trị được chiết xuất từ ​​những trở ngại.</p>
+        <p>Với hơn 20 năm kinh nghiệm trong lĩnh vực sản xuất, FPT Software giúp khách hàng thiết lập chuỗi cung ứng không chỉ chịu được sự không chắc chắn mà còn phát triển mạnh mẽ hơn trong nghịch cảnh. Bằng cách truyền tải tốc độ, sự hợp tác và các công nghệ mới nổi như AI, bản sao kỹ thuật số và phân tích dự đoán, chúng tôi trao quyền cho các đối tác của mình để dự đoán sự gián đoạn, biến khó khăn thành cơ hội và phát triển mạnh mẽ ngay cả trong những môi trường hỗn loạn nhất.</p>
+      </li>
+    </ul>
+  </div>
+</div>',null,'{}',null,1);

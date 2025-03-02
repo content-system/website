@@ -37,7 +37,7 @@ export class ContentController {
     const resource = getResource(req)
     const id = req.params["id"]
     this.service
-      .load(id, "vi")
+      .load(id, "en")
       .then((content) => {
         if (!content) {
           res.render(getView(req, "error-404"), { resource })
