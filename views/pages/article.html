@@ -1,13 +1,11 @@
 <article class="article">
   <header>
-    <button type="button" id="btnBack" name="btnBack" class="btn-back"></button>
+    <button type="button" id="btnBack" name="btnBack" class="btn-back" onclick="goBack()"></button>
     <h2>{{article.title}}</h2>
   </header>
   <div class="article-body">
     <h4 class="article-description">{{article.description}}</h4>
     <h4 class="article-meta">{{datetimeToString(article.publishedAt)}}</h4>
-    <div class="article-content">
-      {{article.content}}
-    </div>
+    <div class="article-content">{{article.content}}</div>
   </div>
 </article>
