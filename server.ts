@@ -1,7 +1,7 @@
 import { merge } from "config-plus"
 import dotenv from "dotenv"
-import express, { Request, Response } from "express"
-import { getView, MiddlewareLogger } from "express-ext"
+import express from "express"
+import { MiddlewareLogger } from "express-ext"
 import http from "http"
 import { createLogger } from "logger-core"
 import nunjucks from "nunjucks"
@@ -42,6 +42,7 @@ const ctx = useContext(db, logger, middleware, cfg)
 route(app, ctx)
 
 app.locals.datetimeToString = datetimeToString
+/*
 app.get("/", (req: Request, res: Response) => {
   res.render(getView(req, "index"), {
     message: "Welcome in Express",
@@ -67,7 +68,7 @@ app.get("/leadership", (req: Request, res: Response) => {
     message: "Welcome in leadership Express",
   })
 })
-
+*/
 http.createServer(app).listen(cfg.port, () => {
   console.log("Start server at port " + cfg.port)
 })

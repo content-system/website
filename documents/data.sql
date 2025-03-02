@@ -274,7 +274,7 @@ create table categories (
   resource_key varchar(255),
   icon varchar(255),
   sequence int not null,
-  actions int4 null,
+  type varchar(40),
   parent varchar(40),
   created_by varchar(40),
   created_at timestamptz,
@@ -282,26 +282,27 @@ create table categories (
   updated_at timestamptz
 );
 /*
-about
- + milestones
- + leadership
- + companies
-works
+home
 services
 news
 careers
 contact
+about
+ + milestones
+ + companies
+ + leadership
 */
-insert into categories (id,name,status,path,resource_key,icon,sequence,actions,parent) values ('about','About','A','/about','about','assignment',1,7,'');
-insert into categories (id,name,status,path,resource_key,icon,sequence,actions,parent) values ('works','Works','A','/works','works','assignment',2,7,'');
-insert into categories (id,name,status,path,resource_key,icon,sequence,actions,parent) values ('services','Services','A','/services','services','settings',3,7,'');
-insert into categories (id,name,status,path,resource_key,icon,sequence,actions,parent) values ('news','News','A','/news','news','assignment',4,7,'');
-insert into categories (id,name,status,path,resource_key,icon,sequence,actions,parent) values ('careers','Careers','A','/careers','careers','pie_chart',5,7,'');
-insert into categories (id,name,status,path,resource_key,icon,sequence,actions,parent) values ('contact','contact','A','/contact','contact','contacts',6,7,'');
 
-insert into categories (id,name,status,path,resource_key,icon,sequence,actions,parent) values ('milestones','Milestones','A','/milestones','milestones','local_atm',1,7,'about');
-insert into categories (id,name,status,path,resource_key,icon,sequence,actions,parent) values ('leadership','Leadership','A','/leadership','leadership','public',2,7,'about');
-insert into categories (id,name,status,path,resource_key,icon,sequence,actions,parent) values ('companies','companies','A','/companies','companies','zoom_in',2,7,'about');
+insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('home','Home','A','/','home','home',1,'content','');
+insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('services','Services','A','/services','services','settings',2,'content','');
+insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('news','News','A','/news','news','credit_card',3,'content','');
+insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('careers','Careers','A','/careers','careers','work',4,'','');
+insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('contact','contact','A','/contact','contact','mail',5,'','');
+insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('about','About','A','/about','about','assignment',6,'','');
+
+insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('milestones','Milestones','A','/milestones','milestones','public',1,'content','about');
+insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('companies','companies','A','/companies','companies','account_balance',2,'content','about');
+insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('leadership','Leadership','A','/leadership','leadership','person',3,'content','about');
 
 create table companies (
   id character varying(40) not null primary key,

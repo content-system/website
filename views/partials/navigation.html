@@ -4,41 +4,31 @@
       <p class="sidebar-off-menu"><button class="toggle" onclick="toggleMenu(event)"></button><i class="expand"></i><i class="collapse"></i></p>
     </li>
     <li>
-      <a class="menu-item" href="/"><button type="button" class="btn-pin"></button><i class="material-icons">home</i><span>Home</span></a>
+      <a class="menu-item" href="/" onclick="navigate(event)"><i class="material-icons">home</i><span>Home</span></a>
     </li>
-    <li class="">
-      <a class="menu-item" href="/services" onclick="navigate(event)">
-        <button type="button" class="btn-pin"></button><i class="material-icons">settings</i><span>Services</span>
-      </a>
+    <li>
+      <a class="menu-item" href="/services" onclick="navigate(event)"><i class="material-icons">settings</i><span>Services</span></a>
     </li>
-    <li class="">
-      <a class="menu-item" href="/news" onclick="navigate(event)">
-        <button type="button" class="btn-pin"></button><i class="material-icons">assignment</i><span>News</span>
-      </a>
+    <li>
+      <a class="menu-item" href="/news" onclick="navigate(event)"><i class="material-icons">credit_card</i><span>News</span></a>
     </li>
-    <li class="">
-      <a class="menu-item" href="/careers" onclick="navigate(event)">
-        <button type="button" class="btn-pin"></button><i class="material-icons">pie_chart</i><span>Careers</span>
-      </a>
+    <li>
+      <a class="menu-item" href="/careers" onclick="navigate(event)"><i class="material-icons">work</i><span>Careers</span></a>
     </li>
-    <li class="">
-      <a class="menu-item" href="/contact" onclick="navigate(event)">
-        <button type="button" class="btn-pin"></button><i class="material-icons">contacts</i><span>Contact</span>
-      </a>
+    <li>
+      <a class="menu-item" href="/contact" onclick="navigate(event)"><i class="material-icons">mail</i><span>Contact</span></a>
     </li>
     <li class="open">
-      <div class="menu-item" onclick="toggleMenuItem(event)">
-        <button type="button" class="btn-pin"></button><i class="material-icons">assignment</i><span>About</span><i class="entity-icon down"></i>
-      </div>
+      <div class="menu-item" onclick="toggleMenuItem(event)"><i class="material-icons">assignment</i><span>About</span><i class="entity-icon down"></i></div>
       <ul class="sub-list expanded">
-        <li class="">
-          <a class="menu-item" href="/milestones" onclick="navigate(event)"><i class="material-icons">local_atm</i><span>Milestones</span></a>
+        <li>
+          <a class="menu-item" href="/milestones" onclick="navigate(event)"> <i class="material-icons">public</i><span>Milestones</span> </a>
         </li>
-        <li class="">
-          <a class="menu-item" href="/companies" onclick="navigate(event)"><i class="material-icons">zoom_in</i><span>companies</span></a>
+        <li>
+          <a class="menu-item" href="/companies" onclick="navigate(event)"> <i class="material-icons">account_balance</i><span>companies</span> </a>
         </li>
-        <li class="">
-          <a class="menu-item" href="/leadership" onclick="navigate(event)"><i class="material-icons">public</i><span>Leadership</span></a>
+        <li>
+          <a class="menu-item" href="/leadership" onclick="navigate(event)"> <i class="material-icons">person</i><span>Leadership</span> </a>
         </li>
       </ul>
     </li>

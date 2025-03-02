@@ -1389,14 +1389,15 @@ var historyMax = 10
 function goBack() {
   var url = histories.pop()
   if (url) {
-    url = url.indexOf("?") >= 0 ? url + "&partial=true" : url + "?partial=true"
-    fetch(url, { method: "GET", headers: getHeaders() })
+    var newUrl = url + (url.indexOf("?") >= 0 ? "&" : "?") + "partial=true"
+    fetch(newUrl, { method: "GET", headers: getHeaders() })
       .then(function (response) {
         if (response.ok) {
           response.text().then(function (data) {
             var pageBody = document.getElementById("pageBody")
             if (pageBody) {
               pageBody.innerHTML = data
+              window.history.pushState({ pageTitle: "" }, "", url)
               var forms_1 = pageBody.querySelectorAll("form")
               for (var i = 0; i < forms_1.length; i++) {
                 registerEvents(forms_1[i])

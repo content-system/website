@@ -45,7 +45,7 @@ export class ArticleController {
     this.search = this.search.bind(this)
   }
   view(req: Request, res: Response) {
-    const resource = getResource(req)
+    const resource = getResource(req, req.params["lang"])
     const id = req.params["id"]
     this.service
       .load(id)

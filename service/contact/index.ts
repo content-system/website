@@ -28,7 +28,7 @@ export class ContactController {
     this.submit = this.submit.bind(this)
   }
   render(req: Request, res: Response) {
-    const resource = getResource(req)
+    const resource = getResource(req, req.params["lang"])
     res.render(getView(req, "contact"), {
       resource,
       contact: {},

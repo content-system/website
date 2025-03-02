@@ -30,8 +30,13 @@ export const resources: Resources = {
   vi: vi,
 }
 
-export function getResource(req: Request): StringMap {
-  // const l = lang ? lang : "en"
+export function getResource(req: Request, lang?: string): StringMap {
+  if (lang && lang.length > 0) {
+    const r = resources[lang]
+    if (r) {
+      return r
+    }
+  }
   const l = "en"
   const r = resources[l]
   return r ? r : resources["en"]

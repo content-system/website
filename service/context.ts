@@ -13,6 +13,7 @@ import { check } from "types-validation"
 import { createValidator } from "xvalidators"
 import { ArticleController, useArticleController } from "./article"
 import { SigninController } from "./authentication"
+import { MenuItemLoader } from "./common/navigation"
 import { ContactController, useContactController } from "./contact"
 import { ContentController, useContentController } from "./content"
 import { JobController, useJobController } from "./job"
@@ -49,6 +50,12 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
   const sqlChecker = createChecker(db)
   const health = new HealthController([sqlChecker])
 
+  const menuItemsLoader = new MenuItemLoader(db)
+  /*
+  menuItemsLoader.load().then((categories) => {
+    console.log(JSON.stringify(categories))
+  })
+    */
   const auth = cfg.auth
   const status = initializeStatus(cfg.auth.status)
   const userRepository = useUserRepository<string, SqlAuthTemplateConfig>(db, cfg.auth, cfg.map)
@@ -121,7 +128,7 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
   )
   const password = new PasswordController(passwordService, logger.error)
 
-  const content = useContentController(db, logger.error)
+  const content = useContentController(db, logger.error, ["vi"], menuItemsLoader)
   const article = useArticleController(db, logger.error)
   const job = useJobController(db, logger.error)
   const contact = useContactController(db, logger.error)
