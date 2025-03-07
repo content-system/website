@@ -2,8 +2,8 @@ import { Request, Response } from "express"
 import { getView, toString } from "express-ext"
 import { Log } from "onecore"
 import { DB } from "query-core"
-import { MenuItemLoader, renderItems } from "../common/navigation"
-import { getResource } from "../resources"
+import { MenuItemLoader } from "../common/navigation"
+import { buildError404, buildError500, getResource } from "../resources"
 import { Content, ContentRepository, ContentService } from "./content"
 export * from "./content"
 
@@ -48,25 +48,25 @@ export class ContentController {
       lang = id
       id = "home"
     }
-    const resource = getResource(req, lang)
+    const resource = getResource(lang)
     this.service
       .load(id, lang)
       .then((content) => {
         if (!content) {
-          res.render(getView(req, "error-404"), { resource })
+          res.render(getView(req, "error"), buildError404(resource, res))
         } else {
           this.menuLoader.load().then((items) => {
             res.render(getView(req, "content"), {
               resource,
               content,
-              menu: renderItems(items),
+              menu: res.locals.menu,
             })
           })
         }
       })
       .catch((err) => {
         this.log(toString(err))
-        res.render(getView(req, "error-500"), { resource })
+        res.render(getView(req, "error"), buildError500(resource, res))
       })
   }
 }

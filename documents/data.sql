@@ -284,9 +284,9 @@ create table categories (
 /*
 home
 services
-news
-careers
-contact
+news => dynamic
+careers => dynamic
+contact => dynamic
 about
  + milestones
  + companies
@@ -295,7 +295,7 @@ about
 
 insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('home','Home','A','/','home','home',1,'content','');
 insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('services','Services','A','/services','services','settings',2,'content','');
-insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('news','News','A','/news','news','credit_card',3,'content','');
+insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('news','News','A','/news','news','credit_card',3,'','');
 insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('careers','Careers','A','/careers','careers','work',4,'','');
 insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('contact','contact','A','/contact','contact','mail',5,'','');
 insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('about','About','A','/about','about','assignment',6,'','');

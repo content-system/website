@@ -5,10 +5,15 @@ export const en = {
   date_format: "Date Format",
 
   home: "Home",
-  dashboard: "Dashboard",
-  settings: "Settings",
-  help: "Help",
-  events_history: "Event History",
+  services: "Services",
+  news: "News",
+  careers: "Careers",
+  contact: "Contact",
+  about: "About",
+  milestones: "Milestones",
+  companies: "Companies",
+  leadership: "Leadership",
+
   menu: "Menu",
   sidebar: "Sidebar",
   dark_mode: "Dark mode",
@@ -17,6 +22,11 @@ export const en = {
   grey_mode: "Grey mode",
   classic_menu: "Classic menu",
   modern_menu: "Modern menu",
+
+  dashboard: "Dashboard",
+  settings: "Settings",
+  help: "Help",
+  events_history: "Event History",
 
   read: "Read",
   write: "Write",
@@ -248,7 +258,6 @@ export const en = {
   timestamp: "Timestamp",
   ip: "IP",
 
-  news: "News",
   jobs: "Jobs",
   id: "Id",
   title: "Title",

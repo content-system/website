@@ -1088,13 +1088,7 @@ function validateElement(ele, locale, includeReadOnly) {
       addErrorMessage(ele, msg)
       return msg
     }
-  } else if (
-    datatype === "number" ||
-    datatype === "integer" ||
-    datatype === "currency" ||
-    datatype === "string-currency" ||
-    datatype === "percentage"
-  ) {
+  } else if (datatype === "number" || datatype === "integer" || datatype === "currency" || datatype === "string-currency" || datatype === "percentage") {
     var v = checkNumber(ele, locale, resource)
     var separator = getDecimalSeparator(ele)
     if (typeof v === "string") {
@@ -1769,10 +1763,7 @@ function registerEvents(form) {
       if (type != null) {
         type = type.toLowerCase()
       }
-      if (
-        ele.nodeName === "INPUT" &&
-        (type === "checkbox" || type === "radio" || type === "submit" || type === "button" || type === "reset")
-      ) {
+      if (ele.nodeName === "INPUT" && (type === "checkbox" || type === "radio" || type === "submit" || type === "button" || type === "reset")) {
         continue
       } else {
         var parent_1 = ele.parentElement

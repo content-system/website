@@ -1,4 +1,6 @@
-import { DB } from "onecore"
+import { NextFunction, Request, Response } from "express"
+import { DB, StringMap } from "onecore"
+import { getResource } from "../../resources"
 
 export interface MenuItem {
   id?: string
@@ -7,6 +9,7 @@ export interface MenuItem {
   resource?: string
   icon?: string
   sequence?: number
+  type?: string
   children?: MenuItem[]
 }
 export interface Category {
@@ -79,24 +82,100 @@ function getChildren(m: Category, all: Category[]) {
   }
 }
 
-function renderSingleItem(item: MenuItem): string {
-  return `<li><a class="menu-item" href="${item.path}" onclick="navigate(event)"><i class="material-icons">${item.icon}</i><span>${item.name}</span></a></li>`
+function renderSingleItem(item: MenuItem, r: StringMap): string {
+  let name = item.name
+  if (r && item.resource) {
+    const x = r[item.resource]
+    name = !x || x === "" ? item.name : x
+  }
+  return `<li><a class="menu-item" href="${item.path}" onclick="navigate(event)"><i class="material-icons">${item.icon}</i><span>${name}</span></a></li>`
 }
-function renderArray(item: MenuItem[]): string {
-  return item.map((i) => renderSingleItem(i)).join("")
+function renderArray(item: MenuItem[], r: StringMap): string {
+  return item.map((i) => renderSingleItem(i, r)).join("")
 }
-function renderItem(item: MenuItem): string {
+function renderItem(item: MenuItem, r: StringMap): string {
   if (item.children && item.children.length > 0) {
+    let name = item.name
+    if (r && item.resource) {
+      const x = r[item.resource]
+      name = !x || x === "" ? item.name : x
+    }
     return `<li class="open">
   <div class="menu-item" onclick="toggleMenuItem(event)">
-    <i class="material-icons">${item.icon}</i><span>${item.name}</span><i class="entity-icon down"></i>
+    <i class="material-icons">${item.icon}</i><span>${name}</span><i class="entity-icon down"></i>
   </div>
-  <ul class="sub-list expanded">${renderArray(item.children)}</ul>
+  <ul class="sub-list expanded">${renderArray(item.children, r)}</ul>
 </li>`
   } else {
-    return renderSingleItem(item)
+    return renderSingleItem(item, r)
   }
 }
-export function renderItems(items: MenuItem[]): string {
-  return items.map((i) => renderItem(i)).join("")
+export function renderItems(items: MenuItem[], r: StringMap): string {
+  return items.map((i) => renderItem(i, r)).join("")
+}
+
+export class MenuBuilder {
+  constructor(private load: () => Promise<MenuItem[]>, private langs: string[], private defaultLang: string) {
+    this.build = this.build.bind(this)
+  }
+  build(req: Request, res: Response, next: NextFunction) {
+    let lang = req.params["lang"]
+    if (!lang || lang.length === 0) {
+      lang = query(req, "lang")
+    }
+    if (!lang || lang.length === 0) {
+      lang = req.params["id"]
+    }
+    if (!lang || lang.length === 0) {
+      lang = this.defaultLang
+    } else {
+      if (!(this.langs.includes(lang) && lang !== this.defaultLang)) {
+        lang = this.defaultLang
+      }
+    }
+    if (!this.langs.includes(lang)) {
+      lang = this.defaultLang
+    }
+    this.load()
+      .then((items) => {
+        if (isPartial(req)) {
+          res.locals.menu = items
+          next()
+        } else {
+          const r = getResource(lang)
+          rebuildItems(items, lang, this.defaultLang)
+          res.locals.menu = renderItems(items, r)
+          next()
+        }
+      })
+      .catch((err) => {
+        next(err)
+      })
+  }
+}
+function rebuildItems(items: MenuItem[], lang: string, defaultLang: string) {
+  if (lang === defaultLang) {
+    return
+  }
+  for (const item of items) {
+    item.path = item.type === "content" ? `/${lang}${item.path}` : `${item.path}?lang=${lang}`
+    const children = item.children
+    if (children && children.length > 0) {
+      rebuildItems(children, lang, defaultLang)
+    }
+  }
+}
+export function query(req: Request, name: string): string {
+  const p = req.query[name]
+  if (!p || p.toString().length === 0) {
+    return ""
+  }
+  return p.toString()
+}
+export function isPartial(req: Request): boolean {
+  const p = req.query["partial"]
+  if (p && p.toString() === "true") {
+    return true
+  }
+  return false
 }

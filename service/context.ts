@@ -13,7 +13,7 @@ import { check } from "types-validation"
 import { createValidator } from "xvalidators"
 import { ArticleController, useArticleController } from "./article"
 import { SigninController } from "./authentication"
-import { MenuItemLoader } from "./common/navigation"
+import { MenuBuilder, MenuItemLoader } from "./common/navigation"
 import { ContactController, useContactController } from "./contact"
 import { ContentController, useContentController } from "./content"
 import { JobController, useJobController } from "./job"
@@ -35,6 +35,7 @@ export interface ApplicationContext {
   health: HealthController
   log: LogController
   middleware: MiddlewareController
+  menu: MenuBuilder
   signin: SigninController
   signup: SignUpController
   password: PasswordController
@@ -51,6 +52,7 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
   const health = new HealthController([sqlChecker])
 
   const menuItemsLoader = new MenuItemLoader(db)
+  const menu = new MenuBuilder(menuItemsLoader.load, ["en", "vi"], "en")
   /*
   menuItemsLoader.load().then((categories) => {
     console.log(JSON.stringify(categories))
@@ -100,18 +102,8 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
     validator.validate,
   )
   const signup = new SignUpController(signupService, signupStatus, logger.error)
-  const resetPasswordMailSender = new MailSender(
-    sendMail,
-    cfg.mail.from,
-    cfg.password.templates.reset.body,
-    cfg.password.templates.reset.subject,
-  )
-  const changePasswordMailSender = new MailSender(
-    sendMail,
-    cfg.mail.from,
-    cfg.password.templates.change.body,
-    cfg.password.templates.change.subject,
-  )
+  const resetPasswordMailSender = new MailSender(sendMail, cfg.mail.from, cfg.password.templates.reset.body, cfg.password.templates.reset.subject)
+  const changePasswordMailSender = new MailSender(sendMail, cfg.mail.from, cfg.password.templates.change.body, cfg.password.templates.change.subject)
   // const codeRepository = new CodeRepository<string>(db, "passwordcodes")
   const passwordRepository = usePasswordRepository<string>(db, cfg.password.db, cfg.password.max, cfg.password.fields)
   const passwordService = new PasswordService<string>(
@@ -133,7 +125,7 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
   const job = useJobController(db, logger.error)
   const contact = useContactController(db, logger.error)
 
-  return { health, log, middleware, signin, signup, password, content, article, job, contact }
+  return { health, log, middleware, menu, signin, signup, password, content, article, job, contact }
 }
 
 function generate(): string {

@@ -489,10 +489,7 @@ function registerEvents(form: HTMLFormElement): void {
       if (type != null) {
         type = type.toLowerCase()
       }
-      if (
-        ele.nodeName === "INPUT" &&
-        (type === "checkbox" || type === "radio" || type === "submit" || type === "button" || type === "reset")
-      ) {
+      if (ele.nodeName === "INPUT" && (type === "checkbox" || type === "radio" || type === "submit" || type === "button" || type === "reset")) {
         continue
       } else {
         const parent = ele.parentElement

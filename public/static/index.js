@@ -460,22 +460,13 @@ function registerEvents(form) {
       if (type != null) {
         type = type.toLowerCase()
       }
-      if (
-        ele.nodeName === "INPUT" &&
-        (type === "checkbox" || type === "radio" || type === "submit" || type === "button" || type === "reset")
-      ) {
+      if (ele.nodeName === "INPUT" && (type === "checkbox" || type === "radio" || type === "submit" || type === "button" || type === "reset")) {
         continue
       } else {
         const parent = ele.parentElement
         const required = ele.getAttribute("required")
         if (parent) {
-          if (
-            parent.nodeName === "LABEL" &&
-            required != null &&
-            required !== undefined &&
-            required != "false" &&
-            !parent.classList.contains("required")
-          ) {
+          if (parent.nodeName === "LABEL" && required != null && required !== undefined && required != "false" && !parent.classList.contains("required")) {
             parent.classList.add("required")
           } else if (parent.classList.contains("form-group") || parent.classList.contains("field")) {
             const firstChild = parent.firstChild

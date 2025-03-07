@@ -4,11 +4,16 @@ export const vi = {
   language: "Language",
   date_format: "Date Format",
 
-  home: "Home",
-  dashboard: "Dashboard",
-  settings: "Settings",
-  help: "Help",
-  events_history: "Event History",
+  home: "Trang chủ",
+  services: "Dịch vụ",
+  news: "Tin tức",
+  careers: "Việc làm",
+  contact: "Liên hệ",
+  about: "Về chúng tôi",
+  milestones: "Các cột mốc quan trọng",
+  companies: "Công ty thành viên",
+  leadership: "Khả năng lãnh đạo",
+
   menu: "Menu",
   sidebar: "Sidebar",
   dark_mode: "Dark mode",
@@ -18,6 +23,10 @@ export const vi = {
   classic_menu: "Classic menu",
   modern_menu: "Modern menu",
 
+  dashboard: "Dashboard",
+  settings: "Settings",
+  help: "Help",
+  events_history: "Event History",
   read: "Read",
   write: "Write",
   delete: "Delete",
@@ -211,7 +220,7 @@ export const vi = {
   name: "Name",
 
   fullname: "Tên",
-  email: "Email",
+  email: "Thư điện tử",
   phone: "Số điện thoại",
   notification: "Notification",
   first_name: "First Name",
@@ -248,7 +257,6 @@ export const vi = {
   timestamp: "Timestamp",
   ip: "IP",
 
-  news: "News",
   jobs: "Jobs",
   id: "Id",
   title: "Title",
@@ -265,5 +273,5 @@ export const vi = {
   submitted_at: "Submitted At",
   contacted_by: "Contacted By",
   contacted_at: "Contacted At",
-  message: "Message",
+  message: "Tin nhắn",
 }

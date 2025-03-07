@@ -13,6 +13,7 @@ import {
   getView,
   handleError,
   hasSearch,
+  query,
   queryNumber,
   queryPage,
   resources,
@@ -22,7 +23,7 @@ import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
 import { formatDateTime, getDateFormat } from "ui-formatter"
 import { validate } from "xvalidators"
-import { getResource } from "../resources"
+import { buildError404, buildError500, getResource } from "../resources"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 export * from "./article"
 
@@ -45,13 +46,13 @@ export class ArticleController {
     this.search = this.search.bind(this)
   }
   view(req: Request, res: Response) {
-    const resource = getResource(req, req.params["lang"])
+    const resource = getResource(query(req, "lang"))
     const id = req.params["id"]
     this.service
       .load(id)
       .then((article) => {
         if (!article) {
-          res.render(getView(req, "error-404"), { resource })
+          res.render(getView(req, "error"), buildError404(resource, res))
         } else {
           res.render(getView(req, "article"), {
             resource,
@@ -61,7 +62,7 @@ export class ArticleController {
       })
       .catch((err) => {
         this.log(toString(err))
-        res.render(getView(req, "error-500"), { resource })
+        res.render(getView(req, "error"), buildError500(resource, res))
       })
   }
   submit(req: Request, res: Response) {
@@ -115,7 +116,7 @@ export class ArticleController {
       })
       .catch((err) => {
         this.log(toString(err))
-        res.render(getView(req, "error-500"), { resource })
+        res.render(getView(req, "error"), buildError500(resource, res))
       })
   }
 }

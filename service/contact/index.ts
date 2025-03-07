@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getView, handleError, toMap } from "express-ext"
+import { escape, getView, handleError, query, toMap } from "express-ext"
 import { nanoid } from "nanoid"
 import { Log } from "onecore"
 import { DB, Repository } from "query-core"
@@ -28,7 +28,7 @@ export class ContactController {
     this.submit = this.submit.bind(this)
   }
   render(req: Request, res: Response) {
-    const resource = getResource(req, req.params["lang"])
+    const resource = getResource(query(req, "lang"))
     res.render(getView(req, "contact"), {
       resource,
       contact: {},

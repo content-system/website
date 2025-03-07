@@ -1,4 +1,4 @@
-import { Request } from "express"
+import { Request, Response } from "express"
 import { en as authenticationEN } from "./authentication/en"
 import { vi as authenticationVI } from "./authentication/vi"
 import { en as commonEN } from "./en"
@@ -30,14 +30,42 @@ export const resources: Resources = {
   vi: vi,
 }
 
-export function getResource(req: Request, lang?: string): StringMap {
-  if (lang && lang.length > 0) {
-    const r = resources[lang]
-    if (r) {
-      return r
+export function getResource(lang?: string | Request): StringMap {
+  if (lang) {
+    if (typeof lang === "string") {
+      const r = resources[lang]
+      if (r) {
+        return r
+      }
+    } else {
+      const l = lang.headers["accept-language"]
+      if (l) {
+        const r = resources[l]
+        if (r) {
+          return r
+        }
+      }
     }
   }
-  const l = "en"
-  const r = resources[l]
-  return r ? r : resources["en"]
+  return resources["en"]
+}
+
+export function buildError404(resource: StringMap, res: Response): any {
+  return {
+    message: {
+      title: resource.error_404_title,
+      description: resource.error_404_message,
+    },
+    menu: res.locals.menu,
+  }
+}
+
+export function buildError500(resource: StringMap, res: Response): any {
+  return {
+    message: {
+      title: resource.error_500_title,
+      description: resource.error_500_message,
+    },
+    menu: res.locals.menu,
+  }
 }
