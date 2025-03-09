@@ -42,33 +42,7 @@ const ctx = useContext(db, logger, middleware, cfg)
 route(app, ctx)
 
 app.locals.datetimeToString = datetimeToString
-/*
-app.get("/", (req: Request, res: Response) => {
-  res.render(getView(req, "index"), {
-    message: "Welcome in Express",
-  })
-})
-app.get("/services", (req: Request, res: Response) => {
-  res.render(getView(req, "services"), {
-    message: "Welcome in services Express",
-  })
-})
-app.get("/milestones", (req: Request, res: Response) => {
-  res.render(getView(req, "milestones"), {
-    message: "Welcome in milestones Express",
-  })
-})
-app.get("/companies", (req: Request, res: Response) => {
-  res.render(getView(req, "companies"), {
-    message: "Welcome in companies Express",
-  })
-})
-app.get("/leadership", (req: Request, res: Response) => {
-  res.render(getView(req, "leadership"), {
-    message: "Welcome in leadership Express",
-  })
-})
-*/
+
 http.createServer(app).listen(cfg.port, () => {
   console.log("Start server at port " + cfg.port)
 })

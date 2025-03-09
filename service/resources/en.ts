@@ -119,13 +119,11 @@ export const en = {
   phone: "Telephone",
   company: "Company",
   job_title: "Job Title",
+  message: "Message",
 
   published_at: "Published At",
   published_at_from: "Published At From",
   published_at_to: "Published At To",
 
   quantity: "Quantity",
-
-  contacts: "Contacts",
-  message: "Message",
 }

@@ -107,9 +107,9 @@ export const vi = {
   error_403: "You do not have permission for this page or for this action." /* error_forbidden */,
 
   error_404_title: "404 Not found",
-  error_404_message: "Sorry, the page you are looking for could not be found.",
+  error_404_message: "Xin lỗi, trang bạn đang tìm kiếm không tìm thấy.",
   error_500_title: "500 Internal Server Error",
-  error_500_message: "Sorry, the server is wrong. Please try again later.",
+  error_500_message: "Xin lỗi, máy chủ bị lỗi. Vui lòng thử lại sau.",
 
   keyword: "Keyword",
 
@@ -119,13 +119,11 @@ export const vi = {
   phone: "Số điện thoại",
   company: "Công ty",
   job_title: "Chức danh",
+  message: "Tin nhắn",
 
   published_at: "Published At",
   published_at_from: "Đăng sau khi",
   published_at_to: "Đăng trước khi",
 
   quantity: "Quantity",
-
-  contacts: "Contacts",
-  message: "Tin nhắn",
 }

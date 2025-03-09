@@ -9,9 +9,7 @@ import {
   format,
   fromRequest,
   getSearch,
-  getStatusCode,
   getView,
-  handleError,
   hasSearch,
   query,
   queryNumber,
@@ -22,7 +20,6 @@ import {
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
 import { formatDateTime, getDateFormat } from "ui-formatter"
-import { validate } from "xvalidators"
 import { buildError404, buildError500, getResource } from "../resources"
 import { Job, JobFilter, jobModel, JobRepository, JobService } from "./job"
 export * from "./job"
@@ -42,7 +39,6 @@ const fields = ["title", "publishedAt", "description"]
 export class JobController {
   constructor(private jobService: JobService, private log: Log) {
     this.view = this.view.bind(this)
-    this.submit = this.submit.bind(this)
     this.search = this.search.bind(this)
   }
   view(req: Request, res: Response) {
@@ -64,23 +60,6 @@ export class JobController {
         this.log(toString(err))
         res.render(getView(req, "error"), buildError500(resource, res))
       })
-  }
-  submit(req: Request, res: Response) {
-    const resource = getResource(req)
-    const job = req.body
-    console.log("job " + JSON.stringify(job))
-    const errors = validate<Job>(job, jobModel, resource)
-    if (errors.length > 0) {
-      res.status(getStatusCode(errors)).json(errors).end()
-    } else {
-      this.jobService
-        .update(job)
-        .then((result) => {
-          console.log("result " + result)
-          res.status(200).json(job).end()
-        })
-        .catch((err) => handleError(err, res, this.log))
-    }
   }
   search(req: Request, res: Response) {
     const dateFormat = getDateFormat()
