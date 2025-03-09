@@ -31,6 +31,12 @@ export const resources: Resources = {
   vi: vi,
 }
 
+export function getDateFormat(lang?: string): string {
+  if (lang === "vi") {
+    return "D/M/YYYY"
+  }
+  return "M/D/YYYY"
+}
 export function getResource(lang?: string | Request): StringMap {
   if (lang) {
     if (typeof lang === "string") {

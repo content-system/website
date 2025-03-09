@@ -19,8 +19,8 @@ import {
 } from "express-ext"
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
-import { formatDateTime, getDateFormat } from "ui-formatter"
-import { buildError404, buildError500, getResource } from "../resources"
+import { formatDateTime } from "ui-formatter"
+import { buildError404, buildError500, getDateFormat, getResource } from "../resources"
 import { Job, JobFilter, jobModel, JobRepository, JobService } from "./job"
 export * from "./job"
 
@@ -42,8 +42,9 @@ export class JobController {
     this.search = this.search.bind(this)
   }
   view(req: Request, res: Response) {
-    const resource = getResource(query(req, "lang"))
-    const dateFormat = getDateFormat()
+    const lang = query(req, "lang")
+    const resource = getResource(lang)
+    const dateFormat = getDateFormat(lang)
     const id = req.params["id"]
     this.jobService
       .load(id)
@@ -64,8 +65,9 @@ export class JobController {
       })
   }
   search(req: Request, res: Response) {
-    const resource = getResource(query(req, "lang"))
-    const dateFormat = getDateFormat()
+    const lang = query(req, "lang")
+    const resource = getResource(lang)
+    const dateFormat = getDateFormat(lang)
     let filter: JobFilter = {
       limit: resources.defaultLimit,
       // title: "Java",

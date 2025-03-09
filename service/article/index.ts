@@ -19,8 +19,8 @@ import {
 } from "express-ext"
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
-import { formatDateTime, getDateFormat } from "ui-formatter"
-import { buildError404, buildError500, getResource } from "../resources"
+import { formatDateTime } from "ui-formatter"
+import { buildError404, buildError500, getDateFormat, getResource } from "../resources"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 export * from "./article"
 
@@ -42,8 +42,9 @@ export class ArticleController {
     this.search = this.search.bind(this)
   }
   view(req: Request, res: Response) {
-    const resource = getResource(query(req, "lang"))
-    const dateFormat = getDateFormat()
+    const lang = query(req, "lang")
+    const resource = getResource(lang)
+    const dateFormat = getDateFormat(lang)
     const id = req.params["id"]
     this.service
       .load(id)
@@ -64,8 +65,9 @@ export class ArticleController {
       })
   }
   search(req: Request, res: Response) {
-    const resource = getResource(query(req, "lang"))
-    const dateFormat = getDateFormat()
+    const lang = query(req, "lang")
+    const resource = getResource(lang)
+    const dateFormat = getDateFormat(lang)
     let filter: ArticleFilter = {
       limit: resources.defaultLimit,
       q: "",
