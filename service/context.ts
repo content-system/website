@@ -18,6 +18,7 @@ import { ContactController, useContactController } from "./contact"
 import { ContentController, useContentController } from "./content"
 import { JobController, useJobController } from "./job"
 import { PasswordController } from "./password"
+import { getResourceByLang } from "./resources"
 import { SignUpController } from "./signup"
 
 resources.createValidator = createValidator
@@ -51,8 +52,11 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
   const sqlChecker = createChecker(db)
   const health = new HealthController([sqlChecker])
 
-  const menuItemsLoader = new MenuItemLoader(db)
-  const menu = new MenuBuilder(menuItemsLoader.load, ["en", "vi"], "en")
+  const menuItemsLoader = new MenuItemLoader(
+    db.query,
+    "select id, name, path, resource_key as resource, icon, sequence, type, parent from categories where status = 'A'",
+  )
+  const menu = new MenuBuilder(getResourceByLang, menuItemsLoader.load, ["en", "vi"], "en")
 
   const auth = cfg.auth
   const status = initializeStatus(cfg.auth.status)

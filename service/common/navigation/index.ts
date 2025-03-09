@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express"
-import { DB, StringMap } from "onecore"
-import { getResource } from "../../resources"
 
+export interface StringMap {
+  [key: string]: string
+}
 export interface MenuItem {
   id?: string
   name: string
@@ -24,12 +25,11 @@ export interface Category {
   children?: MenuItem[]
 }
 export class MenuItemLoader {
-  constructor(private db: DB) {
+  constructor(private query: <T>(sql: string, args?: any[]) => Promise<T[]>, private sql: string) {
     this.load = this.load.bind(this)
   }
   load(): Promise<MenuItem[]> {
-    const sql = "select id, name, path, resource_key as resource, icon, sequence, type, parent from categories where status = 'A'"
-    return this.db.query<Category>(sql).then((categories) => {
+    return this.query<Category>(this.sql).then((categories) => {
       return toMenuItems(categories)
     })
   }
@@ -115,7 +115,7 @@ export function renderItems(items: MenuItem[], r: StringMap): string {
 }
 
 export class MenuBuilder {
-  constructor(private load: () => Promise<MenuItem[]>, private langs: string[], private defaultLang: string) {
+  constructor(private getResource: (lang: string) => StringMap, private load: () => Promise<MenuItem[]>, private langs: string[], private defaultLang: string) {
     this.build = this.build.bind(this)
   }
   build(req: Request, res: Response, next: NextFunction) {
@@ -142,7 +142,7 @@ export class MenuBuilder {
           res.locals.menu = items
           next()
         } else {
-          const r = getResource(lang)
+          const r = this.getResource(lang)
           rebuildItems(items, lang, this.defaultLang)
           res.locals.menu = renderItems(items, r)
           next()

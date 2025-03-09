@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+import { query } from "express-ext"
 import { en as authenticationEN } from "./authentication/en"
 import { vi as authenticationVI } from "./authentication/vi"
 import { en as commonEN } from "./en"
@@ -38,7 +39,7 @@ export function getResource(lang?: string | Request): StringMap {
         return r
       }
     } else {
-      const l = lang.headers["accept-language"]
+      const l = query(lang, "lang")
       if (l) {
         const r = resources[l]
         if (r) {
@@ -49,7 +50,15 @@ export function getResource(lang?: string | Request): StringMap {
   }
   return resources["en"]
 }
-
+export function getResourceByLang(lang: string): StringMap {
+  if (lang) {
+    const r = resources[lang]
+    if (r) {
+      return r
+    }
+  }
+  return resources["en"]
+}
 export function buildError404(resource: StringMap, res: Response): any {
   return {
     message: {
