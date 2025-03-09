@@ -53,11 +53,7 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
 
   const menuItemsLoader = new MenuItemLoader(db)
   const menu = new MenuBuilder(menuItemsLoader.load, ["en", "vi"], "en")
-  /*
-  menuItemsLoader.load().then((categories) => {
-    console.log(JSON.stringify(categories))
-  })
-    */
+
   const auth = cfg.auth
   const status = initializeStatus(cfg.auth.status)
   const userRepository = useUserRepository<string, SqlAuthTemplateConfig>(db, cfg.auth, cfg.map)

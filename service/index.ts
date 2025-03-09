@@ -27,18 +27,12 @@ export function route(app: Application, ctx: ApplicationContext): void {
 
   app.get("/news", ctx.menu.build, ctx.article.search)
   app.get("/news/:id", ctx.menu.build, ctx.article.view)
-  // app.get("/:lang/news", ctx.article.search)
-  // app.get("/:lang/news/:id", ctx.article.view)
 
   app.get("/careers", ctx.menu.build, ctx.job.search)
   app.get("/careers/:id", ctx.menu.build, ctx.job.view)
-  // app.get("/:lang/careers", ctx.job.search)
-  // app.get("/:lang/careers/:id", ctx.job.view)
 
   app.get("/contact", ctx.menu.build, ctx.contact.render)
   app.post("/contact", parser.none(), ctx.contact.submit)
-  // app.get("/:lang/contact", ctx.contact.render)
-  // app.post("/:lang/contact", parser.none(), ctx.contact.submit)
 
   app.get("/", ctx.menu.build, ctx.content.view)
   app.get("/:id", ctx.menu.build, ctx.content.view)
