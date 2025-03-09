@@ -43,6 +43,7 @@ export class JobController {
   }
   view(req: Request, res: Response) {
     const resource = getResource(query(req, "lang"))
+    const dateFormat = getDateFormat()
     const id = req.params["id"]
     this.jobService
       .load(id)
@@ -50,6 +51,7 @@ export class JobController {
         if (!job) {
           res.render(getView(req, "error"), buildError404(resource, res))
         } else {
+          job.publishedAt = formatDateTime(job.publishedAt, dateFormat)
           res.render(getView(req, "job"), {
             resource,
             job,
@@ -62,8 +64,8 @@ export class JobController {
       })
   }
   search(req: Request, res: Response) {
-    const dateFormat = getDateFormat()
     const resource = getResource(query(req, "lang"))
+    const dateFormat = getDateFormat()
     let filter: JobFilter = {
       limit: resources.defaultLimit,
       // title: "Java",

@@ -43,6 +43,7 @@ export class ArticleController {
   }
   view(req: Request, res: Response) {
     const resource = getResource(query(req, "lang"))
+    const dateFormat = getDateFormat()
     const id = req.params["id"]
     this.service
       .load(id)
@@ -50,6 +51,7 @@ export class ArticleController {
         if (!article) {
           res.render(getView(req, "error"), buildError404(resource, res))
         } else {
+          article.publishedAt = formatDateTime(article.publishedAt, dateFormat)
           res.render(getView(req, "article"), {
             resource,
             article,
@@ -62,8 +64,8 @@ export class ArticleController {
       })
   }
   search(req: Request, res: Response) {
-    const dateFormat = getDateFormat()
     const resource = getResource(query(req, "lang"))
+    const dateFormat = getDateFormat()
     let filter: ArticleFilter = {
       limit: resources.defaultLimit,
       q: "",

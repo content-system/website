@@ -114,10 +114,10 @@ export const vi = {
   keyword: "Keyword",
 
   country: "Quốc gia",
-  fullname: "Tên",
+  company: "Công ty",
   email: "Thư điện tử",
   phone: "Số điện thoại",
-  company: "Công ty",
+  fullname: "Tên",
   job_title: "Chức danh",
   message: "Tin nhắn",
 
@@ -125,5 +125,6 @@ export const vi = {
   published_at_from: "Đăng sau khi",
   published_at_to: "Đăng trước khi",
 
-  quantity: "Quantity",
+  quantity: "Số lượng",
+  location: "Vị trí",
 }

@@ -114,10 +114,10 @@ export const en = {
   keyword: "Keyword",
 
   country: "Country",
-  fullname: "Full Name",
+  company: "Company",
   email: "Email",
   phone: "Telephone",
-  company: "Company",
+  fullname: "Full Name",
   job_title: "Job Title",
   message: "Message",
 
@@ -126,4 +126,5 @@ export const en = {
   published_at_to: "Published At To",
 
   quantity: "Quantity",
+  location: "Location",
 }
