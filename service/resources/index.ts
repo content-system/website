@@ -37,6 +37,13 @@ export function getDateFormat(lang?: string): string {
   }
   return "M/D/YYYY"
 }
+export function queryLang(req: Request): string {
+  let lang = query(req, "lang")
+  if (lang !== "vi") {
+    lang = "en"
+  }
+  return lang
+}
 export function getResource(lang?: string | Request): StringMap {
   if (lang) {
     if (typeof lang === "string") {

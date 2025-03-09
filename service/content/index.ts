@@ -57,6 +57,7 @@ export class ContentController {
         } else {
           this.menuLoader.load().then((items) => {
             res.render(getView(req, "content"), {
+              lang,
               resource,
               content,
               menu: res.locals.menu,
@@ -70,10 +71,9 @@ export class ContentController {
       })
   }
 }
-export function useContentService(db: DB): ContentService {
-  const repository = new SqlContentRepository(db)
-  return new ContentUseCase(repository)
-}
+
 export function useContentController(db: DB, log: Log, langs: string[], menuLoader: MenuItemLoader): ContentController {
-  return new ContentController(useContentService(db), log, langs, menuLoader)
+  const repository = new SqlContentRepository(db)
+  const service = new ContentUseCase(repository)
+  return new ContentController(service, log, langs, menuLoader)
 }

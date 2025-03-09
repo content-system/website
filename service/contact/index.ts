@@ -4,7 +4,7 @@ import { nanoid } from "nanoid"
 import { Log } from "onecore"
 import { DB, Repository } from "query-core"
 import { validate } from "xvalidators"
-import { getResource } from "../resources"
+import { getResource, queryLang } from "../resources"
 import { Contact, contactModel, ContactRepository, ContactService } from "./contact"
 export * from "./contact"
 
@@ -28,8 +28,10 @@ export class ContactController {
     this.submit = this.submit.bind(this)
   }
   render(req: Request, res: Response) {
-    const resource = getResource(req)
+    const lang = queryLang(req)
+    const resource = getResource(lang)
     res.render(getView(req, "contact"), {
+      lang,
       resource,
       contact: {},
     })

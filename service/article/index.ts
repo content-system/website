@@ -11,7 +11,6 @@ import {
   getSearch,
   getView,
   hasSearch,
-  query,
   queryNumber,
   queryPage,
   resources,
@@ -20,7 +19,7 @@ import {
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
 import { formatDateTime } from "ui-formatter"
-import { buildError404, buildError500, getDateFormat, getResource } from "../resources"
+import { buildError404, buildError500, getDateFormat, getResource, queryLang } from "../resources"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 export * from "./article"
 
@@ -42,7 +41,7 @@ export class ArticleController {
     this.search = this.search.bind(this)
   }
   view(req: Request, res: Response) {
-    const lang = query(req, "lang")
+    const lang = queryLang(req)
     const resource = getResource(lang)
     const dateFormat = getDateFormat(lang)
     const id = req.params["id"]
@@ -54,6 +53,7 @@ export class ArticleController {
         } else {
           article.publishedAt = formatDateTime(article.publishedAt, dateFormat)
           res.render(getView(req, "article"), {
+            lang,
             resource,
             article,
           })
@@ -65,7 +65,7 @@ export class ArticleController {
       })
   }
   search(req: Request, res: Response) {
-    const lang = query(req, "lang")
+    const lang = queryLang(req)
     const resource = getResource(lang)
     const dateFormat = getDateFormat(lang)
     let filter: ArticleFilter = {
@@ -87,6 +87,7 @@ export class ArticleController {
         }
         const search = getSearch(req.url)
         res.render(getView(req, "news"), {
+          lang,
           resource,
           limits: resources.limits,
           filter,
@@ -103,11 +104,10 @@ export class ArticleController {
       })
   }
 }
-export function useArticleService(db: DB): ArticleService {
+
+export function useArticleController(db: DB, log: Log): ArticleController {
   const builder = new SearchBuilder<Article, ArticleFilter>(db.query, "articles", articleModel, db.driver)
   const repository = new SqlArticleRepository(db)
-  return new ArticleUseCase(builder.search, repository)
-}
-export function useArticleController(db: DB, log: Log): ArticleController {
-  return new ArticleController(useArticleService(db), log)
+  const service = new ArticleUseCase(builder.search, repository)
+  return new ArticleController(service, log)
 }

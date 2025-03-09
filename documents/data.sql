@@ -97,10 +97,11 @@ insert into modules (module_id,module_name,status,path,resource_key,icon,sequenc
 insert into modules (module_id,module_name,status,path,resource_key,icon,sequence,actions,parent) values ('role','Role Management','A','/roles','role','credit_card',2,7,'admin');
 insert into modules (module_id,module_name,status,path,resource_key,icon,sequence,actions,parent) values ('audit_log','Audit Log','A','/audit-logs','audit_log','zoom_in',4,1,'admin');
 
-insert into modules (module_id,module_name,status,path,resource_key,icon,sequence,actions,parent) values ('content','Content','A','/contents','content','public',1,7,'setup');
-insert into modules (module_id,module_name,status,path,resource_key,icon,sequence,actions,parent) values ('article','Article','A','/articles','article','public',2,7,'setup');
-insert into modules (module_id,module_name,status,path,resource_key,icon,sequence,actions,parent) values ('job','Job','A','/jobs','jobs','local_atm',3,7,'setup');
-insert into modules (module_id,module_name,status,path,resource_key,icon,sequence,actions,parent) values ('contact','Contact','A','/contacts','contact','public',4,7,'setup');
+insert into modules (module_id,module_name,status,path,resource_key,icon,sequence,actions,parent) values ('category','Category','A','/categories','category','menu',1,7,'setup');
+insert into modules (module_id,module_name,status,path,resource_key,icon,sequence,actions,parent) values ('content','Content','A','/contents','content','public',2,7,'setup');
+insert into modules (module_id,module_name,status,path,resource_key,icon,sequence,actions,parent) values ('article','Article','A','/articles','article','public',3,7,'setup');
+insert into modules (module_id,module_name,status,path,resource_key,icon,sequence,actions,parent) values ('job','Job','A','/jobs','jobs','local_atm',4,7,'setup');
+insert into modules (module_id,module_name,status,path,resource_key,icon,sequence,actions,parent) values ('contact','Contact','A','/contacts','contact','public',5,7,'setup');
 
 insert into roles (role_id, role_name, status, remark) values ('admin','Admin','A','Admin');
 insert into roles (role_id, role_name, status, remark) values ('call_center','Call Center','A','Call Center');
@@ -180,6 +181,7 @@ insert into role_modules(role_id, module_id, permissions) values ('it_support', 
 insert into role_modules(role_id, module_id, permissions) values ('it_support', 'role', 7);
 insert into role_modules(role_id, module_id, permissions) values ('it_support', 'audit_log', 7);
 insert into role_modules(role_id, module_id, permissions) values ('it_support', 'setup', 7);
+insert into role_modules(role_id, module_id, permissions) values ('it_support', 'category', 7);
 insert into role_modules(role_id, module_id, permissions) values ('it_support', 'content', 7);
 insert into role_modules(role_id, module_id, permissions) values ('it_support', 'article', 7);
 insert into role_modules(role_id, module_id, permissions) values ('it_support', 'job', 7);
@@ -279,7 +281,8 @@ create table categories (
   created_by varchar(40),
   created_at timestamptz,
   updated_by varchar(40),
-  updated_at timestamptz
+  updated_at timestamptz,
+  version integer
 );
 /*
 home
@@ -303,6 +306,8 @@ insert into categories (id,name,status,path,resource_key,icon,sequence,type,pare
 insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('milestones','Milestones','A','/milestones','milestones','public',1,'content','about');
 insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('companies','companies','A','/companies','companies','account_balance',2,'content','about');
 insert into categories (id,name,status,path,resource_key,icon,sequence,type,parent) values ('leadership','Leadership','A','/leadership','leadership','person',3,'content','about');
+
+update categories set version = 1;
 
 create table companies (
   id character varying(40) not null primary key,

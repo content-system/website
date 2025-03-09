@@ -11,7 +11,6 @@ import {
   getSearch,
   getView,
   hasSearch,
-  query,
   queryNumber,
   queryPage,
   resources,
@@ -20,7 +19,7 @@ import {
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
 import { formatDateTime } from "ui-formatter"
-import { buildError404, buildError500, getDateFormat, getResource } from "../resources"
+import { buildError404, buildError500, getDateFormat, getResource, queryLang } from "../resources"
 import { Job, JobFilter, jobModel, JobRepository, JobService } from "./job"
 export * from "./job"
 
@@ -42,7 +41,7 @@ export class JobController {
     this.search = this.search.bind(this)
   }
   view(req: Request, res: Response) {
-    const lang = query(req, "lang")
+    const lang = queryLang(req)
     const resource = getResource(lang)
     const dateFormat = getDateFormat(lang)
     const id = req.params["id"]
@@ -65,7 +64,7 @@ export class JobController {
       })
   }
   search(req: Request, res: Response) {
-    const lang = query(req, "lang")
+    const lang = queryLang(req)
     const resource = getResource(lang)
     const dateFormat = getDateFormat(lang)
     let filter: JobFilter = {
@@ -104,11 +103,9 @@ export class JobController {
   }
 }
 
-export function useJobService(db: DB): JobService {
+export function useJobController(db: DB, log: Log): JobController {
   const builder = new SearchBuilder<Job, JobFilter>(db.query, "jobs", jobModel, db.driver)
   const repository = new SqlJobRepository(db)
-  return new JobUseCase(builder.search, repository)
-}
-export function useJobController(db: DB, log: Log): JobController {
-  return new JobController(useJobService(db), log)
+  const service = new JobUseCase(builder.search, repository)
+  return new JobController(service, log)
 }
