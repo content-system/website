@@ -8,7 +8,7 @@ export const vi = {
 
   user_id: "User Id",
   username: "User Name",
-  email: "Email",
+  email: "Thư điện tử",
   password: "Password",
   passcode: "Verification Code",
   username_or_email: "Username Or Email",

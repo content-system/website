@@ -9,9 +9,7 @@ import {
   format,
   fromRequest,
   getSearch,
-  getStatusCode,
   getView,
-  handleError,
   hasSearch,
   query,
   queryNumber,
@@ -22,7 +20,6 @@ import {
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
 import { formatDateTime, getDateFormat } from "ui-formatter"
-import { validate } from "xvalidators"
 import { buildError404, buildError500, getResource } from "../resources"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 export * from "./article"
@@ -42,7 +39,6 @@ const fields = ["title", "publishedAt", "description"]
 export class ArticleController {
   constructor(private service: ArticleService, private log: Log) {
     this.view = this.view.bind(this)
-    this.submit = this.submit.bind(this)
     this.search = this.search.bind(this)
   }
   view(req: Request, res: Response) {
@@ -65,26 +61,9 @@ export class ArticleController {
         res.render(getView(req, "error"), buildError500(resource, res))
       })
   }
-  submit(req: Request, res: Response) {
-    const resource = getResource(req)
-    const article = req.body
-    console.log("article " + JSON.stringify(article))
-    const errors = validate<Article>(article, articleModel, resource)
-    if (errors.length > 0) {
-      res.status(getStatusCode(errors)).json(errors).end()
-    } else {
-      this.service
-        .update(article)
-        .then((result) => {
-          console.log("result " + result)
-          res.status(200).json(article).end()
-        })
-        .catch((err) => handleError(err, res, this.log))
-    }
-  }
   search(req: Request, res: Response) {
     const dateFormat = getDateFormat()
-    const resource = getResource(req)
+    const resource = getResource(query(req, "lang"))
     let filter: ArticleFilter = {
       limit: resources.defaultLimit,
       q: "",
