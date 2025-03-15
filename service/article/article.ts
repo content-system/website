@@ -1,4 +1,4 @@
-import { Attributes, Filter, SearchResult, Service, TimeRange } from "onecore"
+import { Attributes, Filter, SearchResult, TimeRange } from "onecore"
 
 export interface Article {
   id: string
@@ -12,7 +12,6 @@ export interface Article {
   author?: string
   status?: string
 }
-
 export interface ArticleFilter extends Filter {
   id?: string
   title?: string
@@ -21,19 +20,19 @@ export interface ArticleFilter extends Filter {
 }
 
 export interface ArticleRepository {
-  load(id: string, ctx?: any): Promise<Article | null>
-  create(article: Article, ctx?: any): Promise<number>
-  update(article: Article, ctx?: any): Promise<number>
-  patch(article: Partial<Article>, ctx?: any): Promise<number>
-  delete(id: string, ctx?: any): Promise<number>
+  load(id: string): Promise<Article | null>
+  create(article: Article): Promise<number>
+  update(article: Article): Promise<number>
+  patch(article: Partial<Article>): Promise<number>
+  delete(id: string): Promise<number>
 }
-export interface ArticleService extends Service<Article, string, ArticleFilter> {
-  load(id: string, ctx?: any): Promise<Article | null>
-  create(article: Article, ctx?: any): Promise<number>
-  update(article: Article, ctx?: any): Promise<number>
-  patch(article: Partial<Article>, ctx?: any): Promise<number>
-  delete(id: string, ctx?: any): Promise<number>
-  search(s: ArticleFilter, limit: number, offset?: number | string, fields?: string[]): Promise<SearchResult<Article>>
+export interface ArticleService {
+  search(filter: ArticleFilter, limit: number, page?: number, fields?: string[]): Promise<SearchResult<Article>>
+  load(id: string): Promise<Article | null>
+  create(article: Article): Promise<number>
+  update(article: Article): Promise<number>
+  patch(article: Partial<Article>): Promise<number>
+  delete(id: string): Promise<number>
 }
 
 export const articleModel: Attributes = {

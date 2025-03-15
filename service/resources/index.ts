@@ -37,7 +37,7 @@ export function getDateFormat(lang?: string): string {
   }
   return "M/D/YYYY"
 }
-export function queryLang(req: Request): string {
+export function getLang(req: Request): string {
   let lang = query(req, "lang")
   if (lang !== "vi") {
     lang = "en"
@@ -72,6 +72,7 @@ export function getResourceByLang(lang: string): StringMap {
   }
   return resources["en"]
 }
+
 export function buildError404(resource: StringMap, res: Response): any {
   return {
     message: {
@@ -81,7 +82,6 @@ export function buildError404(resource: StringMap, res: Response): any {
     menu: res.locals.menu,
   }
 }
-
 export function buildError500(resource: StringMap, res: Response): any {
   return {
     message: {

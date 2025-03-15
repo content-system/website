@@ -19,7 +19,7 @@ import {
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
 import { formatDateTime } from "ui-formatter"
-import { buildError404, buildError500, getDateFormat, getResource, queryLang } from "../resources"
+import { buildError404, buildError500, getDateFormat, getLang, getResource } from "../resources"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 export * from "./article"
 
@@ -41,7 +41,7 @@ export class ArticleController {
     this.search = this.search.bind(this)
   }
   view(req: Request, res: Response) {
-    const lang = queryLang(req)
+    const lang = getLang(req)
     const resource = getResource(lang)
     const dateFormat = getDateFormat(lang)
     const id = req.params["id"]
@@ -65,7 +65,7 @@ export class ArticleController {
       })
   }
   search(req: Request, res: Response) {
-    const lang = queryLang(req)
+    const lang = getLang(req)
     const resource = getResource(lang)
     const dateFormat = getDateFormat(lang)
     let filter: ArticleFilter = {
