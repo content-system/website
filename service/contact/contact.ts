@@ -22,11 +22,7 @@ export interface ContactFilter extends Filter {
 }
 
 export interface ContactRepository {
-  load(id: string): Promise<Contact | null>
   create(contact: Contact): Promise<number>
-  update(contact: Contact): Promise<number>
-  patch(contact: Partial<Contact>): Promise<number>
-  delete(id: string): Promise<number>
 }
 export interface ContactService {
   submit(contact: Contact): Promise<number>
