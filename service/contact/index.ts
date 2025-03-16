@@ -31,7 +31,6 @@ export class ContactController {
     const lang = getLang(req)
     const resource = getResource(lang)
     res.render(getView(req, "contact"), {
-      lang,
       resource,
       contact: {},
     })

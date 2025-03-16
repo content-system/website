@@ -16,7 +16,7 @@
     "bcrypt": "^5.1.1",
     "bcrypt-plus": "^0.0.1",
     "config-plus": "^0.0.4",
-    "content-menu": "^0.0.2",
+    "content-menu": "^0.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-ext": "^0.3.9",

@@ -60,7 +60,6 @@ export class ContentController {
               lang,
               resource,
               content,
-              menu: res.locals.menu,
             })
           })
         }

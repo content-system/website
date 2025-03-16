@@ -53,7 +53,6 @@ export class ArticleController {
         } else {
           article.publishedAt = formatDateTime(article.publishedAt, dateFormat)
           res.render(getView(req, "article"), {
-            lang,
             resource,
             article,
           })
@@ -87,7 +86,6 @@ export class ArticleController {
         }
         const search = getSearch(req.url)
         res.render(getView(req, "news"), {
-          lang,
           resource,
           limits: resources.limits,
           filter,
