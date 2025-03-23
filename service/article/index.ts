@@ -78,7 +78,7 @@ export class ArticleController {
     const page = queryPage(req, filter)
     const limit = queryLimit(req)
     this.service
-      .search(cloneFilter(filter, page, limit), limit, page)
+      .search(cloneFilter(filter, limit, page), limit, page)
       .then((result) => {
         const list = escapeArray(result.list)
         for (const item of result.list) {

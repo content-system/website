@@ -78,7 +78,7 @@ export class JobController {
     const page = queryPage(req, filter)
     const limit = queryLimit(req)
     this.jobService
-      .search(cloneFilter(filter, page, limit), limit, page)
+      .search(cloneFilter(filter, limit, page), limit, page)
       .then((result) => {
         const list = escapeArray(result.list)
         for (const item of list) {
