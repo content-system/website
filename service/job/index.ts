@@ -11,7 +11,7 @@ import {
   getSearch,
   getView,
   hasSearch,
-  queryNumber,
+  queryLimit,
   queryPage,
   resources,
   toString,
@@ -76,7 +76,7 @@ export class JobController {
       format(filter, ["publishedAt"])
     }
     const page = queryPage(req, filter)
-    const limit = queryNumber(req, resources.limit, resources.defaultLimit)
+    const limit = queryLimit(req)
     this.jobService
       .search(cloneFilter(filter, page, limit), limit, page)
       .then((result) => {
