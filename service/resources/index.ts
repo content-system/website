@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { Request } from "express"
 import { query } from "express-ext"
 import { en as authenticationEN } from "./authentication/en"
 import { vi as authenticationVI } from "./authentication/vi"
@@ -71,23 +71,4 @@ export function getResourceByLang(lang: string): StringMap {
     }
   }
   return resources["en"]
-}
-
-export function buildError404(resource: StringMap, res: Response): any {
-  return {
-    message: {
-      title: resource.error_404_title,
-      description: resource.error_404_message,
-    },
-    menu: res.locals.menu,
-  }
-}
-export function buildError500(resource: StringMap, res: Response): any {
-  return {
-    message: {
-      title: resource.error_500_title,
-      description: resource.error_500_message,
-    },
-    menu: res.locals.menu,
-  }
 }

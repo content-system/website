@@ -1,5 +1,7 @@
 import { Request, Response } from "express"
 import {
+  buildError404,
+  buildError500,
   buildMessage,
   buildPages,
   buildPageSearch,
@@ -19,7 +21,7 @@ import {
 import { Log, Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
 import { formatDateTime } from "ui-formatter"
-import { buildError404, buildError500, getDateFormat, getLang, getResource } from "../resources"
+import { getDateFormat, getLang, getResource } from "../resources"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 export * from "./article"
 
@@ -37,31 +39,8 @@ export class ArticleUseCase extends Manager<Article, string, ArticleFilter> impl
 const fields = ["title", "publishedAt", "description"]
 export class ArticleController {
   constructor(private service: ArticleService, private log: Log) {
-    this.view = this.view.bind(this)
     this.search = this.search.bind(this)
-  }
-  view(req: Request, res: Response) {
-    const lang = getLang(req)
-    const resource = getResource(lang)
-    const dateFormat = getDateFormat(lang)
-    const id = req.params["id"]
-    this.service
-      .load(id)
-      .then((article) => {
-        if (!article) {
-          res.render(getView(req, "error"), buildError404(resource, res))
-        } else {
-          article.publishedAt = formatDateTime(article.publishedAt, dateFormat)
-          res.render(getView(req, "article"), {
-            resource,
-            article,
-          })
-        }
-      })
-      .catch((err) => {
-        this.log(toString(err))
-        res.render(getView(req, "error"), buildError500(resource, res))
-      })
+    this.view = this.view.bind(this)
   }
   search(req: Request, res: Response) {
     const lang = getLang(req)
@@ -95,6 +74,29 @@ export class ArticleController {
           sort: buildSortSearch(search, fields, filter.sort),
           message: buildMessage(resource, list, limit, page, result.total),
         })
+      })
+      .catch((err) => {
+        this.log(toString(err))
+        res.render(getView(req, "error"), buildError500(resource, res))
+      })
+  }
+  view(req: Request, res: Response) {
+    const lang = getLang(req)
+    const resource = getResource(lang)
+    const dateFormat = getDateFormat(lang)
+    const id = req.params["id"]
+    this.service
+      .load(id)
+      .then((article) => {
+        if (!article) {
+          res.render(getView(req, "error"), buildError404(resource, res))
+        } else {
+          article.publishedAt = formatDateTime(article.publishedAt, dateFormat)
+          res.render(getView(req, "article"), {
+            resource,
+            article,
+          })
+        }
       })
       .catch((err) => {
         this.log(toString(err))

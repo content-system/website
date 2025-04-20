@@ -1,9 +1,9 @@
 import { MenuItemLoader } from "content-menu"
 import { Request, Response } from "express"
-import { getView, toString } from "express-ext"
+import { buildError404, buildError500, getView, toString } from "express-ext"
 import { Log } from "onecore"
 import { DB } from "query-core"
-import { buildError404, buildError500, getResource } from "../resources"
+import { getResource } from "../resources"
 import { Content, ContentRepository, ContentService } from "./content"
 export * from "./content"
 
