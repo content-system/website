@@ -1,10 +1,11 @@
 import { Request, Response } from "express"
-import { escape, getView, handleError, toMap } from "express-ext"
+import { escape, handleError, toMap } from "express-ext"
 import { nanoid } from "nanoid"
 import { Log } from "onecore"
 import { DB, Repository } from "query-core"
 import { validate } from "xvalidators"
 import { getLang, getResource } from "../resources"
+import { render } from "../template"
 import { Contact, contactModel, ContactRepository, ContactService } from "./contact"
 export * from "./contact"
 
@@ -30,10 +31,7 @@ export class ContactController {
   render(req: Request, res: Response) {
     const lang = getLang(req)
     const resource = getResource(lang)
-    res.render(getView(req, "contact"), {
-      resource,
-      contact: {},
-    })
+    render(req, res, "contact", { resource, contact: {} })
   }
   submit(req: Request, res: Response) {
     const resource = getResource(req)
@@ -44,20 +42,13 @@ export class ContactController {
       // res.status(getStatusCode(errors)).json(errors).end()
       const errorMap = toMap(errors)
       console.log(JSON.stringify(errorMap))
-      res.render("pages/contact", {
-        resource,
-        contact: escape(contact),
-        errors: errorMap,
-      })
+      render(req, res, "contact", { resource, contact: escape(contact), errors: errorMap })
     } else {
       this.service
         .submit(contact)
         .then((result) => {
           // res.status(201).json(contact).end()
-          res.render("pages/contact", {
-            resource,
-            contact: escape(contact),
-          })
+          render(req, res, "contact", { resource, contact: escape(contact) })
         })
         .catch((err) => handleError(err, res, this.log))
     }

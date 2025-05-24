@@ -1,7 +1,5 @@
 import { Request, Response } from "express"
 import {
-  buildError404,
-  buildError500,
   buildMessage,
   buildPages,
   buildPageSearch,
@@ -11,17 +9,16 @@ import {
   format,
   fromRequest,
   getSearch,
-  getView,
   hasSearch,
   queryLimit,
   queryPage,
   resources,
-  toString,
 } from "express-ext"
-import { Log, Manager, Search } from "onecore"
+import { Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
 import { formatDateTime } from "ui-formatter"
 import { getDateFormat, getLang, getResource } from "../resources"
+import { render, renderError404, renderError500 } from "../template"
 import { Job, JobFilter, jobModel, JobRepository, JobService } from "./job"
 export * from "./job"
 
@@ -38,7 +35,7 @@ export class JobUseCase extends Manager<Job, string, JobFilter> implements JobSe
 
 const fields = ["title", "publishedAt", "description"]
 export class JobController {
-  constructor(private jobService: JobService, private log: Log) {
+  constructor(private jobService: JobService) {
     this.search = this.search.bind(this)
     this.view = this.view.bind(this)
   }
@@ -64,7 +61,7 @@ export class JobController {
           item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
         }
         const search = getSearch(req.url)
-        res.render(getView(req, "careers"), {
+        render(req, res, "careers", {
           resource,
           limits: resources.limits,
           filter,
@@ -75,10 +72,7 @@ export class JobController {
           message: buildMessage(resource, list, limit, page, result.total),
         })
       })
-      .catch((err) => {
-        this.log(toString(err))
-        res.render(getView(req, "error"), buildError500(resource, res))
-      })
+      .catch((err) => renderError500(req, res, resource, err))
   }
 
   view(req: Request, res: Response) {
@@ -90,25 +84,19 @@ export class JobController {
       .load(id)
       .then((job) => {
         if (!job) {
-          res.render(getView(req, "error"), buildError404(resource, res))
+          renderError404(req, res, resource)
         } else {
           job.publishedAt = formatDateTime(job.publishedAt, dateFormat)
-          res.render(getView(req, "job"), {
-            resource,
-            job,
-          })
+          render(req, res, "job", { resource, job })
         }
       })
-      .catch((err) => {
-        this.log(toString(err))
-        res.render(getView(req, "error"), buildError500(resource, res))
-      })
+      .catch((err) => renderError500(req, res, resource, err))
   }
 }
 
-export function useJobController(db: DB, log: Log): JobController {
+export function useJobController(db: DB): JobController {
   const builder = new SearchBuilder<Job, JobFilter>(db.query, "jobs", jobModel, db.driver)
   const repository = new SqlJobRepository(db)
   const service = new JobUseCase(builder.search, repository)
-  return new JobController(service, log)
+  return new JobController(service)
 }

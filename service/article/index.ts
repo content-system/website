@@ -1,7 +1,5 @@
 import { Request, Response } from "express"
 import {
-  buildError404,
-  buildError500,
   buildMessage,
   buildPages,
   buildPageSearch,
@@ -11,17 +9,16 @@ import {
   format,
   fromRequest,
   getSearch,
-  getView,
   hasSearch,
   queryLimit,
   queryPage,
   resources,
-  toString,
 } from "express-ext"
-import { Log, Manager, Search } from "onecore"
+import { Manager, Search } from "onecore"
 import { DB, Repository, SearchBuilder } from "query-core"
 import { formatDateTime } from "ui-formatter"
 import { getDateFormat, getLang, getResource } from "../resources"
+import { render, renderError404, renderError500 } from "../template"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 export * from "./article"
 
@@ -38,7 +35,7 @@ export class ArticleUseCase extends Manager<Article, string, ArticleFilter> impl
 
 const fields = ["title", "publishedAt", "description"]
 export class ArticleController {
-  constructor(private service: ArticleService, private log: Log) {
+  constructor(private service: ArticleService) {
     this.search = this.search.bind(this)
     this.view = this.view.bind(this)
   }
@@ -64,7 +61,7 @@ export class ArticleController {
           item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
         }
         const search = getSearch(req.url)
-        res.render(getView(req, "news"), {
+        render(req, res, "news", {
           resource,
           limits: resources.limits,
           filter,
@@ -75,10 +72,7 @@ export class ArticleController {
           message: buildMessage(resource, list, limit, page, result.total),
         })
       })
-      .catch((err) => {
-        this.log(toString(err))
-        res.render(getView(req, "error"), buildError500(resource, res))
-      })
+      .catch((err) => renderError500(req, res, resource, err))
   }
   view(req: Request, res: Response) {
     const lang = getLang(req)
@@ -89,25 +83,19 @@ export class ArticleController {
       .load(id)
       .then((article) => {
         if (!article) {
-          res.render(getView(req, "error"), buildError404(resource, res))
+          renderError404(req, res, resource)
         } else {
           article.publishedAt = formatDateTime(article.publishedAt, dateFormat)
-          res.render(getView(req, "article"), {
-            resource,
-            article,
-          })
+          render(req, res, "article", { resource, article })
         }
       })
-      .catch((err) => {
-        this.log(toString(err))
-        res.render(getView(req, "error"), buildError500(resource, res))
-      })
+      .catch((err) => renderError500(req, res, resource, err))
   }
 }
 
-export function useArticleController(db: DB, log: Log): ArticleController {
+export function useArticleController(db: DB): ArticleController {
   const builder = new SearchBuilder<Article, ArticleFilter>(db.query, "articles", articleModel, db.driver)
   const repository = new SqlArticleRepository(db)
   const service = new ArticleUseCase(builder.search, repository)
-  return new ArticleController(service, log)
+  return new ArticleController(service)
 }

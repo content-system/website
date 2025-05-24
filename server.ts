@@ -11,6 +11,7 @@ import { datetimeToString } from "ui-formatter"
 import { config, env } from "./config"
 import { route } from "./service"
 import { useContext } from "./service/context"
+import { resources } from "./service/template"
 
 dotenv.config()
 const cfg = merge(config, process.env, env, process.env.ENV)
@@ -25,13 +26,17 @@ app.use(express.static(__dirname + "/public"))
 app.set("views", __dirname + "/views")
 // Setup view engine :
 // Setting Nunjucks as default view
-nunjucks.configure("views", {
+const nunjucksEnv = nunjucks.configure("views", {
   autoescape: false,
   express: app,
+  noCache: false,
 })
+resources.nunjucks = nunjucksEnv
 app.set("view engine", "html")
 
 const logger = createLogger(cfg.log)
+resources.log = logger.error
+
 const middleware = new MiddlewareLogger(logger.info, cfg.middleware)
 // app.use(allow(conf.allow), json(), middleware.log)
 // app.use(allow(conf.allow), json())

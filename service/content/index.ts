@@ -1,9 +1,9 @@
 import { MenuItemLoader } from "content-menu"
 import { Request, Response } from "express"
-import { buildError404, buildError500, getView, toString } from "express-ext"
-import { Log } from "onecore"
+import { getView } from "express-ext"
 import { DB } from "query-core"
 import { getResource } from "../resources"
+import { renderError404, renderError500 } from "../template"
 import { Content, ContentRepository, ContentService } from "./content"
 export * from "./content"
 
@@ -31,7 +31,7 @@ export class ContentUseCase implements ContentService {
 }
 
 export class ContentController {
-  constructor(private service: ContentService, private log: Log, private langs: string[], private menuLoader: MenuItemLoader) {
+  constructor(private service: ContentService, private langs: string[], private menuLoader: MenuItemLoader) {
     this.view = this.view.bind(this)
   }
   view(req: Request, res: Response) {
@@ -53,26 +53,19 @@ export class ContentController {
       .load(id, lang)
       .then((content) => {
         if (!content) {
-          res.render(getView(req, "error"), buildError404(resource, res))
+          renderError404(req, res, resource)
         } else {
           this.menuLoader.load().then((items) => {
-            res.render(getView(req, "content"), {
-              lang,
-              resource,
-              content,
-            })
+            res.render(getView(req, "content"), { lang, resource, content })
           })
         }
       })
-      .catch((err) => {
-        this.log(toString(err))
-        res.render(getView(req, "error"), buildError500(resource, res))
-      })
+      .catch((err) => renderError500(req, res, resource, err))
   }
 }
 
-export function useContentController(db: DB, log: Log, langs: string[], menuLoader: MenuItemLoader): ContentController {
+export function useContentController(db: DB, langs: string[], menuLoader: MenuItemLoader): ContentController {
   const repository = new SqlContentRepository(db)
   const service = new ContentUseCase(repository)
-  return new ContentController(service, log, langs, menuLoader)
+  return new ContentController(service, langs, menuLoader)
 }
