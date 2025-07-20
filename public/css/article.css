@@ -1,3 +1,9 @@
+pre[class*="language-"] {
+  margin: 0;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid;
+}
 .page-body > article > div.article-body {
   padding-left: 16px;
   padding-right: 16px;
@@ -120,4 +126,18 @@
 .page-body > article > ul ul {
   margin-bottom: 8px;
   padding-left: 34px;
+}
+
+article ol,
+article ul {
+  margin-bottom: 16px;
+}
+article li {
+  padding-left: 4px;
+  position: relative;
+  margin-top: 4px;
+}
+article li input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]) {
+  position: absolute;
+  left: -16px;
 }

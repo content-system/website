@@ -226,6 +226,355 @@ function alertSuccess(msg, callback, header) {
   showAlert(msg, h, "Alert", "Success", "", buttonText, callback, undefined)
 }
 
+// tslint:disable-next-line:class-name
+var resources = /** @class */ (function () {
+  function resources() {}
+  resources.load = function (pageBody) {}
+  resources.login = "/login"
+  resources.redirect = "redirectUrl"
+  resources.defaultLimit = 12
+  resources.containerClass = "form-input"
+  resources.hiddenMessage = "hidden-message"
+  resources.token = "token"
+  resources.num1 = / |,|\$|€|£|¥|'|٬|،| /g
+  resources.num2 = / |\.|\$|€|£|¥|'|٬|،| /g
+  resources.email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/i
+  resources.phone = /^\d{5,14}$/
+  resources.password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+  resources.url = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+  resources.digit = /^\d+$/
+  resources.amount = /^[0-9]{0,15}(?:\.[0-9]{1,3})?$/ // const regExp = /\d+\.\d+/;
+  resources.digitAndDash = /^[0-9-]*$/
+  resources.digitAndChar = /^\w*\d*$/
+  resources.checkNumber = /^\d{0,8}$/
+  resources.percentage = /^[1-9][0-9]?$|^100$/
+  resources.ipv4 = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/
+  resources.usPostcode = /(^\d{5}$)|(^\d{5}-\d{4}$)/
+  resources.caPostcode =
+    /^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz][ -]?[0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz][0-9]$/
+  resources.ipv6 =
+    /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/
+  return resources
+})()
+function getCurrentURL() {
+  return window.location.origin + window.location.pathname
+}
+function getRedirect() {
+  var loc = window.location.href
+  if (loc.length < 8) {
+    return ""
+  }
+  var i = loc.indexOf("/", 9)
+  if (i < 0) {
+    return ""
+  }
+  return loc.substring(i)
+}
+function buildLoginUrl() {
+  var r = getRedirect()
+  if (r.length === 0) {
+    return resources.login
+  } else {
+    return resources.login + "?" + resources.redirect + "=" + encodeURIComponent(r)
+  }
+}
+var eleHtml
+var isGetHtml = false
+function getLang() {
+  if (!isGetHtml) {
+    eleHtml = document.querySelector("html")
+    isGetHtml = true
+  }
+  if (isGetHtml && eleHtml) {
+    var lang = eleHtml.getAttribute("lang")
+    if (lang && lang.length > 0) {
+      return lang
+    }
+  }
+  return undefined
+}
+function getToken() {
+  var token = localStorage.getItem(resources.token)
+  return token
+}
+function getHeaders() {
+  var token = getToken()
+  var lang = getLang()
+  if (lang) {
+    if (token && token.length > 0) {
+      return { "Content-Language": lang, Authorization: "Bearer " + token } // Include the JWT
+    } else {
+      return { "Content-Language": lang }
+    }
+  } else {
+    if (token && token.length > 0) {
+      return { Authorization: "Bearer " + token } // Include the JWT
+    } else {
+      return {}
+    }
+  }
+}
+function handleGetError(response, resource) {
+  if (response.status === 401) {
+    window.location.href = buildLoginUrl()
+  } else if (response.status === 403) {
+    alertError(resource.error_403, response.statusText)
+  } else if (response.status === 404) {
+    alertError(resource.error_404, response.statusText)
+  } else if (response.status === 400) {
+    alertError(resource.error_400, response.statusText)
+  } else {
+    console.error("Error: ", response.statusText)
+    alertError(resource.error_submit_failed, response.statusText)
+  }
+}
+function handleError(err, msg) {
+  hideLoading()
+  console.log("Error: " + err)
+  alertError(msg, err)
+}
+var histories = []
+var historyMax = 10
+function goBack() {
+  var url = histories.pop()
+  if (url) {
+    var newUrl = url + (url.indexOf("?") >= 0 ? "&" : "?") + "partial=true"
+    showLoading()
+    fetch(newUrl, { method: "GET", headers: getHeaders() })
+      .then(function (response) {
+        if (response.ok) {
+          response
+            .text()
+            .then(function (data) {
+              var pageBody = document.getElementById("pageBody")
+              if (pageBody) {
+                pageBody.innerHTML = data
+                window.history.pushState({ pageTitle: "" }, "", url)
+                afterLoaded(pageBody)
+              }
+              hideLoading()
+            })
+            .catch(function (err) {
+              return handleError(err, resource.error_response_body)
+            })
+        } else {
+          console.error("Error: ", response.statusText)
+          alertError(resource.error_submit_failed, response.statusText)
+        }
+      })
+      .catch(function (err) {
+        return handleError(err, resource.error_network)
+      })
+  }
+}
+function getField(search, fieldName) {
+  var i = search.indexOf(fieldName + "=")
+  if (i < 0) {
+    return ""
+  }
+  if (i > 0) {
+    if (search.substring(i - 1, 1) != "&") {
+      i = search.indexOf("&" + fieldName + "=")
+      if (i < 0) {
+        return search
+      }
+      i = i + 1
+    }
+  }
+  var j = search.indexOf("&", i + fieldName.length)
+  return j >= 0 ? search.substring(i, j) : search.substring(i)
+}
+function findParent(e, className, nodeName) {
+  if (!e) {
+    return null
+  }
+  if (nodeName && e.nodeName === nodeName) {
+    return e
+  }
+  var p = e
+  while (true) {
+    p = p.parentElement
+    if (!p) {
+      return null
+    }
+    if (p.classList.contains(className)) {
+      return p
+    }
+    if (nodeName && p.nodeName === nodeName) {
+      return p
+    }
+  }
+}
+function findParentNode(e, nodeName) {
+  if (!e) {
+    return null
+  }
+  if (e.nodeName == nodeName || e.getAttribute("data-field")) {
+    return e
+  }
+  var p = e
+  while (true) {
+    p = p.parentElement
+    if (!p) {
+      return null
+    }
+    if (p.nodeName == nodeName || p.getAttribute("data-field")) {
+      return p
+    }
+  }
+}
+function toggleClass(e, className) {
+  if (e) {
+    if (e.classList.contains(className)) {
+      e.classList.remove(className)
+      return false
+    } else {
+      e.classList.add(className)
+      return true
+    }
+  }
+  return false
+}
+function addClass(ele, className) {
+  if (ele) {
+    if (!ele.classList.contains(className)) {
+      ele.classList.add(className)
+      return true
+    }
+  }
+  return false
+}
+function addClasses(ele, classes) {
+  var count = 0
+  if (ele) {
+    for (var i = 0; i < classes.length; i++) {
+      if (addClass(ele, classes[i])) {
+        count++
+      }
+    }
+  }
+  return count
+}
+function removeClass(ele, className) {
+  if (ele) {
+    if (ele && ele.classList.contains(className)) {
+      ele.classList.remove(className)
+      return true
+    }
+  }
+  return false
+}
+function removeClasses(ele, classes) {
+  var count = 0
+  if (ele) {
+    for (var i = 0; i < classes.length; i++) {
+      if (removeClass(ele, classes[i])) {
+        count++
+      }
+    }
+  }
+  return count
+}
+function afterLoaded(pageBody) {
+  if (pageBody) {
+    setTimeout(function () {
+      var forms = pageBody.querySelectorAll("form")
+      for (var i = 0; i < forms.length; i++) {
+        registerEvents(forms[i])
+      }
+      var msg = getHiddenMessage(forms, resources.hiddenMessage)
+      if (msg && msg.length > 0) {
+        toast(msg)
+      }
+    }, 0)
+  }
+}
+function getHiddenMessage(nodes, name, i) {
+  var index = i !== undefined && i >= 0 ? i : 0
+  if (nodes.length > index) {
+    var form = nodes[index]
+    var n = name && name.length > 0 ? name : "hidden-message"
+    var ele = form.querySelector("." + n)
+    if (ele) {
+      return ele.innerHTML
+    }
+  }
+  return null
+}
+function getContainer(ele) {
+  return findParent(ele, resources.containerClass, "LABEL")
+}
+function handleMaterialFocus(ele) {
+  if (ele.disabled || ele.readOnly) {
+    return
+  }
+  if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
+    addClass(getContainer(ele), "focused")
+  }
+}
+function materialOnFocus(event) {
+  var ele = event.currentTarget
+  if (ele.disabled || ele.readOnly) {
+    return
+  }
+  setTimeout(function () {
+    if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
+      addClass(getContainer(ele), "focused")
+    }
+  }, 0)
+}
+function materialOnBlur(event) {
+  var ele = event.currentTarget
+  setTimeout(function () {
+    if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
+      removeClasses(getContainer(ele), ["focused", "focus"])
+    }
+  }, 0)
+}
+function registerEvents(form) {
+  var len = form.length
+  for (var i = 0; i < len; i++) {
+    var ele = form[i]
+    if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
+      var type = ele.getAttribute("type")
+      if (type != null) {
+        type = type.toLowerCase()
+      }
+      if (ele.nodeName === "INPUT" && (type === "checkbox" || type === "radio" || type === "submit" || type === "button" || type === "reset")) {
+        continue
+      } else {
+        var parent_1 = ele.parentElement
+        var required = ele.getAttribute("required")
+        if (parent_1) {
+          if (
+            parent_1.nodeName === "LABEL" &&
+            // tslint:disable-next-line:triple-equals
+            required != null &&
+            required !== undefined &&
+            required != "false" &&
+            !parent_1.classList.contains("required")
+          ) {
+            parent_1.classList.add("required")
+          } else if (parent_1.classList.contains("form-group") || parent_1.classList.contains("field")) {
+            var firstChild = parent_1.firstChild
+            if (firstChild && firstChild.nodeName === "LABEL") {
+              if (!firstChild.classList.contains("required")) {
+                firstChild.classList.add("required")
+              }
+            }
+          }
+        }
+        if (ele.getAttribute("onblur") === null && ele.getAttribute("(blur)") === null) {
+          ele.onblur = materialOnBlur
+        }
+        if (ele.getAttribute("onfocus") === null && ele.getAttribute("(focus)") === null) {
+          ele.onfocus = materialOnFocus
+        }
+      }
+    }
+  }
+}
+
 function addErrorMessage(ele, msg, directParent) {
   if (!ele) {
     return
@@ -568,6 +917,24 @@ function getLabel(ele) {
     }
   }
   return ""
+}
+function checkRequiredElements(form, names) {
+  var resource = getResource()
+  var eleMsg = form.querySelector(".message")
+  if (eleMsg) {
+    for (var i = 0; i < names.length; i++) {
+      var ele = getElement(form, names[i])
+      if (ele) {
+        if (ele.value === "") {
+          var label = getLabel(ele)
+          var msg = format(resource.error_required, label)
+          showErrorMessage(eleMsg, msg)
+          return false
+        }
+      }
+    }
+  }
+  return true
 }
 function checkRequired(ele, label, r) {
   var value = ele.value
@@ -1295,35 +1662,6 @@ function validateElements(elements, locale) {
 
 var r1 = / |,|\$|€|£|¥|'|٬|،| /g
 var r2 = / |\.|\$|€|£|¥|'|٬|،| /g
-// tslint:disable-next-line:class-name
-var resources = /** @class */ (function () {
-  function resources() {}
-  resources.login = "/login"
-  resources.redirect = "redirectUrl"
-  resources.defaultLimit = 12
-  resources.containerClass = "form-input"
-  resources.hiddenMessage = "hidden-message"
-  resources.token = "token"
-  resources.num1 = / |,|\$|€|£|¥|'|٬|،| /g
-  resources.num2 = / |\.|\$|€|£|¥|'|٬|،| /g
-  resources.email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/i
-  resources.phone = /^\d{5,14}$/
-  resources.password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-  resources.url = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
-  resources.digit = /^\d+$/
-  resources.amount = /^[0-9]{0,15}(?:\.[0-9]{1,3})?$/ // const regExp = /\d+\.\d+/;
-  resources.digitAndDash = /^[0-9-]*$/
-  resources.digitAndChar = /^\w*\d*$/
-  resources.checkNumber = /^\d{0,8}$/
-  resources.percentage = /^[1-9][0-9]?$|^100$/
-  resources.ipv4 = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/
-  resources.usPostcode = /(^\d{5}$)|(^\d{5}-\d{4}$)/
-  resources.caPostcode =
-    /^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz][ -]?[0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz][0-9]$/
-  resources.ipv6 =
-    /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/
-  return resources
-})()
 function parseDate(v, format) {
   if (!format || format.length === 0) {
     format = "MM/DD/YYYY"
@@ -1352,43 +1690,6 @@ function parseDate(v, format) {
   var day = parseInt(valueItems[iday], 10)
   return new Date(year, month, day)
 }
-var eleHtml
-var isGetHtml = false
-function getLang() {
-  if (!isGetHtml) {
-    eleHtml = document.querySelector("html")
-    isGetHtml = true
-  }
-  if (isGetHtml && eleHtml) {
-    var lang = eleHtml.getAttribute("lang")
-    if (lang && lang.length > 0) {
-      return lang
-    }
-  }
-  return undefined
-}
-function getCurrentURL() {
-  return window.location.origin + window.location.pathname
-}
-function getRedirect() {
-  var loc = window.location.href
-  if (loc.length < 8) {
-    return ""
-  }
-  var i = loc.indexOf("/", 9)
-  if (i < 0) {
-    return ""
-  }
-  return loc.substring(i)
-}
-function buildLoginUrl() {
-  var r = getRedirect()
-  if (r.length === 0) {
-    return resources.login
-  } else {
-    return resources.login + "?" + resources.redirect + "=" + encodeURIComponent(r)
-  }
-}
 function getDecimalSeparator(ele) {
   var separator = ele.getAttribute("data-decimal-separator")
   if (!separator) {
@@ -1398,54 +1699,6 @@ function getDecimalSeparator(ele) {
     }
   }
   return separator === "," ? "," : "."
-}
-function afterLoaded(pageBody) {
-  if (pageBody) {
-    setTimeout(function () {
-      var forms = pageBody.querySelectorAll("form")
-      for (var i = 0; i < forms.length; i++) {
-        registerEvents(forms[i])
-      }
-      var msg = getHiddenMessage(forms, resources.hiddenMessage)
-      if (msg && msg.length > 0) {
-        toast(msg)
-      }
-    }, 0)
-  }
-}
-var histories = []
-var historyMax = 10
-function goBack() {
-  var url = histories.pop()
-  if (url) {
-    var newUrl = url + (url.indexOf("?") >= 0 ? "&" : "?") + "partial=true"
-    showLoading()
-    fetch(newUrl, { method: "GET", headers: getHeaders() })
-      .then(function (response) {
-        if (response.ok) {
-          response
-            .text()
-            .then(function (data) {
-              var pageBody = document.getElementById("pageBody")
-              if (pageBody) {
-                pageBody.innerHTML = data
-                window.history.pushState({ pageTitle: "" }, "", url)
-                afterLoaded(pageBody)
-              }
-              hideLoading()
-            })
-            .catch(function (err) {
-              return handleError(err, resource.error_response_body)
-            })
-        } else {
-          console.error("Error: ", response.statusText)
-          alertError(resource.error_submit_failed, response.statusText)
-        }
-      })
-      .catch(function (err) {
-        return handleError(err, resource.error_network)
-      })
-  }
 }
 var d = "data-value"
 function selectOnChange(ele, attr) {
@@ -1665,170 +1918,6 @@ function getElement(form, name) {
   }
   return null
 }
-function findParent(e, className, nodeName) {
-  if (!e) {
-    return null
-  }
-  if (nodeName && e.nodeName === nodeName) {
-    return e
-  }
-  var p = e
-  while (true) {
-    p = p.parentElement
-    if (!p) {
-      return null
-    }
-    if (p.classList.contains(className)) {
-      return p
-    }
-    if (nodeName && p.nodeName === nodeName) {
-      return p
-    }
-  }
-}
-function findParentNode(e, nodeName) {
-  if (!e) {
-    return null
-  }
-  if (e.nodeName == nodeName || e.getAttribute("data-field")) {
-    return e
-  }
-  var p = e
-  while (true) {
-    p = p.parentElement
-    if (!p) {
-      return null
-    }
-    if (p.nodeName == nodeName || p.getAttribute("data-field")) {
-      return p
-    }
-  }
-}
-function toggleClass(e, className) {
-  if (e) {
-    if (e.classList.contains(className)) {
-      e.classList.remove(className)
-      return false
-    } else {
-      e.classList.add(className)
-      return true
-    }
-  }
-  return false
-}
-function addClass(ele, className) {
-  if (ele) {
-    if (!ele.classList.contains(className)) {
-      ele.classList.add(className)
-      return true
-    }
-  }
-  return false
-}
-function addClasses(ele, classes) {
-  var count = 0
-  if (ele) {
-    for (var i = 0; i < classes.length; i++) {
-      if (addClass(ele, classes[i])) {
-        count++
-      }
-    }
-  }
-  return count
-}
-function removeClass(ele, className) {
-  if (ele) {
-    if (ele && ele.classList.contains(className)) {
-      ele.classList.remove(className)
-      return true
-    }
-  }
-  return false
-}
-function removeClasses(ele, classes) {
-  var count = 0
-  if (ele) {
-    for (var i = 0; i < classes.length; i++) {
-      if (removeClass(ele, classes[i])) {
-        count++
-      }
-    }
-  }
-  return count
-}
-function getContainer(ele) {
-  return findParent(ele, resources.containerClass, "LABEL")
-}
-function handleMaterialFocus(ele) {
-  if (ele.disabled || ele.readOnly) {
-    return
-  }
-  if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
-    addClass(getContainer(ele), "focused")
-  }
-}
-function materialOnFocus(event) {
-  var ele = event.currentTarget
-  if (ele.disabled || ele.readOnly) {
-    return
-  }
-  setTimeout(function () {
-    if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
-      addClass(getContainer(ele), "focused")
-    }
-  }, 0)
-}
-function materialOnBlur(event) {
-  var ele = event.currentTarget
-  setTimeout(function () {
-    if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
-      removeClasses(getContainer(ele), ["focused", "focus"])
-    }
-  }, 0)
-}
-function registerEvents(form) {
-  var len = form.length
-  for (var i = 0; i < len; i++) {
-    var ele = form[i]
-    if (ele.nodeName === "INPUT" || ele.nodeName === "SELECT" || ele.nodeName === "TEXTAREA") {
-      var type = ele.getAttribute("type")
-      if (type != null) {
-        type = type.toLowerCase()
-      }
-      if (ele.nodeName === "INPUT" && (type === "checkbox" || type === "radio" || type === "submit" || type === "button" || type === "reset")) {
-        continue
-      } else {
-        var parent_1 = ele.parentElement
-        var required = ele.getAttribute("required")
-        if (parent_1) {
-          if (
-            parent_1.nodeName === "LABEL" &&
-            // tslint:disable-next-line:triple-equals
-            required != null &&
-            required !== undefined &&
-            required != "false" &&
-            !parent_1.classList.contains("required")
-          ) {
-            parent_1.classList.add("required")
-          } else if (parent_1.classList.contains("form-group") || parent_1.classList.contains("field")) {
-            var firstChild = parent_1.firstChild
-            if (firstChild && firstChild.nodeName === "LABEL") {
-              if (!firstChild.classList.contains("required")) {
-                firstChild.classList.add("required")
-              }
-            }
-          }
-        }
-        if (ele.getAttribute("onblur") === null && ele.getAttribute("(blur)") === null) {
-          ele.onblur = materialOnBlur
-        }
-        if (ele.getAttribute("onfocus") === null && ele.getAttribute("(focus)") === null) {
-          ele.onfocus = materialOnFocus
-        }
-      }
-    }
-  }
-}
 function valueOf(obj, key) {
   var mapper = key.split(".").map(function (item) {
     return item.replace(/\[/g, ".[").replace(/\[|\]/g, "")
@@ -1983,6 +2072,14 @@ function decodeFromForm(form, currencySymbol) {
   }
   return obj
 }
+function removeMessage(ele) {
+  if (ele) {
+    removeClasses(ele, ["alert-error", "alert-warning", "alert-info"])
+    ele.innerHTML = ""
+    return true
+  }
+  return false
+}
 function hideElement(ele) {
   if (ele) {
     ele.hidden = true
@@ -2002,26 +2099,6 @@ function isHidden(ele) {
     return ele.hidden || ele.style.display === "none"
   }
   return true
-}
-function getHiddenMessage(nodes, name, i) {
-  var index = i !== undefined && i >= 0 ? i : 0
-  if (nodes.length > index) {
-    var form = nodes[index]
-    var n = name && name.length > 0 ? name : "hidden-message"
-    var ele = form.querySelector("." + n)
-    if (ele) {
-      return ele.innerHTML
-    }
-  }
-  return null
-}
-function removeMessage(ele) {
-  if (ele) {
-    removeClasses(ele, ["alert-error", "alert-warning", "alert-info"])
-    ele.innerHTML = ""
-    return true
-  }
-  return false
 }
 function showErrorMessage(ele, msg) {
   if (ele) {
@@ -2065,24 +2142,6 @@ function showInfoMessageOfForm(form, msg) {
   var ele = form.querySelector(".message")
   return showInfoMessage(ele, msg)
 }
-function checkRequiredElements(form, names) {
-  var resource = getResource()
-  var eleMsg = form.querySelector(".message")
-  if (eleMsg) {
-    for (var i = 0; i < names.length; i++) {
-      var ele = getElement(form, names[i])
-      if (ele) {
-        if (ele.value === "") {
-          var label = getLabel(ele)
-          var msg = format(resource.error_required, label)
-          showErrorMessage(eleMsg, msg)
-          return false
-        }
-      }
-    }
-  }
-  return true
-}
 function setInputValue(form, name, value) {
   if (form) {
     for (var i = 0; i < form.length; i++) {
@@ -2094,27 +2153,6 @@ function setInputValue(form, name, value) {
     }
   }
   return false
-}
-function getToken() {
-  var token = localStorage.getItem(resources.token)
-  return token
-}
-function getHeaders() {
-  var token = getToken()
-  var lang = getLang()
-  if (lang) {
-    if (token && token.length > 0) {
-      return { "Content-Language": lang, Authorization: "Bearer " + token } // Include the JWT
-    } else {
-      return { "Content-Language": lang }
-    }
-  } else {
-    if (token && token.length > 0) {
-      return { Authorization: "Bearer " + token } // Include the JWT
-    } else {
-      return {}
-    }
-  }
 }
 function getHttpHeaders() {
   var token = getToken()
@@ -2145,28 +2183,9 @@ function getHttpHeaders() {
     }
   }
 }
-function handleGetError(response, resource) {
-  if (response.status === 401) {
-    window.location.href = buildLoginUrl()
-  } else if (response.status === 403) {
-    alertError(resource.error_403, response.statusText)
-  } else if (response.status === 404) {
-    alertError(resource.error_404, response.statusText)
-  } else if (response.status === 400) {
-    alertError(resource.error_400, response.statusText)
-  } else {
-    console.error("Error: ", response.statusText)
-    alertError(resource.error_submit_failed, response.statusText)
-  }
-}
 function getConfirmMessage(ele, resource) {
   var confirmMsg = ele.getAttribute("data-message")
   return confirmMsg ? confirmMsg : resource.msg_confirm_save
-}
-function handleError(err, msg) {
-  hideLoading()
-  console.log("Error: " + err)
-  alertError(msg, err)
 }
 function submitFormData(e) {
   e.preventDefault()
@@ -2305,274 +2324,178 @@ function handleJsonError(response, resource, form, showErrors, allErrors) {
   }
 }
 
-function clearText(e, name) {
-  var n = name && name.length > 0 ? name : "q"
-  var btn = e.target
-  var q = getElement(btn.form, n)
-  if (q) {
-    btn.hidden = true
-    q.value = ""
-  }
-}
-function clearMessage(e) {
-  var ele = e.target
-  if (ele && ele.parentElement) {
-    removeClasses(ele.parentElement, ["alert-error", "alert-warning", "alert-info"])
-    ele.parentElement.innerText = ""
-  }
-}
-function qOnChange(e) {
-  var text = e.target
-  var form = text.form
-  if (form) {
-    var btn = form.querySelector(".btn-remove-text")
-    if (btn) {
-      btn.hidden = !(text.value.length > 0)
-    }
-  }
-}
-function toggleSearch(e) {
-  var btn = e.target
-  var form = btn.form
-  if (form) {
-    var advanceSearch = form.querySelector(".advance-search")
-    if (advanceSearch) {
-      var onStatus = toggleClass(btn, "on")
-      advanceSearch.hidden = !onStatus
-    }
-  }
-}
-var o = "object"
-function trimNull(obj) {
-  if (!obj || typeof obj !== o) {
-    return obj
-  }
-  var keys = Object.keys(obj)
-  for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
-    var key = keys_1[_i]
-    var v = obj[key]
-    if (v === null) {
-      delete obj[key]
-    } else if (Array.isArray(v) && v.length > 0) {
-      var v1 = v[0]
-      if (typeof v1 === o && !(v1 instanceof Date)) {
-        for (var _a = 0, v_1 = v; _a < v_1.length; _a++) {
-          var item = v_1[_a]
-          trimNull(item)
-        }
+function changeMenu(e) {
+  var body = document.getElementById("sysBody")
+  if (body) {
+    var menu = body.classList.toggle("top-menu")
+    var ele = e.target
+    if (ele) {
+      if (ele.nodeName !== "LI") {
+        ele = ele.parentElement
       }
-    } else if (typeof v === o && !(v instanceof Date)) {
-      trimNull(obj[key])
-    }
-  }
-  return obj
-}
-function removeFormatUrl(url) {
-  var startParams = url.indexOf("?")
-  return startParams !== -1 ? url.substring(0, startParams) : url
-}
-function getPrefix(url) {
-  return url.indexOf("?") >= 0 ? "&" : "?"
-}
-function buildSearchUrl(ft, page, limit, fields) {
-  if (!page || page.length === 0) {
-    page = "page"
-  }
-  if (!limit || limit.length === 0) {
-    limit = "limit"
-  }
-  if (!fields || fields.length === 0) {
-    fields = "fields"
-  }
-  var pageIndex = ft.page
-  if (pageIndex && !isNaN(pageIndex) && pageIndex <= 1) {
-    delete ft.page
-  }
-  var keys = Object.keys(ft)
-  // const currentUrl = window.location.host + window.location.pathname
-  var url = "?partial=true"
-  for (var _i = 0, keys_2 = keys; _i < keys_2.length; _i++) {
-    var key = keys_2[_i]
-    var objValue = ft[key]
-    if (objValue) {
-      if (key !== fields) {
-        if (typeof objValue === "string" || typeof objValue === "number") {
-          if (key === page) {
-            if (objValue != 1) {
-              url += getPrefix(url) + (key + "=" + objValue)
-            }
-          } else if (key === limit) {
-            if (objValue != resources.defaultLimit) {
-              url += getPrefix(url) + (key + "=" + objValue)
-            }
-          } else {
-            url += getPrefix(url) + (key + "=" + encodeURIComponent(objValue))
-          }
-        } else if (typeof objValue === "object") {
-          if (objValue instanceof Date) {
-            url += getPrefix(url) + (key + "=" + objValue.toISOString())
-          } else {
-            if (Array.isArray(objValue)) {
-              if (objValue.length > 0) {
-                var strs = []
-                for (var _a = 0, objValue_1 = objValue; _a < objValue_1.length; _a++) {
-                  var subValue = objValue_1[_a]
-                  if (typeof subValue === "string") {
-                    strs.push(encodeURIComponent(subValue))
-                  } else if (typeof subValue === "number") {
-                    strs.push(subValue.toString())
-                  }
-                }
-                url += getPrefix(url) + (key + "=" + strs.join(","))
-              }
-            } else {
-              var keysLvl2 = Object.keys(objValue)
-              for (var _b = 0, keysLvl2_1 = keysLvl2; _b < keysLvl2_1.length; _b++) {
-                var key2 = keysLvl2_1[_b]
-                var objValueLvl2 = objValue[key2]
-                if (objValueLvl2) {
-                  if (objValueLvl2 instanceof Date) {
-                    url += getPrefix(url) + (key + "." + key2 + "=" + objValueLvl2.toISOString())
-                  } else {
-                    url += getPrefix(url) + (key + "." + key2 + "=" + encodeURIComponent(objValueLvl2))
-                  }
-                }
-              }
-            }
-          }
+      var attr = menu ? "data-sidebar" : "data-menu"
+      var icon = menu ? "view_list" : "credit_card"
+      var i = ele.querySelector("i")
+      if (i) {
+        i.innerText = icon
+      }
+      var text = ele.getAttribute(attr)
+      if (text) {
+        var span = ele.querySelector("span")
+        if (span) {
+          span.innerHTML = text
         }
       }
     }
   }
-  return url
 }
-function removeField(search, fieldName) {
-  var i = search.indexOf(fieldName + "=")
-  if (i < 0) {
-    return search
-  }
-  if (i > 0) {
-    if (search.substring(i - 1, 1) != "&") {
-      i = search.indexOf("&" + fieldName + "=")
-      if (i < 0) {
-        return search
+function changeMode(e) {
+  var body = document.getElementById("sysBody")
+  if (body) {
+    var dark = body.classList.toggle("dark")
+    var ele = e.target
+    if (ele) {
+      if (ele.nodeName !== "LI") {
+        ele = ele.parentElement
       }
-      i = i + 1
+      var attr = dark ? "data-light" : "data-dark"
+      var icon = dark ? "radio_button_checked" : "timelapse"
+      var i = ele.querySelector("i")
+      if (i) {
+        i.innerText = icon
+      }
+      var text = ele.getAttribute(attr)
+      if (text) {
+        var span = ele.querySelector("span")
+        if (span) {
+          span.innerHTML = text
+        }
+      }
     }
   }
-  var j = search.indexOf("&", i + fieldName.length)
-  return j >= 0 ? search.substring(0, i) + search.substring(j + 1) : search.substring(0, i - 1)
 }
-function getField(search, fieldName) {
-  var i = search.indexOf(fieldName + "=")
-  if (i < 0) {
-    return ""
+function toggleMenu(e) {
+  var p = findParent(e.target, "sidebar-parent")
+  if (p) {
+    p.classList.toggle("menu-on")
   }
-  if (i > 0) {
-    if (search.substring(i - 1, 1) != "&") {
-      i = search.indexOf("&" + fieldName + "=")
-      if (i < 0) {
-        return search
-      }
-      i = i + 1
-    }
-  }
-  var j = search.indexOf("&", i + fieldName.length)
-  return j >= 0 ? search.substring(i, j) : search.substring(i)
 }
-function changePage(e) {
+function toggleUniversalSearch(e) {
+  var p = findParent(e.target, "sidebar-parent")
+  if (p) {
+    p.classList.toggle("search")
+  }
+}
+function toggleMenuItem(e) {
   e.preventDefault()
   var target = e.target
-  var search = target.search
-  if (search.length > 0) {
-    search = search.substring(1)
-  }
-  search = removeField(search, "partial")
-  var p = getField(search, "page")
-  if (p === "page=1") {
-    search = removeField(search, "page")
-  }
-  var url = window.location.origin + window.location.pathname
-  url = url + (search.length === 0 ? "?partial=true" : "?" + search + "&partial=true")
-  var newUrl = window.location.origin + window.location.pathname
-  if (search.length > 0) {
-    newUrl = newUrl + "?" + search
-  }
-  var resource = getResource()
-  showLoading()
-  fetch(url, {
-    method: "GET",
-    headers: getHeaders(),
-  })
-    .then(function (response) {
-      if (response.ok) {
-        response
-          .text()
-          .then(function (data) {
-            var pageBody = document.getElementById("pageBody")
-            if (pageBody) {
-              pageBody.innerHTML = data
-              afterLoaded(pageBody)
-            }
-            window.history.pushState(undefined, "Title", newUrl)
-            hideLoading()
-          })
-          .catch(function (err) {
-            return handleError(err, resource.error_response_body)
-          })
+  var nul = target.nextElementSibling
+  if (nul) {
+    var elI = target.querySelector(".menu-item > i.entity-icon")
+    if (elI) {
+      if (nul.classList.contains("expanded")) {
+        nul.classList.remove("expanded")
+        elI.classList.add("up")
+        elI.classList.remove("down")
       } else {
-        hideLoading()
-        handleGetError(response, resource)
+        nul.classList.add("expanded")
+        elI.classList.remove("up")
+        elI.classList.add("down")
       }
-    })
-    .catch(function (err) {
-      return handleError(err, resource.error_network)
-    })
-}
-function search(e) {
-  e.preventDefault()
-  var target = e.target
-  var form = target.form
-  var initFilter = decodeFromForm(form)
-  var filter = trimNull(initFilter)
-  filter.page = 1
-  var search = buildSearchUrl(filter)
-  var url = getCurrentURL() + search
-  var newUrl = getCurrentURL()
-  if (search.length > 0) {
-    var s = removeField(search.substring(1), "partial")
-    if (s.length > 0) {
-      newUrl = newUrl + "?" + s
     }
   }
+  var parent = findParentNode(target, "LI")
+  if (parent) {
+    parent.classList.toggle("open")
+  }
+}
+function getFirstPath(url) {
+  var s = url.substring(8)
+  var i = s.indexOf("/")
+  if (i < 0 || s.length - i <= 1) {
+    return "/"
+  }
+  var j = s.indexOf("/", i + 1)
+  if (j > 0) {
+    return s.substring(i, j)
+  } else {
+    return s.substring(i)
+  }
+}
+function navigate(e, ignoreLang) {
+  e.preventDefault()
+  var target = e.target
+  var link = findParentNode(target, "A")
   var resource = getResource()
-  showLoading()
-  fetch(url, {
-    method: "GET",
-    headers: getHeaders(),
-  })
-    .then(function (response) {
-      if (response.ok) {
-        response
-          .text()
-          .then(function (data) {
-            var pageBody = document.getElementById("pageBody")
-            if (pageBody) {
-              pageBody.innerHTML = data
-              afterLoaded(pageBody)
-            }
-            window.history.pushState(undefined, "Title", newUrl)
-            hideLoading()
-          })
-          .catch(function (err) {
-            return handleError(err, resource.error_response_body)
-          })
-      } else {
-        hideLoading()
-        handleGetError(response, resource)
-      }
-    })
-    .catch(function (err) {
-      return handleError(err, resource.error_network)
-    })
+  if (link) {
+    histories.push(window.location.origin + window.location.pathname + window.location.search)
+    if (histories.length > historyMax) {
+      histories.shift()
+    }
+    var search_1 = window.location.search.length > 0 ? window.location.search.substring(1) : ""
+    var lang = getField(search_1, "lang")
+    var url_1 = link.href
+    if (!ignoreLang && lang.length > 0) {
+      url_1 = url_1 + (url_1.indexOf("?") > 0 ? "&" : "?") + lang
+    }
+    var lang1 = lang.length > 0 && !ignoreLang ? "&" + lang : ""
+    var newUrl = url_1 + (url_1.indexOf("?") > 0 ? "&" : "?") + "partial=true" + lang1
+    showLoading()
+    fetch(newUrl, { method: "GET", headers: getHeaders() })
+      .then(function (response) {
+        if (response.ok) {
+          response
+            .text()
+            .then(function (data) {
+              var pageBody = document.getElementById("pageBody")
+              if (pageBody) {
+                pageBody.innerHTML = data
+                var span = link.querySelector("span")
+                var title = span ? span.innerText : link.innerText
+                window.history.pushState({ pageTitle: title }, "", url_1)
+                afterLoaded(pageBody)
+                setTimeout(function () {
+                  resources.load(pageBody)
+                }, 0)
+                setTimeout(function () {
+                  var _a
+                  var parent = findParentNode(target, "LI")
+                  if (parent) {
+                    var nav = findParentNode(parent, "NAV")
+                    if (nav) {
+                      var elI = nav.querySelector(".active")
+                      if (elI) {
+                        elI.classList.remove("active")
+                      }
+                      elI = nav.querySelector(".active")
+                      if (elI) {
+                        elI.classList.remove("active")
+                      }
+                      elI = nav.querySelector(".active")
+                      if (elI) {
+                        elI.classList.remove("active")
+                      }
+                    }
+                    parent.classList.add("active")
+                    var pp = (_a = parent.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement
+                    if (pp && pp.nodeName === "LI") {
+                      pp.classList.add("active")
+                    }
+                  }
+                }, 0)
+              }
+              hideLoading()
+            })
+            .catch(function (err) {
+              return handleError(err, resource.error_response_body)
+            })
+        } else {
+          hideLoading()
+          handleGetError(response, resource)
+        }
+      })
+      .catch(function (err) {
+        return handleError(err, resource.error_network)
+      })
+  }
 }
