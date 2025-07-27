@@ -20,14 +20,16 @@ export function mergeFiles(newFile: string, files: string[], prettier?: boolean)
 
 function replaceFourSpaces(input: string): string {
   input = input.replace(/ {4}/g, "  ")
-  input = input.replace(/"use strict";/g, "")
+  input = input.replace(/"use strict"/g, "")
   return input
 }
 
 export function buildJavascript() {
-  const desFile = "./es6/client/script.js"
+  const desFile = "./es5/client/script.js"
   // const files: string[] = ["./es6/client/ui.js", "./es6/client/validator.js", "./es6/client/index.js", "./es6/client/search.js"]
-  const files: string[] = ["./es5/client/ui.js", "./es5/client/validator.js", "./es5/client/index.js", "./es5/client/search.js"]
+  // const files: string[] = ["./es5/client/ui.js", "./es5/client/validator.js", "./es5/client/index.js", "./es5/client/search.js"]
+  // const files: string[] = ["./es5/client/ui.js", "./es5/client/index.js", "./es5/client/layout.js"]
+  const files: string[] = ["./es5/client/ui.js", "./es5/client/index.js", "./es5/client/validator.js", "./es5/client/form.js", "./es5/client/layout.js"]
   mergeFiles(desFile, files, true)
 }
 
