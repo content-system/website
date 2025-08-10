@@ -24,7 +24,6 @@
         id="country"
         name="country"
         value="{{contact.country}}"
-        value=""
         maxlength="100"
         required
         onblur="requiredOnBlur(event)"
@@ -92,6 +91,7 @@
         value="{{contact.phone}}"
         maxlength="17"
         required
+        onfocus="phoneOnFocus(event)"
         onblur="phoneOnBlur(event)"
         placeholder="{{resource.phone}}"
       />
