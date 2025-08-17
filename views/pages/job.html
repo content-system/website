@@ -5,8 +5,9 @@
   </header>
   <div class="article-body">
     <h3 class="article-description">{{resource.location}}: {{job.location}}</h3>
-    <h4 class="article-meta">{{resource.quantity}}: {{job.quantity}}</h3>
     <h4 class="article-meta">{{job.publishedAt}}</h4>
+    <h4 class="article-meta">{{resource.quantity}}: {{job.quantity}}</h3>
+    <h4 class="article-meta">{{resource.skills}}: {{generateChips(job.skills, true)}}</h3>
     <div class="job-description">{{job.description}}</div>
   </div>
 </article>

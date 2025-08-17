@@ -129,4 +129,5 @@ export const vi = {
 
   quantity: "Số lượng",
   location: "Vị trí",
+  skills: "Kỹ năng",
 }
