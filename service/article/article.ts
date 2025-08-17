@@ -55,6 +55,9 @@ export const articleModel: Attributes = {
     required: true,
     q: true,
   },
+  thumbnail: {
+    length: 400,
+  },
   publishedAt: {
     column: "published_at",
     type: "datetime",
