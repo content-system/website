@@ -130,4 +130,5 @@ export const en = {
   quantity: "Quantity",
   location: "Location",
   skills: "Skills",
+  tags: "Tags",
 }

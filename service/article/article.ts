@@ -17,6 +17,7 @@ export interface ArticleFilter extends Filter {
   title?: string
   description?: string
   publishedAt?: TimeRange
+  tags?: string[]
 }
 
 export interface ArticleRepository {

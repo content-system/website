@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { buildError404, buildError500, checked, generateChips, getView, toString } from "express-ext"
+import { buildError404, buildError500, checked, generateChips, generateTags, getView, toString } from "express-ext"
 import fs from "fs"
 import nunjucks, { Template } from "nunjucks"
 import { Log, StringMap } from "onecore"
@@ -40,6 +40,7 @@ export function render(req: Request, res: Response, name: string, obj?: any): vo
     obj.formatDate = formatDate
     obj.formatPhone = formatPhone
     obj.formatNumber = formatNumber
+    obj.generateTags = generateTags
     obj.generateChips = generateChips
   }
   const html = compiledTemplate.render(obj)
