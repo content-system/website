@@ -1,5 +1,5 @@
 export const config = {
-  port: 8084,
+  port: 8083,
   allow: {
     origin: "*",
     credentials: "true",
