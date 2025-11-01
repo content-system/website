@@ -1,6 +1,6 @@
 import { MenuItemLoader } from "content-menu"
 import { Request, Response } from "express"
-import { getView } from "express-ext"
+import { escape, getView } from "express-ext"
 import { DB } from "query-core"
 import { getResource } from "../resources"
 import { renderError404, renderError500 } from "../template"
@@ -35,8 +35,8 @@ export class ContentController {
     this.view = this.view.bind(this)
   }
   view(req: Request, res: Response) {
-    let id = req.params["id"]
-    let lang = req.params["lang"]
+    let id = req.params.id
+    let lang = req.params.lang
     if (!id && !lang) {
       id = "home"
       lang = "en"
@@ -55,9 +55,8 @@ export class ContentController {
         if (!content) {
           renderError404(req, res, resource)
         } else {
-          this.menuLoader.load().then((items) => {
-            res.render(getView(req, "content"), { lang, resource, content })
-          })
+          //this.menuLoader.load().then((items) => {})
+          res.render(getView(req, "content"), { lang, resource, content: escape(content) })
         }
       })
       .catch((err) => renderError500(req, res, resource, err))

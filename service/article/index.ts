@@ -5,6 +5,7 @@ import {
   buildPageSearch,
   buildSortSearch,
   cloneFilter,
+  escape,
   escapeArray,
   format,
   fromRequest,
@@ -79,7 +80,7 @@ export class ArticleController {
         renderError404(req, res, resource)
       } else {
         article.publishedAt = formatDateTime(article.publishedAt, dateFormat)
-        render(req, res, "article", { resource, article })
+        render(req, res, "article", { resource, article: escape(article) })
       }
     }).catch((err) => renderError500(req, res, resource, err))
   }
