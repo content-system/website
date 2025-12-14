@@ -7,6 +7,6 @@
     <h4 class="article-description">{{article.description}}</h4>
     <h4 class="article-meta">{{article.publishedAt}}</h4>
     <div class="article-content">{{article.content}}</div>
-    <h4 class="article-meta">{{generateTags(article.tags, true)}}</h4>
+    {% if isNotEmpty(article.tags) %}<h4 class="article-meta">{{generateTags(article.tags, true)}}</h4>{% endif %}
   </div>
 </article>
