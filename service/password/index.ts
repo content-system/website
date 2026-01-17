@@ -28,7 +28,8 @@ export class PasswordController {
     const resource = getResource(req)
     const contact = req.body.contact as string
     if (isEmpty(contact)) {
-      return res.status(401).end(formatText(resource.required, resource.username_or_email))
+      res.status(401).end(formatText(resource.required, resource.username_or_email))
+      return
     }
     this.service
       .forgot(contact)
@@ -53,13 +54,16 @@ export class PasswordController {
     const resource = getResource(req)
     const pass: PasswordReset = req.body
     if (isEmpty(pass.username)) {
-      return res.status(401).end(formatText(resource.required, resource.username))
+      res.status(401).end(formatText(resource.required, resource.username))
+      return
     }
     if (isEmpty(pass.passcode)) {
-      return res.status(401).end(formatText(resource.required, resource.passcode))
+      res.status(401).end(formatText(resource.required, resource.passcode))
+      return
     }
     if (isEmpty(pass.password)) {
-      return res.status(401).end(formatText(resource.required, resource.new_password))
+      res.status(401).end(formatText(resource.required, resource.new_password))
+      return
     }
     this.service
       .reset(pass)
@@ -84,13 +88,16 @@ export class PasswordController {
     const resource = getResource(req)
     const pass: PasswordChange = req.body
     if (isEmpty(pass.username)) {
-      return res.status(401).end(formatText(resource.required, resource.username))
+      res.status(401).end(formatText(resource.required, resource.username))
+      return
     }
     if (isEmpty(pass.currentPassword)) {
-      return res.status(401).end(formatText(resource.required, resource.current_password))
+      res.status(401).end(formatText(resource.required, resource.current_password))
+      return
     }
     if (isEmpty(pass.password)) {
-      return res.status(401).end(formatText(resource.required, resource.new_password))
+      res.status(401).end(formatText(resource.required, resource.new_password))
+      return
     }
     this.service
       .change(pass)

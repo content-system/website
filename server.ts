@@ -1,7 +1,7 @@
 import { merge } from "config-plus"
 import dotenv from "dotenv"
 import express from "express"
-import { MiddlewareLogger } from "express-ext"
+import { resources as exResources, MiddlewareLogger } from "express-ext"
 import http from "http"
 import { createLogger } from "logger-core"
 import nunjucks from "nunjucks"
@@ -18,6 +18,7 @@ const cfg = merge(config, process.env, env, process.env.ENV)
 
 // buildJavascript()
 // buildCSS()
+exResources.defaultLimit = 24
 
 const app = express()
 // Define public folder :

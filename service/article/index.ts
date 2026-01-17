@@ -1,94 +1,48 @@
-import { Request, Response } from "express"
-import {
-  buildMessage,
-  buildPages,
-  buildPageSearch,
-  buildSortSearch,
-  cloneFilter,
-  escape,
-  escapeArray,
-  format,
-  fromRequest,
-  getSearch,
-  hasSearch,
-  queryLimit,
-  queryPage,
-  resources
-} from "express-ext"
-import { Manager, Search } from "onecore"
-import { DB, Repository, SearchBuilder } from "query-core"
-import { formatDateTime } from "ui-formatter"
-import { getDateFormat, getLang, getResource } from "../resources"
-import { render, renderError404, renderError500 } from "../template"
+import { Log, SavedRepository, SavedService, SearchResult } from "onecore"
+import { SqlSavedRepository } from "pg-extension"
+import { DB, SearchRepository } from "query-core"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
+import { ArticleController } from "./controller"
 import { buildQuery } from "./query"
-export * from "./article"
 
-export class SqlArticleRepository extends Repository<Article, string> implements ArticleRepository {
+export * from "./controller"
+
+export class SqlArticleRepository extends SearchRepository<Article, ArticleFilter> implements ArticleRepository {
   constructor(db: DB) {
-    super(db, "articles", articleModel)
+    super(db.query, "articles", articleModel, db.driver, buildQuery)
   }
-}
-export class ArticleUseCase extends Manager<Article, string, ArticleFilter> implements ArticleService {
-  constructor(search: Search<Article, ArticleFilter>, repository: ArticleRepository) {
-    super(search, repository)
-  }
-}
-
-const fields = ["title", "publishedAt", "description"]
-export class ArticleController {
-  constructor(private service: ArticleService) {
-    this.search = this.search.bind(this)
-    this.view = this.view.bind(this)
-  }
-  search(req: Request, res: Response) {
-    const lang = getLang(req)
-    const resource = getResource(lang)
-    const dateFormat = getDateFormat(lang)
-    let filter: ArticleFilter = { limit: resources.defaultLimit }
-    if (hasSearch(req)) {
-      filter = fromRequest<ArticleFilter>(req, ["tags"])
-      format(filter, ["publishedAt"])
+  load(id: string, userId?: string): Promise<Article | null> {
+    const params = []
+    let query: string
+    if (userId && userId.length > 0) {
+      query = `select a.*, sa.saved_at 
+        from articles a 
+        left join saved_articles sa 
+          on sa.id = a.id and sa.user_id = ${this.param(1)} where a.slug = ${this.param(2)}`
+      params.push(userId)
+    } else {
+      query = `select a.* from articles a where a.slug = ${this.param(1)}`
     }
-    const page = queryPage(req, filter)
-    const limit = queryLimit(req)
-    this.service.search(cloneFilter(filter, limit, page), limit, page).then((result) => {
-      for (const item of result.list) {
-        item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
-      }
-      const list = escapeArray(result.list)
-      const search = getSearch(req.url)
-      render(req, res, "news", {
-        resource,
-        limits: resources.limits,
-        filter,
-        list,
-        pages: buildPages(limit, result.total),
-        pageSearch: buildPageSearch(search),
-        sort: buildSortSearch(search, fields, filter.sort),
-        message: buildMessage(resource, list, limit, page, result.total),
-      })
-    }).catch((err) => renderError500(req, res, resource, err))
-  }
-  view(req: Request, res: Response) {
-    const lang = getLang(req)
-    const resource = getResource(lang)
-    const dateFormat = getDateFormat(lang)
-    const id = req.params.id
-    this.service.load(id).then((article) => {
-      if (!article) {
-        renderError404(req, res, resource)
-      } else {
-        article.publishedAt = formatDateTime(article.publishedAt, dateFormat)
-        render(req, res, "article", { resource, article: escape(article) })
-      }
-    }).catch((err) => renderError500(req, res, resource, err))
+    params.push(id)
+    return this.query<Article>(query, params, this.map).then((articles) => (articles && articles.length > 0 ? articles[0] : null))
   }
 }
 
-export function useArticleController(db: DB): ArticleController {
-  const builder = new SearchBuilder<Article, ArticleFilter>(db.query, "articles", articleModel, db.driver, buildQuery)
+export class ArticleUseCase extends SavedService<string, string> implements ArticleService {
+  constructor(private repository: ArticleRepository, savedRepository: SavedRepository<string, string>, max: number) {
+    super(savedRepository, max)
+  }
+  search(filter: ArticleFilter, limit: number, page?: number, fields?: string[]): Promise<SearchResult<Article>> {
+    return this.repository.search(filter, limit, page, fields)
+  }
+  load(id: string, userId?: string): Promise<Article | null> {
+    return this.repository.load(id, userId)
+  }
+}
+
+export function useArticleController(db: DB, log: Log): ArticleController {
   const repository = new SqlArticleRepository(db)
-  const service = new ArticleUseCase(builder.search, repository)
-  return new ArticleController(service)
+  const savedRepository = new SqlSavedRepository(db, "saved_articles", "user_id", "id", "saved_at")
+  const service = new ArticleUseCase(repository, savedRepository, 200)
+  return new ArticleController(service, log)
 }
