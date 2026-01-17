@@ -2926,7 +2926,8 @@ label.focused > span.span-error,
 .form-group.focused > span.span-error {
   display: flex;
 }
-.form .row > label.textarea-container {
+.form .row > label.auto-height,
+.auto-height {
   height: unset;
 }
 .form > div > .form-group,
@@ -8078,7 +8079,7 @@ table > tbody > tr:nth-of-type(odd),
 .grey.dark footer > .btn-accept::after,
 .grey.dark footer > .btn-next::after,
 .grey.dark .section.search > .btn-search,
-.grey.dark .central-full > form > div > button,
+.grey.dark .central-full button,
 .grey.dark .view-footer > button,
 .grey.dark footer > button {
   color: #000;

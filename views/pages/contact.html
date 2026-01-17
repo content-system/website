@@ -99,7 +99,7 @@
       <span class="span-error">{{errors.phone.message}}</span>
       {% endif %}
     </label>
-    <label class="col s12 m12 textarea-container required {{errors.message.invalid}}">
+    <label class="col s12 m12 auto-height required {{errors.message.invalid}}">
       {{resource.message}}
       <textarea id="message" name="message" rows="6" maxlength="600" required onblur="requiredOnBlur(event)" placeholder="{{resource.message}}">
 {{contact.message}}</textarea
