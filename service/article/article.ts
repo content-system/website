@@ -81,10 +81,22 @@ export const articleModel: Attributes = {
     length: 400,
     noupdate: true,
   },
+
+  createdBy: {
+    column: "created_by",
+    noupdate: true,
+  },
   createdAt: {
     column: "created_at",
     type: "datetime",
     noupdate: true,
+  },
+  updatedBy: {
+    column: "updated_by",
+  },
+  updatedAt: {
+    column: "updated_at",
+    type: "datetime",
   },
   savedAt: {
     column: "saved_at",

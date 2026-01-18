@@ -1,4 +1,3 @@
-import { MenuItemLoader } from "content-menu"
 import { DB } from "query-core"
 import { Content, ContentRepository, ContentService } from "./content"
 import { ContentController } from "./controller"
@@ -23,8 +22,8 @@ export class ContentUseCase implements ContentService {
   }
 }
 
-export function useContentController(db: DB, langs: string[], menuLoader: MenuItemLoader): ContentController {
+export function useContentController(db: DB, langs: string[]): ContentController {
   const repository = new SqlContentRepository(db)
   const service = new ContentUseCase(repository)
-  return new ContentController(service, langs, menuLoader)
+  return new ContentController(service, langs)
 }

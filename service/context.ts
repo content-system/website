@@ -108,7 +108,7 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
   )
   const password = new PasswordController(passwordService, logger.error)
 
-  const content = useContentController(db, ["vi"], menuItemsLoader)
+  const content = useContentController(db, ["vi"])
   const article = useArticleController(db, logger.error)
   const job = useJobController(db)
   const contact = useContactController(db, logger.error)
