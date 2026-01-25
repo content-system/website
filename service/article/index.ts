@@ -4,14 +4,13 @@ import { DB, SearchRepository } from "query-core"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 import { ArticleController } from "./controller"
 import { buildQuery } from "./query"
-
 export * from "./controller"
 
 export class SqlArticleRepository extends SearchRepository<Article, ArticleFilter> implements ArticleRepository {
   constructor(db: DB) {
     super(db.query, "articles", articleModel, db.driver, buildQuery)
   }
-  load(id: string, userId?: string): Promise<Article | null> {
+  async load(id: string, userId?: string): Promise<Article | null> {
     const params = []
     let query: string
     if (userId && userId.length > 0) {
@@ -24,7 +23,8 @@ export class SqlArticleRepository extends SearchRepository<Article, ArticleFilte
       query = `select a.* from articles a where a.slug = ${this.param(1)}`
     }
     params.push(id)
-    return this.query<Article>(query, params, this.map).then((articles) => (articles && articles.length > 0 ? articles[0] : null))
+    const articles = await this.query<Article>(query, params, this.map)
+    return articles && articles.length > 0 ? articles[0] : null
   }
 }
 
