@@ -90,6 +90,17 @@
   color: #b3b3b3 !important;
 }
 
+.grey input:read-only,
+.grey input:disabled,
+.grey select:disabled {
+  color: #b3b3b3 !important;
+}
+
+.grey button:disabled {
+  color: #393f48 !important;
+  background-color: #b3b3b3 !important;
+}
+
 .grey .chip-input-container > input,
 .grey .form-group .form-control,
 .grey .form-textarea,
@@ -115,17 +126,6 @@
 .grey label.invalid > textarea {
   border-color: #d74738;
   outline-color: #d74738;
-}
-
-.grey input:read-only,
-.grey input:disabled,
-.grey select:disabled {
-  color: #b3b3b3 !important;
-}
-
-.grey button:disabled {
-  color: #393f48 !important;
-  background-color: #b3b3b3 !important;
 }
 
 .grey .btn-deselect,
@@ -219,6 +219,18 @@
   color: #fff;
 }
 
+.grey .btn-more:hover,
+.grey footer > button:hover {
+  box-shadow: #565656;
+}
+
+.grey .btn-delete {
+  color: #fc671a;
+}
+.grey section.footer > button#btnReject,
+.grey footer > button#btnReject {
+  background-color: #d74738;
+}
 .grey footer > .btn-cancel::before {
   color: #fff;
   background-color: #fc671a;
@@ -235,17 +247,6 @@
 }
 .grey .btn-secondary {
   color: #657181;
-}
-.grey .btn-delete {
-  color: #fc671a;
-}
-.grey .btn-more:hover,
-.grey footer > button:hover {
-  box-shadow: #565656;
-}
-.grey section.footer > button#btnReject,
-.grey footer > button#btnReject {
-  background-color: #d74738;
 }
 
 .grey .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before,

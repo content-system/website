@@ -87,6 +87,18 @@ ul.list > li.highlight {
   color: #b3b3b3 !important;
 }
 
+input:read-only,
+input:disabled,
+textarea:disabled,
+select:disabled {
+  color: #b3b3b3 !important;
+}
+
+button:disabled {
+  /* color: #4d4d4d !important; */
+  color: #b3b3b3 !important;
+}
+
 .chip-input-container > input,
 .form-group .form-control,
 .form-textarea,
@@ -112,18 +124,6 @@ label.invalid > select:focus {
 label.invalid > textarea {
   border-color: #d74738;
   outline-color: #d74738;
-}
-
-input:read-only,
-input:disabled,
-textarea:disabled,
-select:disabled {
-  color: #b3b3b3 !important;
-}
-
-button:disabled {
-  /* color: #4d4d4d !important; */
-  color: #b3b3b3 !important;
 }
 
 .btn-deselect,
@@ -213,6 +213,19 @@ header > .btn-back,
   color: #fff;
 }
 
+.btn-more:hover,
+footer > button:hover {
+  box-shadow: #a9a9a9;
+}
+
+.btn-delete {
+  color: #fc671a;
+}
+section.footer > button#btnReject,
+footer > button#btnReject {
+  background-color: #d74738;
+  color: #fff;
+}
 footer > .btn-cancel::before {
   color: #fff;
   background-color: #fc671a;
@@ -229,18 +242,6 @@ footer > button {
 }
 .btn-secondary {
   color: #4db6ac;
-}
-.btn-delete {
-  color: #fc671a;
-}
-.btn-more:hover,
-footer > button:hover {
-  box-shadow: #a9a9a9;
-}
-section.footer > button#btnReject,
-footer > button#btnReject {
-  background-color: #d74738;
-  color: #fff;
 }
 
 .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before,
