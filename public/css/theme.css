@@ -87,6 +87,63 @@ ul.list > li.highlight {
   color: #b3b3b3 !important;
 }
 
+.chip-input-container > input,
+.form-group .form-control,
+.form-textarea,
+textarea,
+.inline-input > input,
+label > input,
+.form .row > label > input,
+label > select:not([multiple]),
+.form .row > label > select:not([multiple]) {
+  color: #4d4d4d;
+  border-color: #ebebeb;
+  -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
+}
+
+.form-group .form-control.invalid,
+label > input:not([type="checkbox"]):not([type="radio"]).invalid,
+label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
+label.invalid > select:focus {
+  border-color: #d74738;
+  box-shadow: 0 1px 0 0 #d74738;
+}
+label.invalid > textarea {
+  border-color: #d74738;
+  outline-color: #d74738;
+}
+
+input:read-only,
+input:disabled,
+textarea:disabled,
+select:disabled {
+  color: #b3b3b3 !important;
+}
+
+button:disabled {
+  /* color: #4d4d4d !important; */
+  color: #b3b3b3 !important;
+}
+
+.btn-deselect,
+.row .form-group.invalid label,
+.row .form-group.invalid.focused label,
+label.invalid,
+label.invalid.focused,
+.btn-remove,
+label.required:before,
+.span-error,
+.alert-error,
+.danger-icon .alert-icon {
+  color: #d74738;
+}
+
+.span-error {
+  color: #fff;
+  background-color: #d74738;
+}
+
 /*
 .table > thead > tr,
 */
@@ -192,15 +249,15 @@ input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([i
   color: #b3b3b3;
   background: #fff;
 }
+input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before {
+  border-color: #4d4d4d;
+  background: #fff;
+}
 .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):after,
 input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]).switch:after {
   border-color: 1px solid #808080;
   color: #fff;
   background: #4db6ac;
-}
-input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before {
-  border-color: #4d4d4d;
-  background: #fff;
 }
 input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):after {
   color: #fff;
@@ -250,63 +307,6 @@ input.valid,
 select.valid {
   border-color: #4db6ac;
   box-shadow: 0 1px 0 0 #4db6ac;
-}
-
-.chip-input-container > input,
-.form-group .form-control,
-.form-textarea,
-textarea,
-.inline-input > input,
-label > input,
-.form .row > label > input,
-label > select:not([multiple]),
-.form .row > label > select:not([multiple]) {
-  color: #4d4d4d;
-  border-color: #ebebeb;
-  -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
-}
-
-.form-group .form-control.invalid,
-label > input:not([type="checkbox"]):not([type="radio"]).invalid,
-label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
-label.invalid > select:focus {
-  border-color: #d74738;
-  box-shadow: 0 1px 0 0 #d74738;
-}
-label.invalid > textarea {
-  border-color: #d74738;
-  outline-color: #d74738;
-}
-
-input:read-only,
-input:disabled,
-textarea:disabled,
-select:disabled {
-  color: #b3b3b3 !important;
-}
-
-button:disabled {
-  /* color: #4d4d4d !important; */
-  color: #b3b3b3 !important;
-}
-
-.btn-deselect,
-.row .form-group.invalid label,
-.row .form-group.invalid.focused label,
-label.invalid,
-label.invalid.focused,
-.btn-remove,
-label.required:before,
-.span-error,
-.alert-error,
-.danger-icon .alert-icon {
-  color: #d74738;
-}
-
-.span-error {
-  color: #fff;
-  background-color: #d74738;
 }
 
 .review-custom > .rate-area > .card {

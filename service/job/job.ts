@@ -2,10 +2,12 @@ import { Attributes, Filter, SearchResult, TimeRange } from "onecore"
 
 export interface Job {
   id: string
+  slug: string
   title: string
   description: string
   publishedAt?: Date
   expiredAt?: Date
+  company?: string
   position?: string
   quantity?: number
   location?: string
@@ -18,6 +20,7 @@ export interface Job {
 }
 export interface JobFilter extends Filter {
   id?: string
+  slug?: string
   title?: string
   description?: string
   requirements?: string
@@ -47,6 +50,9 @@ export const jobModel: Attributes = {
     required: true,
     key: true,
   },
+  slug: {
+    length: 150,
+  },
   title: {
     length: 300,
     q: true,
@@ -61,6 +67,9 @@ export const jobModel: Attributes = {
   expiredAt: {
     column: "expired_at",
     type: "datetime",
+  },
+  company: {
+    length: 40,
   },
   position: {
     length: 100,
