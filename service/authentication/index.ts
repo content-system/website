@@ -1,7 +1,7 @@
 import { Authenticator } from "authen-service"
 import { Request, Response } from "express"
 import { handleError } from "express-ext"
-import { Attributes, Log, StringMap } from "onecore"
+import { Attributes, StringMap } from "onecore"
 import { validate } from "xvalidators"
 import { getResource } from "../resources"
 
@@ -29,7 +29,7 @@ export const map: StringMap = {
   "9": "fail_disabled_account",
 }
 export class SigninController {
-  constructor(private authenticator: Authenticator<User, string>, private log: Log) {
+  constructor(private authenticator: Authenticator<User, string>) {
     this.render = this.render.bind(this)
     this.submit = this.submit.bind(this)
   }
@@ -63,7 +63,7 @@ export class SigninController {
             res.status(403).json(result).end()
           }
         })
-        .catch((err) => handleError(err, res, this.log))
+        .catch((err) => handleError(err, res))
     }
   }
 }

@@ -1,13 +1,12 @@
 import { Request, Response } from "express"
 import { escape, toMap } from "express-ext"
-import { Log } from "onecore"
 import { validate } from "xvalidators"
 import { getLang, getResource } from "../resources"
 import { render, renderError500 } from "../template"
 import { Contact, contactModel, ContactService } from "./contact"
 
 export class ContactController {
-  constructor(protected service: ContactService, private log: Log) {
+  constructor(protected service: ContactService) {
     this.render = this.render.bind(this)
     this.submit = this.submit.bind(this)
   }
@@ -33,7 +32,7 @@ export class ContactController {
       // res.status(201).json(contact).end()
     } catch (err) {
       renderError500(req, res, resource, err)
-      // handleError(err, res, this.log)
+      // handleError(err, res)
     }
   }
 }

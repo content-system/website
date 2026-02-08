@@ -1,5 +1,4 @@
 import { nanoid } from "nanoid"
-import { Log } from "onecore"
 import { CRUDRepository, DB } from "query-core"
 import { Contact, contactModel, ContactRepository, ContactService } from "./contact"
 import { ContactController } from "./controller"
@@ -20,8 +19,8 @@ export class ContactUseCase implements ContactService {
 }
 
 
-export function useContactController(db: DB, log: Log): ContactController {
+export function useContactController(db: DB): ContactController {
   const repository = new SqlContactRepository(db)
   const service = new ContactUseCase(repository)
-  return new ContactController(service, log)
+  return new ContactController(service)
 }

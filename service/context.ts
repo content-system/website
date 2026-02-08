@@ -61,7 +61,7 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
   const status = initializeStatus(cfg.auth.status)
   const userRepository = useUserRepository<string, SqlAuthTemplateConfig>(db, cfg.auth, cfg.map)
   const authenticator = new Authenticator(status, compare, auth.account, userRepository, undefined, auth.lockedMinutes, auth.maxPasswordFailed)
-  const signin = new SigninController(authenticator, logger.error)
+  const signin = new SigninController(authenticator)
 
   const comparator = new Comparator()
   const signupMailSender = new SignupSender(cfg.signup.url, sendMail, cfg.mail.from, cfg.signup.template.body, cfg.signup.template.subject)
@@ -89,7 +89,7 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
     cfg.signup.expires,
     validator.validate,
   )
-  const signup = new SignUpController(signupService, signupStatus, logger.error)
+  const signup = new SignUpController(signupService, signupStatus)
   const resetPasswordMailSender = new MailSender(sendMail, cfg.mail.from, cfg.password.templates.reset.body, cfg.password.templates.reset.subject)
   const changePasswordMailSender = new MailSender(sendMail, cfg.mail.from, cfg.password.templates.change.body, cfg.password.templates.change.subject)
   // const codeRepository = new CodeRepository<string>(db, "passwordcodes")
@@ -106,12 +106,12 @@ export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: C
     undefined,
     changePasswordMailSender.send,
   )
-  const password = new PasswordController(passwordService, logger.error)
+  const password = new PasswordController(passwordService)
 
   const content = useContentController(db, ["vi"])
-  const article = useArticleController(db, logger.error)
+  const article = useArticleController(db)
   const job = useJobController(db)
-  const contact = useContactController(db, logger.error)
+  const contact = useContactController(db)
 
   return { health, log, middleware, menu, signin, signup, password, content, article, job, contact }
 }
