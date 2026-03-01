@@ -2,7 +2,7 @@ import { SearchResult } from "onecore"
 import { DB, SearchRepository } from "query-core"
 import { JobController } from "./controller"
 import { Job, JobFilter, jobModel, JobRepository, JobService } from "./job"
-import { buildQuery } from "./query"
+import { buildQuery } from "./repository"
 export * from "./controller"
 
 export class SqlJobRepository extends SearchRepository<Job, JobFilter> implements JobRepository {

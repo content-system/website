@@ -1,6 +1,5 @@
 import { Authenticator, initializeStatus, SqlAuthTemplateConfig, useUserRepository } from "authen-service"
-import { compare } from "bcrypt"
-import { Comparator } from "bcrypt-plus"
+import { compare, hash } from "bcryptjs"
 import { MenuBuilder, MenuItemLoader } from "content-menu"
 import { HealthController, LogController, Logger, Middleware, MiddlewareController, resources } from "express-ext"
 import { nanoid } from "nanoid"
@@ -43,6 +42,21 @@ export interface ApplicationContext {
   article: ArticleController
   job: JobController
   contact: ContactController
+}
+
+export class Comparator {
+  constructor(saltOrRounds?: string|number) {
+    this.saltOrRounds = (saltOrRounds ? saltOrRounds : 10);
+    this.compare = this.compare.bind(this);
+    this.hash = this.hash.bind(this);
+  }
+  saltOrRounds: string|number;
+  compare(data: string, encrypted: string): Promise<boolean> {
+    return compare(data, encrypted);
+  }
+  hash(data: string): Promise<string> {
+    return hash(data, this.saltOrRounds);
+  }
 }
 
 export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: Config): ApplicationContext {

@@ -3,7 +3,7 @@ import { SqlSavedRepository } from "pg-extension"
 import { DB, SearchRepository } from "query-core"
 import { Article, ArticleFilter, articleModel, ArticleRepository, ArticleService } from "./article"
 import { ArticleController } from "./controller"
-import { buildQuery } from "./query"
+import { buildQuery } from "./repository"
 export * from "./controller"
 
 export class SqlArticleRepository extends SearchRepository<Article, ArticleFilter> implements ArticleRepository {
