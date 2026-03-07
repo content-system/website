@@ -26,7 +26,7 @@ export class SqlArticleRepository extends SearchRepository<Article, ArticleFilte
 }
 
 export function buildQuery(filter: ArticleFilter): Statement {
-  const where = []
+  const where: string[] = []
   const params = []
   let i = 1
   let query: string
@@ -45,11 +45,6 @@ export function buildQuery(filter: ArticleFilter): Statement {
     params.push(filter.userId)
   } else {
     query = `select a.id, a.thumbnail, a.slug, a.title, a.description, a.published_at from articles a`
-  }
-
-  if (filter.id) {
-    where.push(`id = ${param(i++)}`)
-    params.push(filter.id)
   }
 
   if (filter.authorId) {

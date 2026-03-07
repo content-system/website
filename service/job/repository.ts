@@ -16,7 +16,7 @@ export class SqlJobRepository extends SearchRepository<Job, JobFilter> implement
 
 export function buildQuery(filter: JobFilter): Statement {
   let query = `select * from jobs`
-  const where = []
+  const where: string[] = []
   const params = []
   let i = 1
 
@@ -34,11 +34,6 @@ export function buildQuery(filter: JobFilter): Statement {
       where.push(`published_at <= ${param(i++)}`)
       params.push(filter.publishedAt.max)
     }
-  }
-
-  if (filter.id) {
-    where.push(`id = ${param(i++)}`)
-    params.push(filter.id)
   }
 
   if (filter.q) {
