@@ -42,9 +42,9 @@ export function buildQuery(filter: JobFilter): Statement {
   }
 
   if (filter.q) {
-    const q = "%" + filter.q.replace(/%/g, "\\%").replace(/_/g, "\\_") + "%"
+    const q = filter.q.replace(/%/g, "\\%").replace(/_/g, "\\_")
     where.push(`title ilike ${param(i++)}`)
-    params.push(q)
+    params.push(`%${q}%`)
   }
 
   if (where.length > 0) {
