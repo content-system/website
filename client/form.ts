@@ -48,7 +48,7 @@ function getGroupSeparator(ele: HTMLInputElement): string {
       separator = form.getAttribute("data-group-separator")
     }
   }
-  return separator === "," ? "," : "."
+  return separator === "." ? "." : ","
 }
 
 const d = "data-value"

@@ -47,7 +47,7 @@ function getGroupSeparator(ele) {
       separator = form.getAttribute("data-group-separator")
     }
   }
-  return separator === "," ? "," : "."
+  return separator === "." ? "." : ","
 }
 var d = "data-value"
 function selectOnChange(ele, attr) {
