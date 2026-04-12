@@ -30,10 +30,7 @@ export class JobController {
     const lang = getLang(req)
     const resource = getResource(lang)
     const dateFormat = getDateFormat(lang)
-    let filter: JobFilter = {
-      limit: resources.defaultLimit,
-      // title: "Java",
-    }
+    let filter: JobFilter = { limit: resources.defaultLimit }
     if (hasSearch(req)) {
       filter = fromRequest<JobFilter>(req)
       format(filter, ["publishedAt"])
