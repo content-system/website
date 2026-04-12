@@ -13,7 +13,7 @@ import {
   SavedController
 } from "express-ext"
 import { formatDateTime } from "ui-formatter"
-import { getDateFormat, getLang, getResource } from "../resources"
+import { getDateFormat, getLang, getLangSearch, getResource } from "../resources"
 import { render, renderError404, renderError500 } from "../template"
 import { ArticleFilter, ArticleService, Published } from "./article"
 
@@ -33,6 +33,7 @@ export class ArticleController extends SavedController {
     const lang = getLang(req)
     const resource = getResource(lang)
     const dateFormat = getDateFormat(lang)
+    const langSearch = getLangSearch(lang)
     let filter: ArticleFilter = {
       limit: resources.defaultLimit,
       publishedAt: {},
@@ -66,6 +67,7 @@ export class ArticleController extends SavedController {
         list,
         pages: buildPages(limit, result.total),
         pageSearch: buildPageSearch(search),
+        langSearch,
         sorts: [sort1, sort2],
         sortText,
         message: buildMessage(resource, list, limit, page, result.total),
@@ -78,6 +80,7 @@ export class ArticleController extends SavedController {
     const lang = getLang(req)
     const resource = getResource(lang)
     const dateFormat = getDateFormat(lang)
+    const langSearch = getLangSearch(lang)
     let filter: ArticleFilter = {
       limit: resources.defaultLimit,
       publishedAt: {},
@@ -112,6 +115,7 @@ export class ArticleController extends SavedController {
         list,
         pages: buildPages(limit, result.total),
         pageSearch: buildPageSearch(search),
+        langSearch,
         sorts: [sort1, sort2],
         sortText,
         message: buildMessage(resource, list, limit, page, result.total),

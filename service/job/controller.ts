@@ -12,7 +12,7 @@ import {
   resources
 } from "express-ext"
 import { formatDateTime } from "ui-formatter"
-import { getDateFormat, getLang, getResource } from "../resources"
+import { getDateFormat, getLang, getLangSearch, getResource } from "../resources"
 import { render, renderError404, renderError500 } from "../template"
 import { JobFilter, JobService } from "./job"
 
@@ -30,6 +30,7 @@ export class JobController {
     const lang = getLang(req)
     const resource = getResource(lang)
     const dateFormat = getDateFormat(lang)
+    const langSearch = getLangSearch(lang)
     let filter: JobFilter = { limit: resources.defaultLimit }
     if (hasSearch(req)) {
       filter = fromRequest<JobFilter>(req)
@@ -58,6 +59,7 @@ export class JobController {
         list,
         pages: buildPages(limit, result.total),
         pageSearch: buildPageSearch(search),
+        langSearch,
         sorts: [sort1, sort2],
         sortText,
         message: buildMessage(resource, list, limit, page, result.total),
