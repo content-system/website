@@ -5,13 +5,7 @@
   </header>
   <div class="article-body">
     <h4 class="article-description">{{article.description}}</h4>
-    <h4 class="article-meta center-align-items">
-      {{article.publishedAt}} {% if account %} {% if article.savedAt %}
-      <i class="material-icons" onclick="unsaveArticle(this, '{{article.id}}', true)">bookmark</i>
-      {% else %}
-      <i class="material-icons" onclick="saveArticle(this, '{{article.id}}', true)">bookmark_border</i>
-      {% endif %} {% endif %}
-    </h4>
+    <h4 class="article-meta center-align-items">{{resource.published_at}}: {{article.publishedAt}}</h4>
     <div class="article-content">{{article.content}}</div>
     {% if isNotEmpty(article.tags) %}
     <div class="chip-list">{{generateTags(article.tags, true)}}</div>

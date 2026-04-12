@@ -3,12 +3,12 @@ import {
   buildMessage,
   buildPages,
   buildPageSearch,
-  buildSortSearch,
   escapeArray,
   format,
   fromRequest,
   getSearch,
   hasSearch,
+  removeSort,
   resources
 } from "express-ext"
 import { formatDateTime } from "ui-formatter"
@@ -16,7 +16,11 @@ import { getDateFormat, getLang, getResource } from "../resources"
 import { render, renderError404, renderError500 } from "../template"
 import { JobFilter, JobService } from "./job"
 
-const fields = ["id", "title", "publishedAt", "description"]
+export interface Item {
+  id?: string
+  value: string;
+  text?: string;
+}
 export class JobController {
   constructor(private service: JobService) {
     this.search = this.search.bind(this)
@@ -45,6 +49,11 @@ export class JobController {
         item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
       }
       const search = getSearch(req.url)
+      const sortSearch = removeSort(search)
+      const prefix = sortSearch ? `?${sortSearch}&` : "?"
+      const sort1: Item = {id: "timeDescSort", value: `${prefix}${resources.sort}=-publishedAt`, text: resource.sort_time_desc}
+      const sort2: Item = {id: "timeAscSort", value: `${prefix}${resources.sort}=publishedAt`, text: resource.sort_time_asc}
+      const sortText = sort == "publishedAt" ? resource.sort_desc_time_asc : resource.sort_desc_time_desc
       render(req, res, "careers", {
         resource,
         limits: resources.limits,
@@ -52,7 +61,8 @@ export class JobController {
         list,
         pages: buildPages(limit, result.total),
         pageSearch: buildPageSearch(search),
-        sort: buildSortSearch(search, fields, sort),
+        sorts: [sort1, sort2],
+        sortText,
         message: buildMessage(resource, list, limit, page, result.total),
       })
     } catch (err) {

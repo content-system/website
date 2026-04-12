@@ -131,4 +131,12 @@ export const en = {
   location: "Location",
   skills: "Skills",
   tags: "Tags",
+  skill_placeholder: "Enter a skill...",
+  tag_placeholder: "Enter a tag value...",
+
+  sort_time_desc: "Most Recent",
+  sort_time_asc: "Oldest",
+
+  sort_desc_time_desc: "Sort by Most Recent",
+  sort_desc_time_asc: "Sort by Oldest",
 }

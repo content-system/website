@@ -5,13 +5,24 @@
   <div class="main-body">
     <form id="jobsForm" name="jobsForm" class="form" novalidate>
       <span class="hidden-message">{{message}}</span>
-      <section class="row search-group">{% include "partials/advance-search.html" %} {% include "partials/pagination.html" %}</section>
+      <section class="row search-group">
+        {% include "partials/advance-search.html" %}
+        <div class="col s12 m6 xl3 sort">
+          <button id="sortBtn" type="button" class="btn-sort" onclick="toggleSort(event)">{{sortText}}</button>
+          <div id="sortDropdown" class="sort-dropdown">
+            {% for item in sorts %}
+            <a id="{{item.id}}" href="{{item.value}}" onclick="navigate(event)">{{item.text}}</a>
+            {% endfor %}
+          </div>
+        </div>
+        {% include "partials/pagination.html" %}
+      </section>
       <section class="row search-group advance-search" hidden>
         <label class="col s12 m6 auto-height">
           {{resource.skills}}
           <div class="chip-list" data-name="skills">{{generateTags(filter.skills)}}
             <div class="chip-input-container">
-              <input type="text" id="txtSkill" name="txtSkill" data-skip="true" onkeydown="chipOnKeydown(event)" placeholder="Enter a skill..." />
+              <input type="text" id="txtSkill" name="txtSkill" data-skip="true" onkeydown="chipOnKeydown(event)" placeholder="{{resource.skill_placeholder}}" />
               <button type="button" id="addSkillBtn" name="addSkillBtn" class="btn-add" onclick="addChip(this)"></button>
             </div>
           </div>

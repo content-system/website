@@ -3,12 +3,12 @@ import {
   buildMessage,
   buildPages,
   buildPageSearch,
-  buildSortSearch,
   escapeArray,
   format,
   fromRequest,
   getSearch,
   hasSearch,
+  removeSort,
   resources,
   SavedController
 } from "express-ext"
@@ -17,7 +17,11 @@ import { getDateFormat, getLang, getResource } from "../resources"
 import { render, renderError404, renderError500 } from "../template"
 import { ArticleFilter, ArticleService, Published } from "./article"
 
-const fields = ["id", "title", "publishedAt", "description"]
+export interface Item {
+  id?: string
+  value: string;
+  text?: string;
+}
 export class ArticleController extends SavedController {
   constructor(protected service: ArticleService) {
     super(service, "id", "userId")
@@ -31,7 +35,6 @@ export class ArticleController extends SavedController {
     const dateFormat = getDateFormat(lang)
     let filter: ArticleFilter = {
       limit: resources.defaultLimit,
-      q: "",
       publishedAt: {},
     }
     if (hasSearch(req)) {
@@ -51,6 +54,11 @@ export class ArticleController extends SavedController {
         item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
       }
       const search = getSearch(req.url)
+      const sortSearch = removeSort(search)
+      const prefix = sortSearch ? `?${sortSearch}&` : "?"
+      const sort1: Item = {id: "timeDescSort", value: `${prefix}${resources.sort}=-publishedAt`, text: resource.sort_time_desc}
+      const sort2: Item = {id: "timeAscSort", value: `${prefix}${resources.sort}=publishedAt`, text: resource.sort_time_asc}
+      const sortText = sort == "publishedAt" ? resource.sort_desc_time_asc : resource.sort_desc_time_desc
       render(req, res, "news", {
         resource,
         limits: resources.limits,
@@ -58,7 +66,8 @@ export class ArticleController extends SavedController {
         list,
         pages: buildPages(limit, result.total),
         pageSearch: buildPageSearch(search),
-        sort: buildSortSearch(search, fields, sort),
+        sorts: [sort1, sort2],
+        sortText,
         message: buildMessage(resource, list, limit, page, result.total),
       })
     } catch (err) {
@@ -71,7 +80,6 @@ export class ArticleController extends SavedController {
     const dateFormat = getDateFormat(lang)
     let filter: ArticleFilter = {
       limit: resources.defaultLimit,
-      q: "",
       publishedAt: {},
     }
     if (hasSearch(req)) {
@@ -92,6 +100,11 @@ export class ArticleController extends SavedController {
         item.publishedAt = formatDateTime(item.publishedAt, dateFormat)
       }
       const search = getSearch(req.url)
+      const sortSearch = removeSort(search)
+      const prefix = sortSearch ? `?${sortSearch}&` : "?"
+      const sort1: Item = {id: "timeDescSort", value: `${prefix}${resources.sort}=-publishedAt`, text: resource.sort_time_desc}
+      const sort2: Item = {id: "timeAscSort", value: `${prefix}${resources.sort}=publishedAt`, text: resource.sort_time_asc}
+      const sortText = sort == "publishedAt" ? resource.sort_desc_time_asc : resource.sort_desc_time_desc
       render(req, res, "news", {
         resource,
         limits: resources.limits,
@@ -99,7 +112,8 @@ export class ArticleController extends SavedController {
         list,
         pages: buildPages(limit, result.total),
         pageSearch: buildPageSearch(search),
-        sort: buildSortSearch(search, fields, sort),
+        sorts: [sort1, sort2],
+        sortText,
         message: buildMessage(resource, list, limit, page, result.total),
       })
     } catch (err) {
