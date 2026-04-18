@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid"
-import { CRUDRepository, DB } from "query-core"
+import { CRUDRepository, DB } from "sql-core"
 import { Contact, contactModel, ContactRepository, ContactService } from "./contact"
 import { ContactController } from "./controller"
 export * from "./controller"

@@ -118,7 +118,7 @@ function navigate(e: Event, partId?: string, includeLang?: boolean) {
       histories.shift()
     }
     const search = window.location.search.length > 0 ? window.location.search.substring(1) : ""
-    const lang = getField(search, "lang")
+    const lang = getField(search, resources.lang)
     let url = link.href
     let pageId = resources.pageBody
     let sub = ""
