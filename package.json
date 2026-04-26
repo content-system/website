@@ -18,7 +18,7 @@
     "content-menu": "^0.0.4",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "express-ext": "^0.6.3",
+    "express-core-web": "^0.1.1",
     "jsonwebtoken": "^9.0.3",
     "jsonwebtoken-plus": "^0.0.7",
     "locale-service": "^0.2.0",
@@ -34,7 +34,7 @@
     "sql-core": "^0.1.1",
     "types-validation": "^0.0.2",
     "ui-formatter": "^0.1.0",
-    "xvalidators": "^0.5.19"
+    "validation-core": "^1.1.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

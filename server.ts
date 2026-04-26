@@ -1,7 +1,7 @@
 import { merge } from "config-plus"
 import dotenv from "dotenv"
 import express from "express"
-import { resources as expressResources, MiddlewareLogger } from "express-ext"
+import { resources as expressResources, MiddlewareLogger } from "express-core-web"
 import http from "http"
 import { createLogger } from "logger-core"
 import nunjucks from "nunjucks"

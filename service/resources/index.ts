@@ -1,5 +1,5 @@
 import { Request } from "express"
-import { query } from "express-ext"
+import { query } from "express-core-web"
 import { enLocale, getLocale } from "locale-service"
 import { en as authenticationEN } from "./authentication/en"
 import { vi as authenticationVI } from "./authentication/vi"

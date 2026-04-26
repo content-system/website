@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import { escape, toMap } from "express-ext"
-import { validate } from "xvalidators"
+import { escape, toMap } from "express-core-web"
+import { validate } from "validation-core"
 import { getLang, getResource } from "../resources"
 import { render, renderError500 } from "../template"
 import { Contact, contactModel, ContactService } from "./contact"

@@ -1,8 +1,8 @@
 import { Authenticator } from "authen-service"
 import { Request, Response } from "express"
-import { handleError } from "express-ext"
+import { handleError } from "express-core-web"
 import { Attributes, StringMap } from "onecore"
-import { validate } from "xvalidators"
+import { validate } from "validation-core"
 import { getResource } from "../resources"
 
 export const userModel: Attributes = {

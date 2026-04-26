@@ -10,7 +10,7 @@ import {
   hasSearch,
   removeSort,
   resources
-} from "express-ext"
+} from "express-core-web"
 import { formatDateTime } from "ui-formatter"
 import { getDateFormat, getLang, getLangSearch, getResource } from "../resources"
 import { render, renderError404, renderError500 } from "../template"
