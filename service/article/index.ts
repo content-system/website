@@ -1,5 +1,6 @@
-import { SavedRepository, SavedService, SearchResult } from "onecore"
+import { SavedRepository, SearchResult } from "onecore"
 import { SqlSavedRepository } from "pg-extension"
+import { SavedService } from "saved-service"
 import { DB } from "sql-core"
 import { Article, ArticleFilter, ArticleRepository, ArticleService } from "./article"
 import { ArticleController } from "./controller"
