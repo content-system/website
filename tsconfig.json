@@ -16,6 +16,6 @@
     "emitDecoratorMetadata": true,
     "removeComments": true
   },
-  "include": ["service/**/*.ts", "server.ts", "config.ts", "client/**/*.ts", "build/**/*.ts"],
+  "include": ["service/**/*.ts", "server.ts", "config.ts", "build/**/*.ts"],
   "exclude": ["node_modules", "./client"]
 }
