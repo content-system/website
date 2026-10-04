@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { escape, toMap } from "express-core-web"
+import { escape, toMap } from "express-web-kit"
 import { validate } from "validation-core"
 import { getLang, getResource } from "../resources"
 import { render, renderError500 } from "../template"

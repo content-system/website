@@ -10,7 +10,7 @@ import {
   hasSearch,
   removeSort,
   resources
-} from "express-core-web"
+} from "express-web-kit"
 import { formatDateTime } from "ui-formatter"
 import { getDateFormat, getLang, getLangSearch, getResource } from "../resources"
 import { render, renderError404, renderError500 } from "../template"
@@ -72,7 +72,7 @@ export class JobController {
     const lang = getLang(req)
     const resource = getResource(lang)
     const dateFormat = getDateFormat(lang)
-    const id = req.params.id
+    const id = req.params.id as string
     try {
       const job = await this.service.load(id)
       if (!job) {

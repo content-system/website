@@ -454,7 +454,7 @@ function decodeFromElement<T>(parent: HTMLElement | null | undefined, fields: st
             try {
               const val = new Date(ele.value) // DateUtil.parse(ele.value, 'YYYY-MM-DD');
               obj[field] = val
-            } catch (err) {}
+            } catch (err) { }
           }
         } else {
           const datatype = ele.getAttribute("data-type")

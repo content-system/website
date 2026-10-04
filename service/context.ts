@@ -1,11 +1,12 @@
 import { Authenticator, initializeStatus, SqlAuthTemplateConfig, useUserRepository } from "authen-service"
 import { compare, hash } from "bcryptjs"
 import { MenuBuilder, MenuItemLoader } from "content-menu"
-import { HealthController, LogController, Logger, Middleware, MiddlewareController, resources } from "express-core-web"
+import { HealthController, LogController, Logger, Middleware, MiddlewareController, resources } from "express-web-kit"
+import { updateLogger } from "logger-core"
 import { nanoid } from "nanoid"
 import { MailConfig, MailData, StringMap } from "onecore"
 import { MailSender, PasswordService, PasswordTemplateConfig, usePasswordRepository } from "password-service"
-import { CodeRepository } from "pg-extension"
+import { CodeRepository } from "postgres-kit"
 import { initStatus, Signup, SignupSender, SignupService, SignupTemplateConfig, useRepository, Validator } from "signup-service"
 import { createChecker, DB } from "sql-core"
 import { check } from "types-validation"
@@ -60,7 +61,7 @@ export class Comparator {
 }
 
 export function useContext(db: DB, logger: Logger, midLogger: Middleware, cfg: Config): ApplicationContext {
-  const log = new LogController(logger)
+  const log = new LogController(logger, updateLogger)
   const middleware = new MiddlewareController(midLogger)
   const sqlChecker = createChecker(db)
   const health = new HealthController([sqlChecker])

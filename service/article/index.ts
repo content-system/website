@@ -1,4 +1,4 @@
-import { SqlSavedRepository } from "pg-extension"
+import { SqlSavedRepository } from "postgres-kit"
 import { DB } from "sql-core"
 import { ArticleController } from "./controller"
 import { SqlArticleRepository } from "./repository"
